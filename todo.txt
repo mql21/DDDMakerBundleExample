@@ -12,7 +12,7 @@ Bundle should be able to make:
     - Event: ddd:domain:make:event
     - Value Object: ddd:domain:make:value-object
 - Application
-    - EventSubscriber: ddd:application:make:subscriber
+    - EventSubscriber: ddd:application:make:event-subscriber
     - UseCase: ddd:application:make:use-case
 
 - List
@@ -24,3 +24,60 @@ Bundle should be able to make:
     - Events: ddd:domain:list:events
     - EventSubscribers: ddd:application:list:event-subscribers
     - UseCases: ddd:cqrs:list:use-cases
+
+
+------> Command: ddd:cqrs:make:command
+--------------------------------------
+What bounded context should the command be saved into?
+: Pricing
+
+What should command be called?
+: CreateUser
+
+--> CreateUserCommand command was created at {path}.
+--> Error: CreateUserCommand already exists and has not been created.
+
+Do you wish to create command handler now? (You can create it later with ddd:cqrs:make:command-handler)
+: Yes
+
+--> CreateUserCommandHandler command handler was created at {path}.
+--> Error: CreateUserCommandHandler already exists and has not been created.
+
+------> Command: ddd:cqrs:make:command-handler
+----------------------------------------------
+What bounded context should the command handler be saved into?
+: Pricing
+
+What command should the command handler handle?
+: CreateUser
+
+--> CreateUserCommandHandler command handler was created at {path}.
+--> Error: CreateUserCommandHandler already exists and has not been created.
+
+------> Event: ddd:domain:make:event
+------------------------------------
+What bounded context should the event be saved into?
+: Pricing
+
+What should the domain event be called?
+: UserCreated
+
+--> UserCreatedDomainEvent domain event was created at {path}.
+--> Error: UserCreatedDomainEvent already exists and has not been created.
+
+Do you wish to create even subscriber now? (You can create it later with ddd:application:make:event-subscriber)
+: Yes
+
+--> UserCreatedDomainEventSubscriber subscriber handler was created at {path}.
+--> Error: UserCreatedDomainEventSubscriber already exists and has not been created.
+
+------> Event: ddd:application:make:event-subscriber
+----------------------------------------------------
+What bounded context should the event subscriber be saved into?
+: Pricing
+
+What domain event should the subscriber be subscribed to?
+: UserCreatedDomainEvent
+
+--> UserCreatedDomainEventSubscriber domain event was created at {path}.
+--> Error: UserCreatedDomainEventSubscriber already exists and has not been created.
