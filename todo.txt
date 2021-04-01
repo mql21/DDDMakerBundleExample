@@ -1,25 +1,26 @@
 Bundle should be able to make:
 
-- Bounded context
+- Bounded context: ddd:make:bounded-context
 
 - CQRS
-    - Command
-    - CommandHandler
-    - Query
-    - QueryHandler
+    - Command: ddd:cqrs:make:command
+    - CommandHandler: ddd:cqrs:make:command-handler
+    - Query: ddd:cqrs:make:query
+    - QueryHandler: ddd:cqrs:make:query-handler
 
-
-- Events and use cases
-    - Event
-    - EventSubscriber
-    - UseCase
+- Domain
+    - Event: ddd:domain:make:event
+    - Value Object: ddd:domain:make:value-object
+- Application
+    - EventSubscriber: ddd:application:make:subscriber
+    - UseCase: ddd:application:make:use-case
 
 - List
-    - Bounded contexs
-    - Commands
-    - CommandHandlers
-    - Querys
-    - QueryHandlers
-    - Events
-    - EventSubscribers
-    - UseCases
+    - Bounded contexs: ddd:list:bounded-contexts
+    - Commands: ddd:cqrs:list:commands
+    - CommandHandlers: ddd:cqrs:list:command-handlers
+    - Querys: ddd:cqrs:list:queries
+    - QueryHandlers: ddd:cqrs:list:query-handlers
+    - Events: ddd:domain:list:events
+    - EventSubscribers: ddd:application:list:event-subscribers
+    - UseCases: ddd:cqrs:list:use-cases
