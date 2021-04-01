@@ -1,0 +1,48 @@
+ii  libapache2-mod-php                              1:7.0+35ubuntu6                                          all          server-side, HTML-embedded scripting language (Apache 2 module) (default)
+ii  libapache2-mod-php7.0                           7.0.33-8+ubuntu16.04.1+deb.sury.org+1                    amd64        server-side, HTML-embedded scripting language (Apache 2 module)
+ii  libapache2-mod-php7.3                           7.3.7-1+ubuntu16.04.1+deb.sury.org+1                     amd64        server-side, HTML-embedded scripting language (Apache 2 module)
+ii  php                                             1:7.0+35ubuntu6                                          all          server-side, HTML-embedded scripting language (default)
+ii  php-cli-prompt                                  1.0.1+dfsg-1build1                                       all          tiny helper prompting for user input
+ii  php-common                                      1:35ubuntu6                                              all          Common files for PHP packages
+ii  php-composer-semver                             1.2.0-1build1                                            all          Semver library that offers utilities, version constraint parsing and
+ii  php-composer-spdx-licenses                      1.1.2-1build1                                            all          SPDX licenses list and validation library
+ii  php-curl                                        2:7.3+69+ubuntu16.04.1+deb.sury.org+2+php7.3             all          CURL module for PHP [default]
+ii  php-gd                                          1:7.0+35ubuntu6                                          all          GD module for PHP [default]
+ii  php-gettext                                     1.0.11-2build1                                           all          read gettext MO files directly, without requiring anything other than PHP
+ii  php-json-schema                                 1.6.1-1build1                                            all          implementation of JSON schema
+ii  php-mbstring                                    2:7.3+69+ubuntu16.04.1+deb.sury.org+2+php7.3             all          MBSTRING module for PHP [default]
+ii  php-mcrypt                                      1:7.0+35ubuntu6                                          all          libmcrypt module for PHP [default]
+ii  php-mysql                                       2:7.3+69+ubuntu16.04.1+deb.sury.org+2+php7.3             all          MySQL module for PHP [default]
+iU  php-pear                                        1:1.10.1+submodules+notgz-6ubuntu0.1                     all          PEAR Base System
+ii  php-phpseclib                                   2.0.1-1build1                                            all          implementations of an arbitrary-precision integer arithmetic library
+ii  php-symfony-console                             2.7.10-0ubuntu2                                          all          run tasks from the command line
+ii  php-symfony-filesystem                          2.7.10-0ubuntu2                                          all          basic filesystem utilities
+ii  php-symfony-finder                              2.7.10-0ubuntu2                                          all          find files and directories
+ii  php-symfony-process                             2.7.10-0ubuntu2                                          all          execute commands in sub-processes
+ii  php-tcpdf                                       6.0.093+dfsg-1ubuntu1                                    all          PHP class for generating PDF files on-the-fly
+ii  php-xml                                         2:7.3+69+ubuntu16.04.1+deb.sury.org+2+php7.3             all          DOM, SimpleXML, WDDX, XML, and XSL module for PHP [default]
+ii  php-zip                                         2:7.3+69+ubuntu16.04.1+deb.sury.org+2+php7.3             all          Zip module for PHP [default]
+ii  php7.0                                          7.0.33-8+ubuntu16.04.1+deb.sury.org+1                    all          server-side, HTML-embedded scripting language (metapackage)
+ii  php7.0-cli                                      7.0.33-8+ubuntu16.04.1+deb.sury.org+1                    amd64        command-line interpreter for the PHP scripting language
+ii  php7.0-common                                   7.0.33-8+ubuntu16.04.1+deb.sury.org+1                    amd64        documentation, examples and common module for PHP
+ii  php7.0-curl                                     7.0.33-8+ubuntu16.04.1+deb.sury.org+1                    amd64        CURL module for PHP
+ii  php7.0-gd                                       7.0.33-8+ubuntu16.04.1+deb.sury.org+1                    amd64        GD module for PHP
+ii  php7.0-json                                     7.0.33-8+ubuntu16.04.1+deb.sury.org+1                    amd64        JSON module for PHP
+ii  php7.0-mbstring                                 7.0.33-8+ubuntu16.04.1+deb.sury.org+1                    amd64        MBSTRING module for PHP
+ii  php7.0-mcrypt                                   7.0.33-8+ubuntu16.04.1+deb.sury.org+1                    amd64        libmcrypt module for PHP
+ii  php7.0-mysql                                    7.0.33-8+ubuntu16.04.1+deb.sury.org+1                    amd64        MySQL module for PHP
+ii  php7.0-opcache                                  7.0.33-8+ubuntu16.04.1+deb.sury.org+1                    amd64        Zend OpCache module for PHP
+ii  php7.0-readline                                 7.0.33-8+ubuntu16.04.1+deb.sury.org+1                    amd64        readline module for PHP
+ii  php7.0-xml                                      7.0.33-8+ubuntu16.04.1+deb.sury.org+1                    amd64        DOM, SimpleXML, WDDX, XML, and XSL module for PHP
+ii  php7.3                                          7.3.7-1+ubuntu16.04.1+deb.sury.org+1                     all          server-side, HTML-embedded scripting language (metapackage)
+ii  php7.3-cli                                      7.3.7-1+ubuntu16.04.1+deb.sury.org+1                     amd64        command-line interpreter for the PHP scripting language
+ii  php7.3-common                                   7.3.7-1+ubuntu16.04.1+deb.sury.org+1                     amd64        documentation, examples and common module for PHP
+ii  php7.3-curl                                     7.3.7-1+ubuntu16.04.1+deb.sury.org+1                     amd64        CURL module for PHP
+ii  php7.3-json                                     7.3.7-1+ubuntu16.04.1+deb.sury.org+1                     amd64        JSON module for PHP
+ii  php7.3-mbstring                                 7.3.7-1+ubuntu16.04.1+deb.sury.org+1                     amd64        MBSTRING module for PHP
+ii  php7.3-mysql                                    7.3.7-1+ubuntu16.04.1+deb.sury.org+1                     amd64        MySQL module for PHP
+ii  php7.3-opcache                                  7.3.7-1+ubuntu16.04.1+deb.sury.org+1                     amd64        Zend OpCache module for PHP
+ii  php7.3-readline                                 7.3.7-1+ubuntu16.04.1+deb.sury.org+1                     amd64        readline module for PHP
+ii  php7.3-xml                                      7.3.7-1+ubuntu16.04.1+deb.sury.org+1                     amd64        DOM, SimpleXML, WDDX, XML, and XSL module for PHP
+ii  php7.3-zip                                      7.3.7-1+ubuntu16.04.1+deb.sury.org+1                     amd64        Zip module for PHP
+ii  phpmyadmin                                      4:4.5.4.1-2ubuntu2.1                                     all          MySQL web administration tool

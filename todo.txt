@@ -1,0 +1,25 @@
+Bundle should be able to make:
+
+- Bounded context
+
+- CQRS
+    - Command
+    - CommandHandler
+    - Query
+    - QueryHandler
+
+
+- Events and use cases
+    - Event
+    - EventSubscriber
+    - UseCase
+
+- List
+    - Bounded contexs
+    - Commands
+    - CommandHandlers
+    - Querys
+    - QueryHandlers
+    - Events
+    - EventSubscribers
+    - UseCases
