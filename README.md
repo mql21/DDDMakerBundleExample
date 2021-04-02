@@ -3,7 +3,7 @@ A Symfony Bundle to easily create DDD elements from your console
 
 **This project is currently under development.**
 
-Current state: This project should be a [Symfony Bundle](https://symfony.com/doc/current/bundles.html). However, because as it's still a work in progress, a full Symfony 5 app is being used to make the development of the bundle easier.
+Current state: This project should be a [Symfony Bundle](https://symfony.com/doc/current/bundles.html). However, because it's still a work in progress, a full Symfony 5 app is being used to make the development of the bundle easier.
 
 ## Goal
 
