@@ -17,10 +17,10 @@ For now, these are the elements that will be able to be created through this bun
 - **Bounded context**: ddd:make:bounded-context
 
 - **CQRS**
-    - Command (*ddd:cqrs:make:command*)
-    - CommandHandler (*ddd:cqrs:make:command-handler*)
+    - Command (*ddd:cqrs:make:command*) :hourglass_flowing_sand:
+    - CommandHandler (*ddd:cqrs:make:command-handler*) :hourglass_flowing_sand:
     - Query (*ddd:cqrs:make:query*)
-    - QueryHandler (*ddd:cqrs:make:query-handler*)
+    - QueryHandler (*ddd:cqrs:make:query-handler*) :heavy_check_mark:
 
 - **Domain**
     - Event (*ddd:domain:make:event*)
@@ -38,7 +38,12 @@ For now, these are the elements that will be able to be created through this bun
     - Events (*ddd:domain:list:events*)
     - EventSubscribers (*ddd:application:list:event-subscribers*)
     - UseCases (*ddd:cqrs:list:use-cases*)
-    
+   
+:hourglass_flowing_sand: Someone is already working on this
+
+:black_square_button: To do
+
+:heavy_check_mark: Done
   ### Contributing
   
   As you might have noticed, there are a lot of console commands to implemen, so any help will be very welcome! If you want to contribute, just reach out opening an issue commenting the work 
