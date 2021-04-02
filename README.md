@@ -7,7 +7,7 @@ A Symfony Bundle to easily create DDD elements from your console
 
 Normally when you work with Hexagonal Architechture or other clean architechtures, specially if working under a DDD approach, there's little room for "creativity". 
 Because all of the layers are well defined, often times you find yourself copy-pasting classes (i.e. commands, queries, event subscribers, value objects...) from 
-one context to another just as a skeleton for the new class.
+one context to another just to have a skeleton for the new class.
 
 So, what if this copy-paste work could be automated? With DDDMakerBundle, you'll be able to create DDD elements from your console, just like Symfony does through 
 the [Maker Bundle](https://symfony.com/doc/current/bundles/SymfonyMakerBundle/index.html).
