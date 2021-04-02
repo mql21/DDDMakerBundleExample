@@ -46,5 +46,4 @@ For now, these are the elements that will be able to be created through this bun
 :heavy_check_mark: Done
   ### Contributing
   
-  As you might have noticed, there are a lot of console commands to implemen, so any help will be very welcome! If you want to contribute, just reach out opening an issue commenting the work 
-  you'd like to do so maybe I can give you some help!
+As you might have noticed, there are a lot of console commands to implement, so any help will be very welcome! If you want to contribute, just reach out opening an issue commenting the work you'd like to do so maybe I can give you some help!
