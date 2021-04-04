@@ -4,7 +4,7 @@
 namespace Mql21\DDDMakerBundle;
 
 
-class PathGenerator
+class PathFactory
 {
     private static string $BASE_PATH = "src/";
     
