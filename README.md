@@ -16,7 +16,7 @@ the [Maker Bundle](https://symfony.com/doc/current/bundles/SymfonyMakerBundle/in
 
 For now, these are the elements that will be able to be created through this bundle:
 
-- **Bounded context**: ddd:make:bounded-context
+- **Bounded context** (*ddd:make:bounded-context*) :black_square_button:
 
 - **CQRS**
     - Command (*ddd:cqrs:make:command*) :hourglass_flowing_sand:
