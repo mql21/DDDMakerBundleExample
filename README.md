@@ -28,8 +28,8 @@ For now, these are the elements that will be able to be created through this bun
     - Event (*ddd:domain:make:event*) :black_square_button:
     - Value Object (*ddd:domain:make:value-object*) :black_square_button:
 - **Application**
-    - EventSubscriber (*ddd:application:make:event-subscriber) :black_square_button:
-    - UseCase (*ddd:application:make:use-case) :black_square_button:
+    - EventSubscriber (*ddd:application:make:event-subscriber*) :black_square_button:
+    - UseCase (*ddd:application:make:use-case*) :black_square_button:
 
 - **List**
     - Bounded (*contexs ddd:list:bounded-contexts*) :black_square_button:
