@@ -45,7 +45,7 @@ class BoundedContextModuleLocator
     
     protected function displayModuleNotFoundError(string $moduleName, string $boundedContextName): void
     {
-        $availableModules = implode(', ', $this->moduleFinder->find($boundedContextName));
+        $availableModules = implode(', ', $this->moduleFinder->findIn($boundedContextName));
         
         throw new ElementNotFoundException("Module {$moduleName} does not exist in bounded context {$boundedContextName}. Available modules: {$availableModules}");
     }

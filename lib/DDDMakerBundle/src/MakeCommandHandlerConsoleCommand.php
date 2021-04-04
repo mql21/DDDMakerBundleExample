@@ -56,7 +56,7 @@ class MakeCommandHandlerConsoleCommand extends Command
         
         $this->boundedContextModuleLocator->checkIfBoundedContextModuleExists($boundedContextName, $moduleName);
         
-        $availableCommands = $this->commandFinder->find($boundedContextName, $moduleName);
+        $availableCommands = $this->commandFinder->findIn($boundedContextName, $moduleName);
         
         $commandHandlerNameQuestion = new Question("<info> What should the command handler be called?</info>\n > ");
         $commandHandlerNameQuestion->setAutocompleterValues($availableCommands);

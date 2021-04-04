@@ -8,7 +8,7 @@ use Mql21\DDDMakerBundle\PathGenerator;
 
 class ModuleFinder
 {
-    public function find(string $boundedContextName): array
+    public function findIn(string $boundedContextName): array
     {
         $boundedContextPath = PathGenerator::forBoundedContexts($boundedContextName);
         $elementsInBoundedContextDirectory = scandir($boundedContextPath);

@@ -10,7 +10,7 @@ class CommandFinder
 {
     const COMMAND_FILE_SUFFIX = "Command.php";
     
-    public function find(string $boundedContextName, string $moduleName): array
+    public function findIn(string $boundedContextName, string $moduleName): array
     {
         $commandsPath = PathGenerator::forBoundedContextModuleCommands($boundedContextName, $moduleName);
         $elementsInBoundedContextDirectory = scandir($commandsPath);
