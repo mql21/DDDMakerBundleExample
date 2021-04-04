@@ -3,8 +3,7 @@
 
 namespace Mql21\DDDMakerBundle\Finder;
 
-
-use Mql21\DDDMakerBundle\PathGenerator;
+use Mql21\DDDMakerBundle\Factories\PathFactory;
 
 class CommandFinder
 {
@@ -12,11 +11,11 @@ class CommandFinder
     
     public function findIn(string $boundedContextName, string $moduleName): array
     {
-        $commandsPath = PathGenerator::forBoundedContextModuleCommands($boundedContextName, $moduleName);
+        $commandsPath = PathFactory::forBoundedContextModuleCommands($boundedContextName, $moduleName);
         $elementsInBoundedContextDirectory = scandir($commandsPath);
         
         $availableCommandFiles = $this->findAvailableCommandFiles($elementsInBoundedContextDirectory, $commandsPath);
-    
+        
         return $this->removeCommandSuffixFromCommandFiles($availableCommandFiles);
     }
     
@@ -37,7 +36,7 @@ class CommandFinder
         return array_map(
             function ($element) {
                 
-                return str_replace('Command.php', '', $element);
+                return str_replace(self::COMMAND_FILE_SUFFIX, '', $element);
             },
             $availableCommandFiles
         );

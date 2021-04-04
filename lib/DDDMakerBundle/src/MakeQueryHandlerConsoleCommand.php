@@ -3,8 +3,11 @@
 namespace Mql21\DDDMakerBundle;
 
 use Mql21\DDDMakerBundle\Finder\CommandFinder;
+use Mql21\DDDMakerBundle\Finder\QueryFinder;
 use Mql21\DDDMakerBundle\Generator\CommandGenerator;
 use Mql21\DDDMakerBundle\Generator\CommandHandlerGenerator;
+use Mql21\DDDMakerBundle\Generator\QueryGenerator;
+use Mql21\DDDMakerBundle\Generator\QueryHandlerGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -12,14 +15,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
-class MakeCommandHandlerConsoleCommand extends Command
+class MakeQueryHandlerConsoleCommand extends Command
 {
-    protected static $defaultName = 'ddd:cqrs:make:command-handler';
+    protected static $defaultName = 'ddd:cqrs:make:query-handler';
     
-    private CommandGenerator $commandGenerator;
-    private CommandHandlerGenerator $commandHandlerGenerator;
+    private QueryGenerator $queryGenerator;
+    private QueryHandlerGenerator $queryHandlerGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
-    private CommandFinder $commandFinder;
+    private QueryFinder $queryFinder;
     
     public function __construct(string $name = null)
     {
@@ -30,10 +33,10 @@ class MakeCommandHandlerConsoleCommand extends Command
     {
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
         
-        $this->commandGenerator = new CommandGenerator();
-        $this->commandHandlerGenerator = new CommandHandlerGenerator();
+        $this->queryGenerator = new QueryGenerator();
+        $this->queryHandlerGenerator = new QueryHandlerGenerator();
         
-        $this->commandFinder = new CommandFinder();
+        $this->queryFinder = new QueryFinder();
         
         $this
             ->setDescription('Creates a command handler in the Application layer.')
@@ -48,7 +51,7 @@ class MakeCommandHandlerConsoleCommand extends Command
                 'The name of the module inside the bounded context where Command will be saved into.'
             );
     }
-
+    
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $boundedContextName = $input->getArgument('boundedContext');
@@ -56,17 +59,17 @@ class MakeCommandHandlerConsoleCommand extends Command
         
         $this->boundedContextModuleLocator->checkIfBoundedContextModuleExists($boundedContextName, $moduleName);
         
-        $commandHandlerNameQuestion = new Question("<info> What should the command handler be called?</info>\n > ");
-        $commandHandlerNameQuestion->setAutocompleterValues(
-            $this->commandFinder->findIn($boundedContextName, $moduleName)
+        $queryHandlerNameQuestion = new Question("<info> What should the query handler be called?</info>\n > ");
+        $queryHandlerNameQuestion->setAutocompleterValues(
+            $this->queryFinder->findIn($boundedContextName, $moduleName)
         );
         $questionHelper = $this->getHelper('question');
-    
-        $commandHandlerName = $questionHelper->ask($input, $output, $commandHandlerNameQuestion);
         
-        $this->commandHandlerGenerator->generate($boundedContextName, $moduleName, $commandHandlerName);
-    
-        $output->writeln("<info> Command handler {$commandHandlerName} has been successfully created! </info>\n\n");
+        $queryHandlerName = $questionHelper->ask($input, $output, $queryHandlerNameQuestion);
+        
+        $this->queryHandlerGenerator->generate($boundedContextName, $moduleName, $queryHandlerName);
+        
+        $output->writeln("<info> Query handler {$queryHandlerName} has been successfully created! </info>\n\n");
         
         return Command::SUCCESS;
     }

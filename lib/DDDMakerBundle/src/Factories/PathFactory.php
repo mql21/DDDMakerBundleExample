@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Mql21\DDDMakerBundle;
+namespace Mql21\DDDMakerBundle\Factories;
 
 
 class PathFactory

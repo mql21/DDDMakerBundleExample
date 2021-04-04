@@ -2,9 +2,8 @@
 
 namespace Mql21\DDDMakerBundle\Generator;
 
-
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
-use Mql21\DDDMakerBundle\PathGenerator;
+use Mql21\DDDMakerBundle\Factories\PathFactory;
 
 class CommandHandlerGenerator
 {
@@ -14,7 +13,7 @@ class CommandHandlerGenerator
         $commandSuffix = "CommandHandler";
         $commandHandlerClassName = "{$commandName}{$commandSuffix}";
         $commandHandlerFileName = "{$commandHandlerClassName}.php";
-        $modulePath = PathGenerator::forBoundedContextModules($boundedContextName, $moduleName);
+        $modulePath = PathFactory::forBoundedContextModules($boundedContextName, $moduleName);
         $commandHandlerFullPath = "{$modulePath}/Application/{$commandHandlerFileName}";
         
         if (file_exists($commandHandlerFullPath)) {

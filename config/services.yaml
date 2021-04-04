@@ -29,6 +29,8 @@ services:
 
     Mql21\DDDMakerBundle\MakeCommandConsoleCommand: ~
     Mql21\DDDMakerBundle\MakeCommandHandlerConsoleCommand: ~
+    Mql21\DDDMakerBundle\MakeQueryConsoleCommand: ~
+    Mql21\DDDMakerBundle\MakeQueryHandlerConsoleCommand: ~
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
