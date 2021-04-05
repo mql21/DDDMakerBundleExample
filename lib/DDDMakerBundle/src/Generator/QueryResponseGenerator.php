@@ -17,7 +17,7 @@ class QueryResponseGenerator
         $responseFullPath = "{$modulePath}/Application/{$responseFileName}";
         
         if (file_exists($responseFullPath)) {
-            throw new ElementAlreadyExistsException("Command {$responseName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\".");
+            throw new ElementAlreadyExistsException("Response {$responseName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\".");
         }
     
         file_put_contents($responseFullPath, "<?php \n\nnamespace Test\Module;\n\nclass {$responseClassName}\n{\n}\n");
