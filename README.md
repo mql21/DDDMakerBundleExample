@@ -29,8 +29,8 @@ For now, these are the elements that will be able to be created through this bun
     - Event (*ddd:domain:make:event*) :hourglass_flowing_sand:
     - Value Object (*ddd:domain:make:value-object*) :hourglass_flowing_sand:
 - **Application**
-    - EventSubscriber (*ddd:application:make:event-subscriber*) :black_square_button:
-    - UseCase (*ddd:application:make:use-case*) :black_square_button:
+    - EventSubscriber (*ddd:application:make:event-subscriber*) :hourglass_flowing_sand:
+    - UseCase (*ddd:application:make:use-case*) :hourglass_flowing_sand:
 
 - **List**
     - Bounded (*contexs ddd:list:bounded-contexts*) :black_square_button:
