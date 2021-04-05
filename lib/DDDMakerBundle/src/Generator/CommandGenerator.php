@@ -14,7 +14,7 @@ class CommandGenerator
         $commandClassName = "{$commandName}{$commandSuffix}";
         $commandFileName = "{$commandClassName}.php";
         $modulePath = PathFactory::forBoundedContextModules($boundedContextName, $moduleName);
-        $commandFullPath = "{$modulePath}/Application/{$commandFileName}";
+        $commandFullPath = "{$modulePath}/Application/Command/{$commandFileName}";
         
         if (file_exists($commandFullPath)) {
             throw new ElementAlreadyExistsException("Command {$commandName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\".");

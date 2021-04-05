@@ -14,7 +14,7 @@ class QueryGenerator
         $queryClassName = "{$queryName}{$querySuffix}";
         $queryFileName = "{$queryClassName}.php";
         $modulePath = PathFactory::forBoundedContextModules($boundedContextName, $moduleName);
-        $queryFullPath = "{$modulePath}/Application/{$queryFileName}";
+        $queryFullPath = "{$modulePath}/Application/Query/{$queryFileName}";
         
         if (file_exists($queryFullPath)) {
             throw new ElementAlreadyExistsException("Query {$queryName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\".");

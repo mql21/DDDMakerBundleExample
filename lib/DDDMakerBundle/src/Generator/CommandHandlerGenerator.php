@@ -14,7 +14,7 @@ class CommandHandlerGenerator
         $commandHandlerClassName = "{$commandName}{$commandSuffix}";
         $commandHandlerFileName = "{$commandHandlerClassName}.php";
         $modulePath = PathFactory::forBoundedContextModules($boundedContextName, $moduleName);
-        $commandHandlerFullPath = "{$modulePath}/Application/{$commandHandlerFileName}";
+        $commandHandlerFullPath = "{$modulePath}/Application/Command/{$commandHandlerFileName}";
         
         if (file_exists($commandHandlerFullPath)) {
             throw new ElementAlreadyExistsException("Command handler {$commandHandlerClassName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\".");

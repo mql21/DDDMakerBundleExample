@@ -14,7 +14,7 @@ class QueryResponseGenerator
         $responseClassName = "{$responseName}{$responseSuffix}";
         $responseFileName = "{$responseClassName}.php";
         $modulePath = PathFactory::forBoundedContextModules($boundedContextName, $moduleName);
-        $responseFullPath = "{$modulePath}/Application/{$responseFileName}";
+        $responseFullPath = "{$modulePath}/Application/Response/{$responseFileName}";
         
         if (file_exists($responseFullPath)) {
             throw new ElementAlreadyExistsException("Response {$responseName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\".");

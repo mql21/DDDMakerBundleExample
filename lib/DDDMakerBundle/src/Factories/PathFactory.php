@@ -6,6 +6,7 @@ namespace Mql21\DDDMakerBundle\Factories;
 
 class PathFactory
 {
+    // TODO: All relative paths should be injected via config
     private static string $BASE_PATH = "src/";
     
     public static function basePath(): string

@@ -14,7 +14,7 @@ class QueryHandlerGenerator
         $queryHandlerClassName = "{$queryName}{$querySuffix}";
         $queryHandlerFileName = "{$queryHandlerClassName}.php";
         $modulePath = PathFactory::forBoundedContextModules($boundedContextName, $moduleName);
-        $commandquery = "{$modulePath}/Application/{$queryHandlerFileName}";
+        $commandquery = "{$modulePath}/Application/Query/{$queryHandlerFileName}";
         
         if (file_exists($commandquery)) {
             throw new ElementAlreadyExistsException("Query handler {$queryHandlerClassName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\".");
