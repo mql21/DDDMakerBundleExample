@@ -23,7 +23,7 @@ For now, these are the elements that will be able to be created through this bun
     - CommandHandler (*ddd:cqrs:make:command-handler*) :hourglass_flowing_sand:
     - Query (*ddd:cqrs:make:query*) :hourglass_flowing_sand:
     - QueryHandler (*ddd:cqrs:make:query-handler*) :hourglass_flowing_sand:
-    - Response  (*ddd:cqrs:make:response*)
+    - Response  (*ddd:cqrs:make:response*) :hourglass_flowing_sand:
 
 - **Domain**
     - Event (*ddd:domain:make:event*) :black_square_button:
