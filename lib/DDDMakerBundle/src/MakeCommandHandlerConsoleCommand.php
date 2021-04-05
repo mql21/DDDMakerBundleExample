@@ -3,6 +3,7 @@
 namespace Mql21\DDDMakerBundle;
 
 use Mql21\DDDMakerBundle\Finder\CommandFinder;
+use Mql21\DDDMakerBundle\Finder\UseCaseFinder;
 use Mql21\DDDMakerBundle\Generator\CommandGenerator;
 use Mql21\DDDMakerBundle\Generator\CommandHandlerGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
@@ -20,6 +21,7 @@ class MakeCommandHandlerConsoleCommand extends Command
     private CommandHandlerGenerator $commandHandlerGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
     private CommandFinder $commandFinder;
+    private UseCaseFinder $useCaseFinder;
     
     public function __construct(string $name = null)
     {
@@ -34,7 +36,8 @@ class MakeCommandHandlerConsoleCommand extends Command
         $this->commandHandlerGenerator = new CommandHandlerGenerator();
         
         $this->commandFinder = new CommandFinder();
-        
+        $this->useCaseFinder = new UseCaseFinder();
+    
         $this
             ->setDescription('Creates a command handler in the Application layer.')
             ->addArgument(
@@ -56,17 +59,27 @@ class MakeCommandHandlerConsoleCommand extends Command
         
         $this->boundedContextModuleLocator->checkIfBoundedContextModuleExists($boundedContextName, $moduleName);
         
-        $commandHandlerNameQuestion = new Question("<info> What should the command handler be called?</info>\n > ");
-        $commandHandlerNameQuestion->setAutocompleterValues(
+        $commandNameQuestion = new Question("<info> What command should the command handler listen to?</info>\n > ");
+        $commandNameQuestion->setAutocompleterValues(
             $this->commandFinder->findIn($boundedContextName, $moduleName)
         );
         $questionHelper = $this->getHelper('question');
     
-        $commandHandlerName = $questionHelper->ask($input, $output, $commandHandlerNameQuestion);
-        
-        $this->commandHandlerGenerator->generate($boundedContextName, $moduleName, $commandHandlerName);
+        $commandName = $questionHelper->ask($input, $output, $commandNameQuestion);
     
-        $output->writeln("<info> Command handler {$commandHandlerName} has been successfully created! </info>\n\n");
+        $useCaseQuestion = new Question("<info> What use case should the event handler execute?</info>\n > ");
+        $useCaseQuestion->setAutocompleterValues(
+            $this->useCaseFinder->findIn($boundedContextName, $moduleName)
+        );
+        $questionHelper = $this->getHelper('question');
+    
+        // Following var is not being used now, will be used in the near future bc use case needs to be instantiated
+        // inside the handler
+        $useCaseName = $questionHelper->ask($input, $output, $useCaseQuestion);
+        
+        $this->commandHandlerGenerator->generate($boundedContextName, $moduleName, $commandName);
+    
+        $output->writeln("<info> Command handler {$commandName} has been successfully created! </info>\n\n");
         
         return Command::SUCCESS;
     }
