@@ -33,6 +33,7 @@ services:
     Mql21\DDDMakerBundle\MakeQueryHandlerConsoleCommand: ~
     Mql21\DDDMakerBundle\MakeQueryResponseConsoleCommand: ~
     Mql21\DDDMakerBundle\MakeValueObjectConsoleCommand: ~
+    Mql21\DDDMakerBundle\MakeDomainEventConsoleCommand: ~
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
