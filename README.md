@@ -26,8 +26,8 @@ For now, these are the elements that will be able to be created through this bun
     - Response  (*ddd:cqrs:make:response*) :hourglass_flowing_sand:
 
 - **Domain**
-    - Event (*ddd:domain:make:event*) :black_square_button:
-    - Value Object (*ddd:domain:make:value-object*) :black_square_button:
+    - Event (*ddd:domain:make:event*) :hourglass_flowing_sand:
+    - Value Object (*ddd:domain:make:value-object*) :hourglass_flowing_sand:
 - **Application**
     - EventSubscriber (*ddd:application:make:event-subscriber*) :black_square_button:
     - UseCase (*ddd:application:make:use-case*) :black_square_button:
