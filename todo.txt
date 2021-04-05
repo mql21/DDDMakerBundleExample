@@ -1,9 +1,11 @@
 TODO Tasks:
 
 - Generated code should be obtained via some sort of templating.
-- Use yaml config to define path-related configurations
+- Use yaml config to define paths and generated code configurations
     - Where are bounded contexts located.
     - Where are DDD elements located inside a bounded context.
+    - What interface, if any, should DDD elements implement.
+    - What class, if any, should DDD elements extend from.
 - A lot of code is being duplicated now, find a way (if it makes sense) to abstract that code (i.e. generator classes, finders...)
 - Commands that generate DTO elements (such as events, commands, queries...) should ask for primitive types that will be added to the generated class.
 - Configure Bundle and push it to packagist
