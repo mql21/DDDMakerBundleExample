@@ -14,12 +14,12 @@ class QueryFinder
         $queriesPath = PathFactory::forQueriesIn($boundedContextName, $moduleName);
         $elementsInBoundedContextDirectory = scandir($queriesPath);
         
-        $availableQueryFiles = $this->findAvailableCommandFiles($elementsInBoundedContextDirectory, $queriesPath);
+        $availableQueryFiles = $this->findAvailableQueryFiles($elementsInBoundedContextDirectory, $queriesPath);
         
-        return $this->removeCommandSuffixFromCommandFiles($availableQueryFiles);
+        return $this->removeSuffixFromQueryFiles($availableQueryFiles);
     }
     
-    protected function findAvailableCommandFiles(array $elementsInBoundedContextDirectory, string $queriesPath): array
+    protected function findAvailableQueryFiles(array $elementsInBoundedContextDirectory, string $queriesPath): array
     {
         return array_filter(
             $elementsInBoundedContextDirectory,
@@ -31,7 +31,7 @@ class QueryFinder
         );
     }
     
-    protected function removeCommandSuffixFromCommandFiles(array $availableQueryFiles): array
+    protected function removeSuffixFromQueryFiles(array $availableQueryFiles): array
     {
         return array_map(
             function ($element) {

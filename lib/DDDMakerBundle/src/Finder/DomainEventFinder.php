@@ -16,7 +16,7 @@ class DomainEventFinder
         
         $availableEventFiles = $this->findAvailableEventFiles($elementsInBoundedContextDirectory, $eventsPath);
         
-        return $this->removeFileSuffixFromEventFiles($availableEventFiles);
+        return $this->removeSuffixFromEventFiles($availableEventFiles);
     }
     
     protected function findAvailableEventFiles(array $elementsInBoundedContextDirectory, string $eventsPath): array
@@ -31,7 +31,7 @@ class DomainEventFinder
         );
     }
     
-    protected function removeFileSuffixFromEventFiles(array $availableQueryFiles): array
+    protected function removeSuffixFromEventFiles(array $availableQueryFiles): array
     {
         return array_map(
             function ($element) {

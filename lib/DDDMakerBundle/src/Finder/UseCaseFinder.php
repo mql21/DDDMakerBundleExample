@@ -16,7 +16,7 @@ class UseCaseFinder
         
         $availableUseCaseFiles = $this->findAvailableUseCaseFiles($elementsInBoundedContextDirectory, $useCasePath);
         
-        return $this->removeFileExtensionFromEventFiles($availableUseCaseFiles);
+        return $this->removeFileExtensionFromUseCaseFiles($availableUseCaseFiles);
     }
     
     protected function findAvailableUseCaseFiles(array $elementsInBoundedContextDirectory, string $eventsPath): array
@@ -31,7 +31,7 @@ class UseCaseFinder
         );
     }
     
-    protected function removeFileExtensionFromEventFiles(array $availableQueryFiles): array
+    protected function removeFileExtensionFromUseCaseFiles(array $availableQueryFiles): array
     {
         return array_map(
             function ($element) {

@@ -16,7 +16,7 @@ class CommandFinder
         
         $availableCommandFiles = $this->findAvailableCommandFiles($elementsInBoundedContextDirectory, $commandsPath);
         
-        return $this->removeCommandSuffixFromCommandFiles($availableCommandFiles);
+        return $this->removeSuffixFromCommandFiles($availableCommandFiles);
     }
     
     protected function findAvailableCommandFiles(array $elementsInBoundedContextDirectory, string $commandsPath): array
@@ -31,7 +31,7 @@ class CommandFinder
         );
     }
     
-    protected function removeCommandSuffixFromCommandFiles(array $availableCommandFiles): array
+    protected function removeSuffixFromCommandFiles(array $availableCommandFiles): array
     {
         return array_map(
             function ($element) {

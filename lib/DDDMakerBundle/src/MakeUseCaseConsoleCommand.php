@@ -3,7 +3,6 @@
 namespace Mql21\DDDMakerBundle;
 
 use Mql21\DDDMakerBundle\Generator\UseCaseGenerator;
-use Mql21\DDDMakerBundle\Generator\ValueObjectGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

@@ -2,7 +2,6 @@
 
 namespace Mql21\DDDMakerBundle;
 
-use Mql21\DDDMakerBundle\Finder\CommandFinder;
 use Mql21\DDDMakerBundle\Finder\DomainEventFinder;
 use Mql21\DDDMakerBundle\Finder\UseCaseFinder;
 use Mql21\DDDMakerBundle\Generator\DomainEventSubscriberGenerator;

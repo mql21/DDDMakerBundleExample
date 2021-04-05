@@ -2,10 +2,7 @@
 
 namespace Mql21\DDDMakerBundle;
 
-use Mql21\DDDMakerBundle\Finder\CommandFinder;
 use Mql21\DDDMakerBundle\Finder\QueryFinder;
-use Mql21\DDDMakerBundle\Generator\CommandGenerator;
-use Mql21\DDDMakerBundle\Generator\CommandHandlerGenerator;
 use Mql21\DDDMakerBundle\Generator\QueryGenerator;
 use Mql21\DDDMakerBundle\Generator\QueryHandlerGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;

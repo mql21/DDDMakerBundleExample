@@ -14,7 +14,7 @@ class DomainEventSubscriberGenerator
         $subscriberFullPath = "{$modulePath}Application/EventSubscriber/{$subscriberFileName}";
         
         if (file_exists($subscriberFullPath)) {
-            throw new ElementAlreadyExistsException("Subscriber {$subscriberName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\".");
+            throw new ElementAlreadyExistsException("Event subscriber {$subscriberName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\".");
         }
     
         file_put_contents($subscriberFullPath, "<?php \n\nnamespace Test\Module;\n\nclass {$subscriberName}\n{\n}\n");

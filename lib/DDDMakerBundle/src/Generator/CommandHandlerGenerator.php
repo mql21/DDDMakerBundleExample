@@ -10,8 +10,8 @@ class CommandHandlerGenerator
     public function generate(string $boundedContextName, string $moduleName, string $commandName): void
     {
     
-        $commandSuffix = "CommandHandler";
-        $commandHandlerClassName = "{$commandName}{$commandSuffix}";
+        $commandHandlerSuffix = "CommandHandler";
+        $commandHandlerClassName = "{$commandName}{$commandHandlerSuffix}";
         $commandHandlerFileName = "{$commandHandlerClassName}.php";
         $modulePath = PathFactory::forBoundedContextModules($boundedContextName, $moduleName);
         $commandHandlerFullPath = "{$modulePath}/Application/Command/{$commandHandlerFileName}";
