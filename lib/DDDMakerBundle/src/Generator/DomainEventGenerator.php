@@ -10,7 +10,6 @@ class DomainEventGenerator implements DDDElementGenerator
 {
     public function generate(string $boundedContextName, string $moduleName, string $eventName): void
     {
-    
         $eventSuffix = "DomainEvent";
         $eventClassName = "{$eventName}{$eventSuffix}";
         $eventFileName = "{$eventClassName}.php";

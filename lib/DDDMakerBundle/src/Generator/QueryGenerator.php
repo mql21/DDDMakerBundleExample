@@ -10,7 +10,6 @@ class QueryGenerator implements DDDElementGenerator
 {
     public function generate(string $boundedContextName, string $moduleName, string $queryName): void
     {
-    
         $querySuffix = "Query";
         $queryClassName = "{$queryName}{$querySuffix}";
         $queryFileName = "{$queryClassName}.php";

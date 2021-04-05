@@ -10,7 +10,6 @@ class CommandGenerator implements DDDElementGenerator
 {
     public function generate(string $boundedContextName, string $moduleName, string $commandName): void
     {
-    
         $commandSuffix = "Command";
         $commandClassName = "{$commandName}{$commandSuffix}";
         $commandFileName = "{$commandClassName}.php";

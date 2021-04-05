@@ -10,7 +10,6 @@ class QueryResponseGenerator implements DDDElementGenerator
 {
     public function generate(string $boundedContextName, string $moduleName, string $responseName): void
     {
-    
         $responseSuffix = "Response";
         $responseClassName = "{$responseName}{$responseSuffix}";
         $responseFileName = "{$responseClassName}.php";
