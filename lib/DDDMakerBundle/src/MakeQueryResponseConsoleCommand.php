@@ -2,15 +2,12 @@
 
 namespace Mql21\DDDMakerBundle;
 
-use Mql21\DDDMakerBundle\Generator\CommandGenerator;
-use Mql21\DDDMakerBundle\Generator\CommandHandlerGenerator;
 use Mql21\DDDMakerBundle\Generator\QueryResponseGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
 class MakeQueryResponseConsoleCommand extends Command
