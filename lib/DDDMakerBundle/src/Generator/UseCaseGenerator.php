@@ -10,7 +10,7 @@ class UseCaseGenerator
     public function generate(string $boundedContextName, string $moduleName, string $useCaseName): void
     {
         $useCaseFileName = "{$useCaseName}.php";
-        $useCasePath = PathFactory::forUseCases($boundedContextName, $moduleName);
+        $useCasePath = PathFactory::forUseCasesIn($boundedContextName, $moduleName);
         $useCaseFullPath = "{$useCasePath}{$useCaseFileName}";
         
         if (file_exists($useCaseFullPath)) {

@@ -11,7 +11,7 @@ class CommandFinder
     
     public function findIn(string $boundedContextName, string $moduleName): array
     {
-        $commandsPath = PathFactory::forBoundedContextModuleCommands($boundedContextName, $moduleName);
+        $commandsPath = PathFactory::forQueriesIn($boundedContextName, $moduleName);
         $elementsInBoundedContextDirectory = scandir($commandsPath);
         
         $availableCommandFiles = $this->findAvailableCommandFiles($elementsInBoundedContextDirectory, $commandsPath);

@@ -11,7 +11,7 @@ class UseCaseFinder
     
     public function findIn(string $boundedContextName, string $moduleName): array
     {
-        $useCasePath = PathFactory::forUseCases($boundedContextName, $moduleName);
+        $useCasePath = PathFactory::forUseCasesIn($boundedContextName, $moduleName);
         $elementsInBoundedContextDirectory = scandir($useCasePath);
         
         $availableUseCaseFiles = $this->findAvailableUseCaseFiles($elementsInBoundedContextDirectory, $useCasePath);

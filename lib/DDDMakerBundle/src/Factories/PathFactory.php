@@ -23,17 +23,22 @@ class PathFactory
         return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/";
     }
     
-    public static function forBoundedContextModuleCommands(string $boundedContextName, string $moduleName)
+    public static function forCommandsIn(string $boundedContextName, string $moduleName)
     {
-        return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Application/";
+        return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Application/Command/";
     }
     
-    public static function forDomainEvents(string $boundedContextName, string $moduleName)
+    public static function forQueriesIn(string $boundedContextName, string $moduleName)
+    {
+        return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Application/Query/";
+    }
+    
+    public static function forDomainEventsIn(string $boundedContextName, string $moduleName)
     {
         return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Domain/Event/";
     }
     
-    public static function forUseCases(string $boundedContextName, string $moduleName)
+    public static function forUseCasesIn(string $boundedContextName, string $moduleName)
     {
         return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Application/UseCase/";
     }
