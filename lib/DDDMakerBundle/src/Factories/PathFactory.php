@@ -27,4 +27,14 @@ class PathFactory
     {
         return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Application/";
     }
+    
+    public static function forDomainEvents(string $boundedContextName, string $moduleName)
+    {
+        return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Domain/Event/";
+    }
+    
+    public static function forUseCases(string $boundedContextName, string $moduleName)
+    {
+        return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Application/UseCase/";
+    }
 }
