@@ -4,8 +4,9 @@ namespace Mql21\DDDMakerBundle\Generator;
 
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Factories\PathFactory;
+use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
 
-class DomainEventSubscriberGenerator
+class DomainEventSubscriberGenerator implements DDDElementGenerator
 {
     public function generate(string $boundedContextName, string $moduleName, string $subscriberName): void
     {
