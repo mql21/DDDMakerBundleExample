@@ -12,12 +12,12 @@ class DTOAttributeQuestioner
 {
     public function ask(InputInterface $input, OutputInterface $output, $questionHelper): array
     {
+        $availableTypes = ["string", "int", "float", "bool", "array"]; // TODO: abstract this
         $attributes = [];
         $continueAskingAttributes = true;
         while ($continueAskingAttributes) {
             $attributeNameQuestion = new Question("<info> What should the attribute be called?</info>\n > ");
             $attributeName = $questionHelper->ask($input, $output, $attributeNameQuestion);
-            $availableTypes = ["string", "int", "float", "bool", "array"]; // TODO: abstract this
             $attributeTypeQuestion = new ChoiceQuestion(
                 "<info> What type should the attribute be?</info>\n > ",
                 $availableTypes
