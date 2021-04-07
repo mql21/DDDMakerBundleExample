@@ -17,7 +17,7 @@ class MakeDomainEventConsoleCommand extends Command
     
     private DomainEventGenerator $domainEventGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
-    private DTOAttributeQuestioner $attributeAsker;
+    private DTOAttributeQuestioner $attributeQuestioner;
     
     public function __construct(string $name = null)
     {
@@ -27,7 +27,7 @@ class MakeDomainEventConsoleCommand extends Command
     protected function configure()
     {
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        $this->attributeAsker = new DTOAttributeQuestioner();
+        $this->attributeQuestioner = new DTOAttributeQuestioner();
         
         $this
             ->setDescription('Creates a domain event in the Domain layer.')
@@ -47,9 +47,8 @@ class MakeDomainEventConsoleCommand extends Command
     {
         $boundedContextName = $input->getArgument('boundedContext');
         $moduleName = $input->getArgument('module');
-        
+    
         $this->boundedContextModuleLocator->checkIfBoundedContextModuleExists($boundedContextName, $moduleName);
-        
         // Ask for event name and create it
         $eventNameQuestion = new Question("<info> What should the event be called?</info>\n > ");
         $questionHelper = $this->getHelper('question');
@@ -57,7 +56,7 @@ class MakeDomainEventConsoleCommand extends Command
         $output->writeln("<info>\n Now tell me what attributes should the event have! </info>\n\n");
         
         $this->domainEventGenerator = new DomainEventGenerator(
-            $this->attributeAsker->ask($input, $output, $questionHelper)
+            $this->attributeQuestioner->ask($input, $output, $questionHelper)
         );
         
         $this->domainEventGenerator->generate($boundedContextName, $moduleName, $eventName);

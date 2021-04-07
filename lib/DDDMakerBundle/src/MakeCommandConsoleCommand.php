@@ -4,7 +4,9 @@ namespace Mql21\DDDMakerBundle;
 
 use Mql21\DDDMakerBundle\Generator\CommandGenerator;
 use Mql21\DDDMakerBundle\Generator\CommandHandlerGenerator;
+use Mql21\DDDMakerBundle\Generator\DomainEventGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
+use Mql21\DDDMakerBundle\Question\DTOAttributeQuestioner;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,6 +21,7 @@ class MakeCommandConsoleCommand extends Command
     private CommandGenerator $commandGenerator;
     private CommandHandlerGenerator $commandHandlerGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
+    private DTOAttributeQuestioner $attributeQuestioner;
     
     public function __construct(string $name = null)
     {
@@ -28,8 +31,8 @@ class MakeCommandConsoleCommand extends Command
     protected function configure()
     {
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        
-        $this->commandGenerator = new CommandGenerator();
+    
+        $this->attributeQuestioner = new DTOAttributeQuestioner();
         $this->commandHandlerGenerator = new CommandHandlerGenerator();
         
         $this
@@ -57,6 +60,10 @@ class MakeCommandConsoleCommand extends Command
         $commandNameQuestion = new Question("<info> What should the command be called?</info>\n > ");
         $questionHelper = $this->getHelper('question');
         $commandName = $questionHelper->ask($input, $output, $commandNameQuestion);
+    
+        $this->commandGenerator = new CommandGenerator(
+            $this->attributeQuestioner->ask($input, $output, $questionHelper)
+        );
         
         $this->commandGenerator->generate($boundedContextName, $moduleName, $commandName);
     

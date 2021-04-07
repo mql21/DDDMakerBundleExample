@@ -2,9 +2,11 @@
 
 namespace Mql21\DDDMakerBundle;
 
+use Mql21\DDDMakerBundle\Generator\CommandGenerator;
 use Mql21\DDDMakerBundle\Generator\QueryGenerator;
 use Mql21\DDDMakerBundle\Generator\QueryHandlerGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
+use Mql21\DDDMakerBundle\Question\DTOAttributeQuestioner;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,6 +21,7 @@ class MakeQueryConsoleCommand extends Command
     private QueryGenerator $queryGenerator;
     private QueryHandlerGenerator $queryHandlerGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
+    private DTOAttributeQuestioner $attributeQuestioner;
     
     public function __construct(string $name = null)
     {
@@ -28,8 +31,8 @@ class MakeQueryConsoleCommand extends Command
     protected function configure()
     {
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        
-        $this->queryGenerator = new QueryGenerator();
+    
+        $this->attributeQuestioner = new DTOAttributeQuestioner();
         $this->queryHandlerGenerator = new QueryHandlerGenerator();
         
         $this
@@ -57,6 +60,10 @@ class MakeQueryConsoleCommand extends Command
         $queryNameQuestion = new Question("<info> What should the query be called?</info>\n > ");
         $questionHelper = $this->getHelper('question');
         $queryName = $questionHelper->ask($input, $output, $queryNameQuestion);
+    
+        $this->queryGenerator = new QueryGenerator(
+            $this->attributeQuestioner->ask($input, $output, $questionHelper)
+        );
         
         $this->queryGenerator->generate($boundedContextName, $moduleName, $queryName);
     

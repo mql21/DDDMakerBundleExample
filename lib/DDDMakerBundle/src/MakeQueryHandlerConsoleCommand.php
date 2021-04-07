@@ -3,7 +3,6 @@
 namespace Mql21\DDDMakerBundle;
 
 use Mql21\DDDMakerBundle\Finder\QueryFinder;
-use Mql21\DDDMakerBundle\Generator\QueryGenerator;
 use Mql21\DDDMakerBundle\Generator\QueryHandlerGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
 use Symfony\Component\Console\Command\Command;
@@ -16,7 +15,6 @@ class MakeQueryHandlerConsoleCommand extends Command
 {
     protected static $defaultName = 'ddd:cqrs:make:query-handler';
     
-    private QueryGenerator $queryGenerator;
     private QueryHandlerGenerator $queryHandlerGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
     private QueryFinder $queryFinder;
@@ -30,7 +28,6 @@ class MakeQueryHandlerConsoleCommand extends Command
     {
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
         
-        $this->queryGenerator = new QueryGenerator();
         $this->queryHandlerGenerator = new QueryHandlerGenerator();
         
         $this->queryFinder = new QueryFinder();
