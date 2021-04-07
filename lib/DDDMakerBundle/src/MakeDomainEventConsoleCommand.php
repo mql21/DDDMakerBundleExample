@@ -27,7 +27,6 @@ class MakeDomainEventConsoleCommand extends Command
     protected function configure()
     {
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        $this->domainEventGenerator = new DomainEventGenerator();
         $this->attributeAsker = new DTOAttributeQuestioner();
         
         $this
@@ -57,8 +56,9 @@ class MakeDomainEventConsoleCommand extends Command
         $eventName = $questionHelper->ask($input, $output, $eventNameQuestion);
         $output->writeln("<info>\n Now tell me what attributes should the event have! </info>\n\n");
         
-        $eventAttributes = $this->attributeAsker->ask($input, $output, $questionHelper);
-        // TODO pass attributes to generator
+        $this->domainEventGenerator = new DomainEventGenerator(
+            $this->attributeAsker->ask($input, $output, $questionHelper)
+        );
         
         $this->domainEventGenerator->generate($boundedContextName, $moduleName, $eventName);
         

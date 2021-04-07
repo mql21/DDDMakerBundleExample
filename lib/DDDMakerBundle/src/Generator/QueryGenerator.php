@@ -6,7 +6,7 @@ use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Factories\PathFactory;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
 
-class QueryGenerator implements DDDElementGenerator
+class QueryGenerator extends DTOGenerator implements DDDElementGenerator
 {
     public function generate(string $boundedContextName, string $moduleName, string $queryName): void
     {
@@ -17,9 +17,11 @@ class QueryGenerator implements DDDElementGenerator
         $queryFullPath = "{$modulePath}/Application/Query/{$queryFileName}";
         
         if (file_exists($queryFullPath)) {
-            throw new ElementAlreadyExistsException("Query {$queryName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\".");
+            throw new ElementAlreadyExistsException(
+                "Query {$queryName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\"."
+            );
         }
-    
+        
         file_put_contents($queryFullPath, "<?php \n\nnamespace Test\Module;\n\nclass {$queryClassName}\n{\n}\n");
     }
     
