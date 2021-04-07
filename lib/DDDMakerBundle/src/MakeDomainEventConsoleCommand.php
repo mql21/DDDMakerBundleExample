@@ -4,6 +4,7 @@ namespace Mql21\DDDMakerBundle;
 
 use Mql21\DDDMakerBundle\Generator\DomainEventGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
+use Mql21\DDDMakerBundle\Question\DTOAttributeQuestioner;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,6 +17,7 @@ class MakeDomainEventConsoleCommand extends Command
     
     private DomainEventGenerator $domainEventGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
+    private DTOAttributeQuestioner $attributeAsker;
     
     public function __construct(string $name = null)
     {
@@ -26,6 +28,7 @@ class MakeDomainEventConsoleCommand extends Command
     {
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
         $this->domainEventGenerator = new DomainEventGenerator();
+        $this->attributeAsker = new DTOAttributeQuestioner();
         
         $this
             ->setDescription('Creates a domain event in the Domain layer.')
@@ -52,6 +55,10 @@ class MakeDomainEventConsoleCommand extends Command
         $eventNameQuestion = new Question("<info> What should the event be called?</info>\n > ");
         $questionHelper = $this->getHelper('question');
         $eventName = $questionHelper->ask($input, $output, $eventNameQuestion);
+        $output->writeln("<info>\n Now tell me what attributes should the event have! </info>\n\n");
+        
+        $eventAttributes = $this->attributeAsker->ask($input, $output, $questionHelper);
+        // TODO pass attributes to generator
         
         $this->domainEventGenerator->generate($boundedContextName, $moduleName, $eventName);
         
