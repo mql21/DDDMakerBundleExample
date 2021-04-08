@@ -47,7 +47,7 @@ class MakeDomainEventConsoleCommand extends Command
     {
         $boundedContextName = $input->getArgument('boundedContext');
         $moduleName = $input->getArgument('module');
-    
+        
         $this->boundedContextModuleLocator->checkIfBoundedContextModuleExists($boundedContextName, $moduleName);
         // Ask for event name and create it
         $eventNameQuestion = new Question("<info> What should the event be called?</info>\n > ");

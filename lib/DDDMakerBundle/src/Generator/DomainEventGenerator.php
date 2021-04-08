@@ -5,6 +5,7 @@ namespace Mql21\DDDMakerBundle\Generator;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Factories\PathFactory;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
+use Mql21\DDDMakerBundle\Templates\DTOTemplateData;
 
 class DomainEventGenerator extends DTOGenerator implements DDDElementGenerator
 {
@@ -22,27 +23,28 @@ class DomainEventGenerator extends DTOGenerator implements DDDElementGenerator
             );
         }
         
-        $domainEventBaseClassNamespace = "App\Shared\Domain\Bus\Event\DomainEvent"; // TODO, get from config
+        // TODO extract and inject as collaborator
         $eventClassContent = $this->renderEventTemplate(
-            $eventClassName,
-            $domainEventBaseClassNamespace,
-            $this->classAttributes
+            new DTOTemplateData(
+                "App\Shared\Domain\Bus\Event\DomainEvent",
+                $eventClassName,
+                $this->classAttributes->attributes()
+            )
         );
         file_put_contents($eventFullPath, $eventClassContent);
     }
     
-    protected function renderEventTemplate(
-        string $eventClassName,
-        string $domainEventBaseClassNamespace,
-        array $classAttributes
-    ): string {
-        $template = file_get_contents("lib/DDDMakerBundle/src/Templates/event.php.template"); //TODO: get via config (DI)
-        $eventBaseClassReflectionObject = new \ReflectionClass($domainEventBaseClassNamespace);
+    protected function renderEventTemplate(DTOTemplateData $templateData): string
+    {
+        $template = file_get_contents(
+            "lib/DDDMakerBundle/src/Templates/event.php.template"
+        ); //TODO: get via config (DI)
+        $eventBaseClassReflectionObject = new \ReflectionClass($templateData->baseClassNamespace());
         
-        $eventClassContent = str_replace("{{t_class_name}}", $eventClassName, $template);
+        $eventClassContent = str_replace("{{t_class_name}}", $templateData->getClassName(), $template);
         $eventClassContent = str_replace(
             "{{t_base_class_full_namespace}}",
-            $domainEventBaseClassNamespace,
+            $templateData->baseClassNamespace(),
             $eventClassContent
         );
         
@@ -55,7 +57,7 @@ class DomainEventGenerator extends DTOGenerator implements DDDElementGenerator
         $attributesPHPCode = [];
         $gettersPHPCode = [];
         
-        foreach ($classAttributes as $attribute => $type) {
+        foreach ($templateData->classAttributes() as $attribute => $type) {
             $attributesPHPCode[] = "    private {$type} \${$attribute};";
             $gettersPHPCode[] = $this->getGetterCode($attribute, $type);
         }

@@ -2,11 +2,12 @@
 
 namespace Mql21\DDDMakerBundle;
 
-use Mql21\DDDMakerBundle\Generator\CommandGenerator;
 use Mql21\DDDMakerBundle\Generator\QueryGenerator;
 use Mql21\DDDMakerBundle\Generator\QueryHandlerGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
 use Mql21\DDDMakerBundle\Question\DTOAttributeQuestioner;
+use Mql21\DDDMakerBundle\Question\DTOAttributesResponse;
+use Mql21\DDDMakerBundle\Question\DTODataResponse;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

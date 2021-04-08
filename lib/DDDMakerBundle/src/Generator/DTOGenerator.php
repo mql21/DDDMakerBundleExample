@@ -2,11 +2,13 @@
 
 namespace Mql21\DDDMakerBundle\Generator;
 
+use Mql21\DDDMakerBundle\Response\DTOAttributesResponse;
+
 class DTOGenerator
 {
-    protected array $classAttributes;
+    protected DTOAttributesResponse $classAttributes;
     
-    public function __construct(array $classAttributes)
+    public function __construct(DTOAttributesResponse $classAttributes)
     {
         $this->classAttributes = $classAttributes;
     }

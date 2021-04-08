@@ -2,6 +2,7 @@
 
 namespace Mql21\DDDMakerBundle\Question;
 
+use Mql21\DDDMakerBundle\Response\DTOAttributesResponse;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
@@ -10,7 +11,7 @@ use Symfony\Component\Console\Question\Question;
 
 class DTOAttributeQuestioner
 {
-    public function ask(InputInterface $input, OutputInterface $output, $questionHelper): array
+    public function ask(InputInterface $input, OutputInterface $output, $questionHelper): DTOAttributesResponse
     {
         $availableTypes = ["string", "int", "float", "bool", "array"]; // TODO: abstract this
         $attributes = [];
@@ -36,6 +37,6 @@ class DTOAttributeQuestioner
             $continueAskingAttributes = $questionHelper->ask($input, $output, $createQueryHandlerQuestion);
         }
         
-        return $attributes;
+        return new DTOAttributesResponse($attributes);
     }
 }

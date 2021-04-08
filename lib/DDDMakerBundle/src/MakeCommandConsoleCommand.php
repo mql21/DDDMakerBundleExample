@@ -7,6 +7,7 @@ use Mql21\DDDMakerBundle\Generator\CommandHandlerGenerator;
 use Mql21\DDDMakerBundle\Generator\DomainEventGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
 use Mql21\DDDMakerBundle\Question\DTOAttributeQuestioner;
+use Mql21\DDDMakerBundle\Question\DTODataResponse;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
