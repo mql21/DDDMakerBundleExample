@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Mql21\DDDMakerBundle\Generator;
+namespace {{t_namespace}};
 
 use {{t_interface_full_namespace}};
 

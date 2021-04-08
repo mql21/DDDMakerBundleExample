@@ -42,8 +42,9 @@ class DomainEventGenerator extends DTOGenerator implements DDDElementGenerator
             "lib/DDDMakerBundle/src/Templates/event.php.template"
         ); //TODO: get via config (DI)
         $baseClassReflectionObject = new \ReflectionClass($templateData->baseClassNamespace());
-        
-        $classContent = str_replace("{{t_class_name}}", $templateData->getClassName(), $template);
+    
+        $classContent = str_replace("{{t_namespace}}", "Mql21\DDDMakerBundle\Generator", $template);
+        $classContent = str_replace("{{t_class_name}}", $templateData->getClassName(), $classContent);
         $classContent = str_replace(
             "{{t_base_class_full_namespace}}",
             $templateData->baseClassNamespace(),

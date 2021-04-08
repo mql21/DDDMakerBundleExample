@@ -40,7 +40,8 @@ class QueryGenerator extends DTOGenerator implements DDDElementGenerator
         ); //TODO: get via config (DI)
         $baseClassReflectionObject = new \ReflectionClass($templateData->baseClassNamespace());
         
-        $classContent = str_replace("{{t_class_name}}", $templateData->getClassName(), $template);
+        $classContent = str_replace("{{t_namespace}}", "Mql21\DDDMakerBundle\Generator", $template);
+        $classContent = str_replace("{{t_class_name}}", $templateData->getClassName(), $classContent);
         $classContent = str_replace(
             "{{t_interface_full_namespace}}",
             $templateData->baseClassNamespace(),
