@@ -1,0 +1,14 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Mql21\DDDMakerBundle\Generator;
+
+use {{t_interface_full_namespace}};
+
+class {{t_class_name}} implements {{t_interface_name}}
+{
+{{t_attributes}}
+
+{{t_getters}}
+}
