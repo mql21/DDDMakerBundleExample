@@ -34,7 +34,6 @@ class MakeCommandConsoleCommand extends Command
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
     
         $this->attributeQuestioner = new DTOAttributeQuestioner();
-        $this->commandHandlerGenerator = new CommandHandlerGenerator();
         
         $this
             ->setDescription('Creates a command in the Application layer.')
@@ -71,21 +70,6 @@ class MakeCommandConsoleCommand extends Command
         $this->commandGenerator->generate($boundedContextName, $moduleName, $commandName);
     
         $output->writeln("<info> Command {$commandName} has been successfully created! </info>\n\n");
-    
-        // Ask if command handler should be created and create if so
-        $createCommandHandlerQuestion = new ConfirmationQuestion(
-            "<info> Do you wish to create command handler now (y/n)? (You can create it later with ddd:cqrs:make:command-handler)</info>\n > ",
-            false,
-            '/^(y|s)/i'
-        );
-    
-        $createCommandHandler = $questionHelper->ask($input, $output, $createCommandHandlerQuestion);
-        if (!$createCommandHandler) {
-            return Command::SUCCESS;
-        }
-    
-        $this->commandHandlerGenerator->generate($boundedContextName, $moduleName, $commandName);
-        $output->writeln("<info> Command handler for {$commandName} command has been successfully created! </info>\n\n");
         
         return Command::SUCCESS;
     }

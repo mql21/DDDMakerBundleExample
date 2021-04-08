@@ -15,8 +15,8 @@ TODO Tasks:
 Templates:
 - Event (ok)
 - Event subscriber
-- Command
+- Command (ok)
 - CommandHandler
-- Query
+- Query (ok)
 - QueryHandler
 - UseCase

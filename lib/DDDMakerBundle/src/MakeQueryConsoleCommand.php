@@ -3,16 +3,12 @@
 namespace Mql21\DDDMakerBundle;
 
 use Mql21\DDDMakerBundle\Generator\QueryGenerator;
-use Mql21\DDDMakerBundle\Generator\QueryHandlerGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
 use Mql21\DDDMakerBundle\Question\DTOAttributeQuestioner;
-use Mql21\DDDMakerBundle\Question\DTOAttributesResponse;
-use Mql21\DDDMakerBundle\Question\DTODataResponse;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
 class MakeQueryConsoleCommand extends Command
@@ -20,7 +16,6 @@ class MakeQueryConsoleCommand extends Command
     protected static $defaultName = 'ddd:cqrs:make:query';
     
     private QueryGenerator $queryGenerator;
-    private QueryHandlerGenerator $queryHandlerGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
     private DTOAttributeQuestioner $attributeQuestioner;
     
@@ -34,7 +29,6 @@ class MakeQueryConsoleCommand extends Command
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
     
         $this->attributeQuestioner = new DTOAttributeQuestioner();
-        $this->queryHandlerGenerator = new QueryHandlerGenerator();
         
         $this
             ->setDescription('Creates a query in the Application layer.')
@@ -71,21 +65,6 @@ class MakeQueryConsoleCommand extends Command
         $this->queryGenerator->generate($boundedContextName, $moduleName, $queryName);
     
         $output->writeln("<info> Query {$queryName} has been successfully created! </info>\n\n");
-    
-        // Ask if query handler should be created and create if so
-        $createQueryHandlerQuestion = new ConfirmationQuestion(
-            "<info> Do you wish to create query handler now (y/n)?</info>\n > ",
-            false,
-            '/^(y|s)/i'
-        );
-    
-        $createQueryHandler = $questionHelper->ask($input, $output, $createQueryHandlerQuestion);
-        if (!$createQueryHandler) {
-            return Command::SUCCESS;
-        }
-    
-        $this->queryHandlerGenerator->generate($boundedContextName, $moduleName, $queryName);
-        $output->writeln("<info> Query handler for {$queryName} command has been successfully created! </info>\n\n");
         
         return Command::SUCCESS;
     }

@@ -1,0 +1,22 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{t_namespace}};
+
+use {{t_interface_full_namespace}};
+
+final class {{t_class_name}} implements {{t_interface_name}}
+{
+    private {{t_use_case_class_name}} $useCase;
+
+    public function __construct({{t_use_case_class_name}} $useCase)
+    {
+        $this->useCase = $useCase;
+    }
+
+    public function __invoke({{t_command_class_name}} $command): void
+    {
+        $this->useCase->__invoke();
+    }
+}

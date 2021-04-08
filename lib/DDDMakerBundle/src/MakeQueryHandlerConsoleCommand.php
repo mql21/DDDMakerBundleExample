@@ -3,8 +3,11 @@
 namespace Mql21\DDDMakerBundle;
 
 use Mql21\DDDMakerBundle\Finder\QueryFinder;
+use Mql21\DDDMakerBundle\Finder\ResponseFinder;
+use Mql21\DDDMakerBundle\Finder\UseCaseFinder;
 use Mql21\DDDMakerBundle\Generator\QueryHandlerGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
+use Mql21\DDDMakerBundle\Response\UseCaseResponse;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,9 +18,10 @@ class MakeQueryHandlerConsoleCommand extends Command
 {
     protected static $defaultName = 'ddd:cqrs:make:query-handler';
     
-    private QueryHandlerGenerator $queryHandlerGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
     private QueryFinder $queryFinder;
+    private UseCaseFinder $useCaseFinder;
+    private ResponseFinder $responseFinder;
     
     public function __construct(string $name = null)
     {
@@ -27,11 +31,10 @@ class MakeQueryHandlerConsoleCommand extends Command
     protected function configure()
     {
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        
-        $this->queryHandlerGenerator = new QueryHandlerGenerator();
-        
         $this->queryFinder = new QueryFinder();
-        
+        $this->useCaseFinder = new UseCaseFinder();
+        $this->responseFinder = new ResponseFinder();
+    
         $this
             ->setDescription('Creates a command handler in the Application layer.')
             ->addArgument(
@@ -50,21 +53,34 @@ class MakeQueryHandlerConsoleCommand extends Command
     {
         $boundedContextName = $input->getArgument('boundedContext');
         $moduleName = $input->getArgument('module');
-        
+    
         $this->boundedContextModuleLocator->checkIfBoundedContextModuleExists($boundedContextName, $moduleName);
-        
-        $queryHandlerNameQuestion = new Question("<info> What should the query handler be called?</info>\n > ");
-        $queryHandlerNameQuestion->setAutocompleterValues(
+    
+        $queryNameQuestion = new Question("<info> What query should the query handler listen to?</info>\n > ");
+        $queryNameQuestion->setAutocompleterValues(
             $this->queryFinder->findIn($boundedContextName, $moduleName)
         );
         $questionHelper = $this->getHelper('question');
-        
-        $queryHandlerName = $questionHelper->ask($input, $output, $queryHandlerNameQuestion);
-        
-        $this->queryHandlerGenerator->generate($boundedContextName, $moduleName, $queryHandlerName);
-        
-        $output->writeln("<info> Query handler {$queryHandlerName} has been successfully created! </info>\n\n");
-        
+    
+        $queryName = $questionHelper->ask($input, $output, $queryNameQuestion);
+    
+        $useCaseQuestion = new Question("<info> What use case should the query handler execute?</info>\n > ");
+        $useCaseQuestion->setAutocompleterValues(
+            $this->useCaseFinder->findIn($boundedContextName, $moduleName)
+        );
+        $useCaseNameResponse = new UseCaseResponse($questionHelper->ask($input, $output, $useCaseQuestion));
+    
+        $responseClassNameQuestion = new Question("<info> What response object should the query handler return?</info>\n > ");
+        $responseClassNameQuestion->setAutocompleterValues(
+            $this->responseFinder->findIn($boundedContextName, $moduleName)
+        );
+        $responseClassName = $questionHelper->ask($input, $output, $responseClassNameQuestion);
+    
+        $queryHandlerGenerator = new QueryHandlerGenerator($useCaseNameResponse, $responseClassName);
+        $queryHandlerGenerator->generate($boundedContextName, $moduleName, $queryName);
+    
+        $output->writeln("<info> Query handler {$queryName} has been successfully created! </info>\n\n");
+    
         return Command::SUCCESS;
     }
 }

@@ -43,4 +43,9 @@ class PathFactory
     {
         return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Application/UseCase/";
     }
+    
+    public static function forResponsesIn(string $boundedContextName, string $moduleName)
+    {
+        return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Application/Response/";
+    }
 }

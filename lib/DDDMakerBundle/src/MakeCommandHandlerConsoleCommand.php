@@ -5,7 +5,9 @@ namespace Mql21\DDDMakerBundle;
 use Mql21\DDDMakerBundle\Finder\CommandFinder;
 use Mql21\DDDMakerBundle\Finder\UseCaseFinder;
 use Mql21\DDDMakerBundle\Generator\CommandHandlerGenerator;
+use Mql21\DDDMakerBundle\Generator\HandlerGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
+use Mql21\DDDMakerBundle\Response\UseCaseResponse;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,12 +31,9 @@ class MakeCommandHandlerConsoleCommand extends Command
     protected function configure()
     {
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        
-        $this->commandHandlerGenerator = new CommandHandlerGenerator();
-        
         $this->commandFinder = new CommandFinder();
         $this->useCaseFinder = new UseCaseFinder();
-    
+        
         $this
             ->setDescription('Creates a command handler in the Application layer.')
             ->addArgument(
@@ -48,7 +47,7 @@ class MakeCommandHandlerConsoleCommand extends Command
                 'The name of the module inside the bounded context where Command will be saved into.'
             );
     }
-
+    
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $boundedContextName = $input->getArgument('boundedContext');
@@ -61,21 +60,19 @@ class MakeCommandHandlerConsoleCommand extends Command
             $this->commandFinder->findIn($boundedContextName, $moduleName)
         );
         $questionHelper = $this->getHelper('question');
-    
+        
         $commandName = $questionHelper->ask($input, $output, $commandNameQuestion);
-    
-        $useCaseQuestion = new Question("<info> What use case should the event handler execute?</info>\n > ");
+        
+        $useCaseQuestion = new Question("<info> What use case should the command handler execute?</info>\n > ");
         $useCaseQuestion->setAutocompleterValues(
             $this->useCaseFinder->findIn($boundedContextName, $moduleName)
         );
-        $questionHelper = $this->getHelper('question');
-    
-        // Following var is not being used now, will be used in the near future bc use case needs to be instantiated
-        // inside the handler
-        $useCaseName = $questionHelper->ask($input, $output, $useCaseQuestion);
         
-        $this->commandHandlerGenerator->generate($boundedContextName, $moduleName, $commandName);
-    
+        $useCaseNameResponse = new UseCaseResponse($questionHelper->ask($input, $output, $useCaseQuestion));
+        
+        $commandHandlerGenerator = new CommandHandlerGenerator($useCaseNameResponse);
+        $commandHandlerGenerator->generate($boundedContextName, $moduleName, $commandName);
+        
         $output->writeln("<info> Command handler {$commandName} has been successfully created! </info>\n\n");
         
         return Command::SUCCESS;
