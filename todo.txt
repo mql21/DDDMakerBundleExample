@@ -16,7 +16,8 @@ Templates:
 - Event (ok)
 - Event subscriber
 - Command (ok)
-- CommandHandler
+- CommandHandler (ok)
 - Query (ok)
-- QueryHandler
+- QueryHandler (ok)
+- Response
 - UseCase
