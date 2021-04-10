@@ -66,7 +66,7 @@ class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenera
         $classContent = str_replace("{{t_class_name}}", $templateData->className(), $classContent);
         $classContent = str_replace("{{t_use_case_class_name}}", $templateData->useCaseName(), $classContent);
         $classContent = str_replace("{{t_response_class_name}}", $templateData->response(), $classContent);
-        $classContent = str_replace("{{t_command_class_name}}", $templateData->command(), $classContent);
+        $classContent = str_replace("{{t_query_class_name}}", $templateData->classToHandle(), $classContent);
         
         return $classContent;
     }

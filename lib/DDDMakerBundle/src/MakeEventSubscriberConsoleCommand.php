@@ -5,7 +5,9 @@ namespace Mql21\DDDMakerBundle;
 use Mql21\DDDMakerBundle\Finder\DomainEventFinder;
 use Mql21\DDDMakerBundle\Finder\UseCaseFinder;
 use Mql21\DDDMakerBundle\Generator\DomainEventSubscriberGenerator;
+use Mql21\DDDMakerBundle\Generator\HandlerGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
+use Mql21\DDDMakerBundle\Response\UseCaseResponse;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,7 +31,6 @@ class MakeEventSubscriberConsoleCommand extends Command
     protected function configure()
     {
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        $this->domainEventSubscriberGenerator = new DomainEventSubscriberGenerator();
         
         $this->eventFinder = new DomainEventFinder();
         $this->useCaseFinder = new UseCaseFinder();
@@ -47,7 +48,7 @@ class MakeEventSubscriberConsoleCommand extends Command
                 'The name of the module inside the bounded context where Command will be saved into.'
             );
     }
-
+    
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $boundedContextName = $input->getArgument('boundedContext');
@@ -60,21 +61,21 @@ class MakeEventSubscriberConsoleCommand extends Command
             $this->eventFinder->findIn($boundedContextName, $moduleName)
         );
         $questionHelper = $this->getHelper('question');
-    
+        
         $eventName = $questionHelper->ask($input, $output, $eventNameQuestion);
-    
+        
         $useCaseQuestion = new Question("<info> What use case should the subscriber execute?</info>\n > ");
         $useCaseQuestion->setAutocompleterValues(
             $this->useCaseFinder->findIn($boundedContextName, $moduleName)
         );
         $questionHelper = $this->getHelper('question');
-    
-        $useCaseName = $questionHelper->ask($input, $output, $useCaseQuestion);
-        $eventSubscriberName = "{$useCaseName}On{$eventName}";
         
-        $this->domainEventSubscriberGenerator->generate($boundedContextName, $moduleName, $eventSubscriberName);
-    
-        $output->writeln("<info> Event subscriber {$eventSubscriberName} has been successfully created! </info>\n\n");
+        $domainEventSubscriberGenerator = new DomainEventSubscriberGenerator(
+            new UseCaseResponse($questionHelper->ask($input, $output, $useCaseQuestion))
+        );
+        $domainEventSubscriberGenerator->generate($boundedContextName, $moduleName, $eventName);
+        
+        $output->writeln("<info> Event subscriber for {$eventName} has been successfully created! </info>\n\n");
         
         return Command::SUCCESS;
     }

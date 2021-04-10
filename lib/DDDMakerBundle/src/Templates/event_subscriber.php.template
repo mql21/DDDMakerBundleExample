@@ -15,8 +15,8 @@ final class {{t_class_name}} implements {{t_interface_name}}
         $this->useCase = $useCase;
     }
 
-    public function __invoke({{t_query_class_name}} $query): {{t_response_class_name}}
+    public function __invoke({{t_event_class_name}} $event): void
     {
-        return $this->useCase->__invoke();
+        $this->useCase->__invoke();
     }
 }

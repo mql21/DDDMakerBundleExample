@@ -7,7 +7,7 @@ class HandlerTemplateData
     private string $classNamespace;
     private string $className;
     private string $interfaceNamespace;
-    private string $command;
+    private string $classToHandle;
     private string $useCaseName;
     private ?string $response;
     
@@ -15,14 +15,14 @@ class HandlerTemplateData
         string $classNamespace,
         string $className,
         string $interfaceNamespace,
-        string $command,
+        string $classToHandle,
         string $useCaseName,
         string $response = null
     ) {
         $this->classNamespace = $classNamespace;
         $this->className = $className;
         $this->interfaceNamespace = $interfaceNamespace;
-        $this->command = $command;
+        $this->classToHandle = $classToHandle;
         $this->useCaseName = $useCaseName;
         $this->response = $response;
     }
@@ -42,9 +42,9 @@ class HandlerTemplateData
         return $this->interfaceNamespace;
     }
     
-    public function command(): string
+    public function classToHandle(): string
     {
-        return $this->command;
+        return $this->classToHandle;
     }
     
     public function useCaseName(): string
