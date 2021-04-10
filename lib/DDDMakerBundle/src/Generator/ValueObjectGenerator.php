@@ -5,6 +5,7 @@ namespace Mql21\DDDMakerBundle\Generator;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Factories\PathFactory;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
+use Mql21\DDDMakerBundle\Renderer\PHPCodeRenderer;
 
 class ValueObjectGenerator implements DDDElementGenerator
 {
@@ -18,7 +19,17 @@ class ValueObjectGenerator implements DDDElementGenerator
             throw new ElementAlreadyExistsException("Value Object {$valueObjectName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\".");
         }
     
-        file_put_contents($valueObjectFullPath, "<?php \n\nnamespace Test\Module;\n\nclass {$valueObjectName}\n{\n}\n");
+        $renderer = new PHPCodeRenderer();
+        file_put_contents(
+            $valueObjectFullPath,
+            $renderer->render(
+                "lib/DDDMakerBundle/src/Templates/value_object.php.template",
+                [
+                    "t_namespace" => "Mql21\DDDMakerBundle\Generator",
+                    "t_class_name" => $valueObjectName,
+                ]
+            )
+        );
     }
     
 }

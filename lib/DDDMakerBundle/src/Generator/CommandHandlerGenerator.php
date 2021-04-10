@@ -5,8 +5,7 @@ namespace Mql21\DDDMakerBundle\Generator;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Factories\PathFactory;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
-use Mql21\DDDMakerBundle\Templates\DTOTemplateData;
-use Mql21\DDDMakerBundle\Templates\HandlerTemplateData;
+use Mql21\DDDMakerBundle\Renderer\PHPCodeRenderer;
 
 class CommandHandlerGenerator extends HandlerGenerator implements DDDElementGenerator
 {
@@ -24,36 +23,22 @@ class CommandHandlerGenerator extends HandlerGenerator implements DDDElementGene
             );
         }
         
+        $baseClassReflectionObject = new \ReflectionClass("App\Shared\Domain\Bus\Command\CommandHandler");
+        
+        $renderer = new PHPCodeRenderer();
         file_put_contents(
             $commandHandlerFullPath,
-            $this->renderCommandHandlerTemplate(
-                new HandlerTemplateData(
-                    "Mql21\DDDMakerBundle\Generator",
-                    $commandHandlerClassName,
-                    "App\Shared\Domain\Bus\Command\CommandHandler",
-                    "{$commandName}Command",
-                    $this->useCaseResponse->useCase()
-                )
+            $renderer->render(
+                "lib/DDDMakerBundle/src/Templates/command_handler.php.template",
+                [
+                    "t_namespace" => "Mql21\DDDMakerBundle\Generator",
+                    "t_class_name" => $commandHandlerClassName,
+                    "t_interface_full_namespace" => $baseClassReflectionObject->getName(),
+                    "t_interface_name" => $baseClassReflectionObject->getShortName(),
+                    "t_use_case_class_name" => $this->useCaseResponse->useCase(),
+                    "t_command_class_name" => "{$commandName}Command",
+                ]
             )
         );
-    }
-    
-    // TODO extract and inject as collaborator
-    protected function renderCommandHandlerTemplate(HandlerTemplateData $templateData): string
-    {
-        $template = file_get_contents(
-            "lib/DDDMakerBundle/src/Templates/command_handler.php.template"
-        ); //TODO: get via config (DI)
-        
-        $interfaceReflectionClass = new \ReflectionClass($templateData->interfaceNamespace());
-        
-        $classContent = str_replace("{{t_namespace}}", $templateData->classNamespace(), $template);
-        $classContent = str_replace("{{t_interface_full_namespace}}", $templateData->interfaceNamespace(), $classContent);
-        $classContent = str_replace("{{t_interface_name}}", $interfaceReflectionClass->getShortName(), $classContent);
-        $classContent = str_replace("{{t_class_name}}", $templateData->className(), $classContent);
-        $classContent = str_replace("{{t_use_case_class_name}}", $templateData->useCaseName(), $classContent);
-        $classContent = str_replace("{{t_command_class_name}}", $templateData->classToHandle(), $classContent);
-        
-        return $classContent;
     }
 }
