@@ -1,12 +1,11 @@
 TODO Tasks:
 
-- Extract template renderer to external class and inject it to generators as collaborator via constructor
 - Use yaml config to define paths and generated code configurations
     - Where are bounded contexts located.
     - Where are DDD elements located inside a bounded context.
     - What interface, if any, should DDD elements implement.
     - What class, if any, should DDD elements extend from.
-- A lot of code is being duplicated now, find a way (if it makes sense) to abstract that code (i.e. generator classes, finders...)
+- Some code is being duplicated now, find a way (if it makes sense) to abstract that code (i.e. generator classes, finders...)
 - Every class that is generated, should be generated in tests directory as well following same path.
 - Tests. To test the bundle, all I/O functions (i.e. scandir(), file_put_contents()...) that are being used will have to be abstracted to an interface to allow mocking during test execution.
 - Configure Bundle and push it to packagist
