@@ -1,0 +1,69 @@
+Use case
+    -> t_namespace
+    -> t_class_name
+-------------------------------------------------------------------
+Response
+    -> t_namespace
+    -> t_class_name
+    -> t_attributes
+    -> t_getters
+-------------------------------------------------------------------
+---> Create generic handler (handler.php.template) template for:
+QueryHandler
+    -> t_namespace
+    -> t_interface_full_namespace
+    -> t_interface_name
+    -> t_class_name
+    -> t_use_case_class_name
+    -> t_query_class_name -> t_class_to_handle
+    -> t_response_class_name -> t_return_type_name
+DomainEventSubscriber
+    -> t_namespace
+    -> t_interface_full_namespace
+    -> t_interface_name
+    -> t_class_name
+    -> t_use_case_class_name
+    -> t_event_class_name -> t_class_to_handle
+    + t_return_type_name
+CommandHandler
+    -> t_namespace
+    -> t_interface_full_namespace
+    -> t_interface_name
+    -> t_class_name
+    -> t_use_case_class_name
+    -> t_command_class_name -> t_class_to_handle
+    + t_return_type_name
+-------------------------------------------------------------------
+----> Create generic template (dto.php.template) for:
+Query
+    -> t_namespace
+    -> t_class_name
+    -> t_interface_full_namespace
+    -> t_interface_name
+    + t_base_class_full_namespace
+    + t_base_class_name
+    + constructor
+    -> t_attributes
+    -> t_getters
+Command
+    -> t_namespace
+    -> t_class_name
+    -> t_interface_full_namespace
+    -> t_interface_name
+    + t_base_class_full_namespace
+    + t_base_class_name
+    + constructor
+    -> t_attributes
+    -> t_getters
+DomainEvent
+    -> t_namespace
+    -> t_class_name
+    -> t_base_class_full_namespace
+    -> t_base_class_name
+    + t_interface_full_namespace
+    + t_interface_name
+    + constructor
+    -> t_attributes
+    -> t_getters
+-------------------------------------------------------------------
+---> Create renderer class (templateName, vars)
