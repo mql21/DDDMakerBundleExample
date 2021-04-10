@@ -14,8 +14,8 @@ class DomainEventGenerator extends DTOGenerator implements DDDElementGenerator
         $eventSuffix = "DomainEvent";
         $eventClassName = "{$eventName}{$eventSuffix}";
         $eventFileName = "{$eventClassName}.php";
-        $modulePath = PathFactory::forBoundedContextModules($boundedContextName, $moduleName);
-        $eventFullPath = "{$modulePath}/Domain/Event/{$eventFileName}";
+        $domainEventsPath = PathFactory::forDomainEventsIn($boundedContextName, $moduleName);
+        $eventFullPath = "{$domainEventsPath}{$eventFileName}";
         
         if (file_exists($eventFullPath)) {
             throw new ElementAlreadyExistsException(

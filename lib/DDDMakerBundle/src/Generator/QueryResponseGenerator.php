@@ -14,8 +14,8 @@ class QueryResponseGenerator extends DTOGenerator implements DDDElementGenerator
         $responseSuffix = "Response";
         $responseClassName = "{$responseName}{$responseSuffix}";
         $responseFileName = "{$responseClassName}.php";
-        $modulePath = PathFactory::forBoundedContextModules($boundedContextName, $moduleName);
-        $responseFullPath = "{$modulePath}/Application/Response/{$responseFileName}";
+        $responsesPath = PathFactory::forResponsesIn($boundedContextName, $moduleName);
+        $responseFullPath = "{$responsesPath}{$responseFileName}";
         
         if (file_exists($responseFullPath)) {
             throw new ElementAlreadyExistsException(

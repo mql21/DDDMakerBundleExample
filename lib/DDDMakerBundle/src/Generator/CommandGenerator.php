@@ -14,8 +14,8 @@ class CommandGenerator extends DTOGenerator implements DDDElementGenerator
         $commandSuffix = "Command";
         $commandClassName = "{$commandName}{$commandSuffix}";
         $commandFileName = "{$commandClassName}.php";
-        $modulePath = PathFactory::forBoundedContextModules($boundedContextName, $moduleName);
-        $commandFullPath = "{$modulePath}Application/Command/{$commandFileName}";
+        $commandsPath = PathFactory::forCommandsIn($boundedContextName, $moduleName);
+        $commandFullPath = "{$commandsPath}{$commandFileName}";
         
         if (file_exists($commandFullPath)) {
             throw new ElementAlreadyExistsException(

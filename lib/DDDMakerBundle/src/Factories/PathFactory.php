@@ -39,6 +39,11 @@ class PathFactory
         return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Domain/Event/";
     }
     
+    public static function forEventSubscribersIn(string $boundedContextName, string $moduleName)
+    {
+        return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Application/EventSubscriber/";
+    }
+    
     public static function forUseCasesIn(string $boundedContextName, string $moduleName)
     {
         return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Application/UseCase/";
@@ -47,5 +52,10 @@ class PathFactory
     public static function forResponsesIn(string $boundedContextName, string $moduleName)
     {
         return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Application/Response/";
+    }
+    
+    public static function forValueObjectsIn(string $boundedContextName, string $moduleName)
+    {
+        return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Domain/ValueObject/";
     }
 }

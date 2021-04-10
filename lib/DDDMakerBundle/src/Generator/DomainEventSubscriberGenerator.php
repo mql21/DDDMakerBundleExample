@@ -13,8 +13,8 @@ class DomainEventSubscriberGenerator extends HandlerGenerator implements DDDElem
     {
         $subscriberClassName = "{$this->useCaseResponse->useCase()}On{$eventName}";
         $subscriberFileName = "{$subscriberClassName}.php";
-        $modulePath = PathFactory::forBoundedContextModules($boundedContextName, $moduleName);
-        $subscriberFullPath = "{$modulePath}Application/EventSubscriber/{$subscriberFileName}";
+        $eventSubscribersPath = PathFactory::forEventSubscribersIn($boundedContextName, $moduleName);
+        $subscriberFullPath = "{$eventSubscribersPath}{$subscriberFileName}";
         
         if (file_exists($subscriberFullPath)) {
             throw new ElementAlreadyExistsException(

@@ -12,8 +12,8 @@ class ValueObjectGenerator implements DDDElementGenerator
     public function generate(string $boundedContextName, string $moduleName, string $valueObjectName): void
     {
         $valueObjectFileName = "{$valueObjectName}.php";
-        $modulePath = PathFactory::forBoundedContextModules($boundedContextName, $moduleName);
-        $valueObjectFullPath = "{$modulePath}/Domain/ValueObject/{$valueObjectFileName}";
+        $valueObjectsPath = PathFactory::forValueObjectsIn($boundedContextName, $moduleName);
+        $valueObjectFullPath = "{$valueObjectsPath}{$valueObjectFileName}";
         
         if (file_exists($valueObjectFullPath)) {
             throw new ElementAlreadyExistsException("Value Object {$valueObjectName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\".");

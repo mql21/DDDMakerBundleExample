@@ -14,8 +14,8 @@ class CommandHandlerGenerator extends HandlerGenerator implements DDDElementGene
         $commandHandlerSuffix = "CommandHandler";
         $commandHandlerClassName = "{$commandName}{$commandHandlerSuffix}";
         $commandHandlerFileName = "{$commandHandlerClassName}.php";
-        $modulePath = PathFactory::forBoundedContextModules($boundedContextName, $moduleName);
-        $commandHandlerFullPath = "{$modulePath}/Application/Command/{$commandHandlerFileName}";
+        $commandsPath = PathFactory::forCommandsIn($boundedContextName, $moduleName);
+        $commandHandlerFullPath = "{$commandsPath}{$commandHandlerFileName}";
         
         if (file_exists($commandHandlerFullPath)) {
             throw new ElementAlreadyExistsException(

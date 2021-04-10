@@ -23,8 +23,8 @@ class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenera
         $querySuffix = "QueryHandler";
         $queryHandlerClassName = "{$queryName}{$querySuffix}";
         $queryHandlerFileName = "{$queryHandlerClassName}.php";
-        $modulePath = PathFactory::forBoundedContextModules($boundedContextName, $moduleName);
-        $queryHandlerFullPath = "{$modulePath}/Application/Query/{$queryHandlerFileName}";
+        $queriesPath = PathFactory::forQueriesIn($boundedContextName, $moduleName);
+        $queryHandlerFullPath = "{$queriesPath}{$queryHandlerFileName}";
         
         if (file_exists($queryHandlerFullPath)) {
             throw new ElementAlreadyExistsException(

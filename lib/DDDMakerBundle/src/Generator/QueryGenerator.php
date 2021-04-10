@@ -14,8 +14,8 @@ class QueryGenerator extends DTOGenerator implements DDDElementGenerator
         $querySuffix = "Query";
         $queryClassName = "{$queryName}{$querySuffix}";
         $queryFileName = "{$queryClassName}.php";
-        $modulePath = PathFactory::forBoundedContextModules($boundedContextName, $moduleName);
-        $queryFullPath = "{$modulePath}/Application/Query/{$queryFileName}";
+        $queryPath = PathFactory::forQueriesIn($boundedContextName, $moduleName);
+        $queryFullPath = "{$queryPath}{$queryFileName}";
         
         if (file_exists($queryFullPath)) {
             throw new ElementAlreadyExistsException(
