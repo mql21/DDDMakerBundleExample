@@ -56,8 +56,6 @@ class MakeQueryConsoleCommand extends Command
         $questionHelper = $this->getHelper('question');
         $queryName = $questionHelper->ask($input, $output, $queryNameQuestion);
     
-        $output->writeln("<info>\n Now tell me what attributes should the event have! </info>\n\n");
-    
         $this->queryGenerator = new QueryGenerator(
             $this->attributeQuestioner->ask($input, $output, $questionHelper)
         );

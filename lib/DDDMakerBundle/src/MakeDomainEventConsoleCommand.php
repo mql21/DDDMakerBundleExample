@@ -53,7 +53,6 @@ class MakeDomainEventConsoleCommand extends Command
         $eventNameQuestion = new Question("<info> What should the event be called?</info>\n > ");
         $questionHelper = $this->getHelper('question');
         $eventName = $questionHelper->ask($input, $output, $eventNameQuestion);
-        $output->writeln("<info>\n Now tell me what attributes should the event have! </info>\n\n");
         
         $this->domainEventGenerator = new DomainEventGenerator(
             $this->attributeQuestioner->ask($input, $output, $questionHelper)

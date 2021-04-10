@@ -61,8 +61,6 @@ class MakeCommandConsoleCommand extends Command
         $questionHelper = $this->getHelper('question');
         $commandName = $questionHelper->ask($input, $output, $commandNameQuestion);
         
-        $output->writeln("<info>\n Now tell me what attributes should the event have! </info>\n\n");
-        
         $this->commandGenerator = new CommandGenerator(
             $this->attributeQuestioner->ask($input, $output, $questionHelper)
         );
