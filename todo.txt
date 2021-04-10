@@ -14,10 +14,10 @@ TODO Tasks:
 
 Templates:
 - Event (ok)
-- Event subscriber
+- Event subscriber (ok)
 - Command (ok)
 - CommandHandler (ok)
 - Query (ok)
 - QueryHandler (ok)
-- Response
+- Response (ok)
 - UseCase

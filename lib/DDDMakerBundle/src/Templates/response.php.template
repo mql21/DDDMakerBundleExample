@@ -1,0 +1,12 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{t_namespace}};
+
+class {{t_class_name}}
+{
+{{t_attributes}}
+
+{{t_getters}}
+}

@@ -4,6 +4,7 @@ namespace Mql21\DDDMakerBundle;
 
 use Mql21\DDDMakerBundle\Generator\QueryResponseGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
+use Mql21\DDDMakerBundle\Question\DTOAttributeQuestioner;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,6 +17,7 @@ class MakeQueryResponseConsoleCommand extends Command
     
     private QueryResponseGenerator $queryResponseGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
+    private DTOAttributeQuestioner $attributeQuestioner;
     
     public function __construct(string $name = null)
     {
@@ -25,7 +27,7 @@ class MakeQueryResponseConsoleCommand extends Command
     protected function configure()
     {
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        $this->queryResponseGenerator = new QueryResponseGenerator();
+        $this->attributeQuestioner = new DTOAttributeQuestioner();
         
         $this
             ->setDescription('Creates a query response in the Application layer.')
@@ -53,6 +55,11 @@ class MakeQueryResponseConsoleCommand extends Command
         $questionHelper = $this->getHelper('question');
         $responseName = $questionHelper->ask($input, $output, $responseNameQuestion);
         
+        $output->writeln("<info>\n Now tell me what attributes should the event have! </info>\n\n");
+        
+        $this->queryResponseGenerator = new QueryResponseGenerator(
+            $this->attributeQuestioner->ask($input, $output, $questionHelper)
+        );
         $this->queryResponseGenerator->generate($boundedContextName, $moduleName, $responseName);
         
         $output->writeln("<info> Response {$responseName} has been successfully created! </info>\n\n");
