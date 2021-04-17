@@ -10,6 +10,6 @@ class BoundedContextLocator
 {
     public function exists(string $boundedContextName): bool
     {
-        return file_exists(PathFactory::forBoundedContexts($boundedContextName));
+        return file_exists(PathFactory::forModules($boundedContextName));
     }
 }

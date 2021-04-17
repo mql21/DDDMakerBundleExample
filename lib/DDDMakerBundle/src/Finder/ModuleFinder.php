@@ -9,7 +9,7 @@ class ModuleFinder
 {
     public function findIn(string $boundedContextName): array
     {
-        $boundedContextPath = PathFactory::forBoundedContexts($boundedContextName);
+        $boundedContextPath = PathFactory::forModules($boundedContextName);
         $elementsInBoundedContextDirectory = scandir($boundedContextPath);
     
         return array_filter(

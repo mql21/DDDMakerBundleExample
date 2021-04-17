@@ -4,58 +4,68 @@
 namespace Mql21\DDDMakerBundle\Factories;
 
 
+use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
+
 class PathFactory
 {
-    // TODO: All relative paths should be injected via config
-    private static string $BASE_PATH = "src/";
-    
-    public static function basePath(): string
+    // TODO, This shouldn't be a factory and ConfigManager should be injected via constructor
+    public static function forBoundedContexts(): string
     {
-        return self::$BASE_PATH;
+        $configManager = new ConfigManager();
+        return $configManager->getBoundedContextPath();
     }
     
-    public static function forBoundedContexts(string $boundedContextName)
+    public static function forModules(string $boundedContextName)
     {
-        return self::$BASE_PATH . "{$boundedContextName}/";
+        $configManager = new ConfigManager();
+        return $configManager->getModulePath($boundedContextName);
     }
     
     public static function forBoundedContextModules(string $boundedContextName, string $moduleName)
     {
-        return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/";
+        $configManager = new ConfigManager();
+        return $configManager->getModulePath($boundedContextName) . "/{$moduleName}/";
     }
     
     public static function forCommandsIn(string $boundedContextName, string $moduleName)
     {
-        return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Application/Command/";
+        $configManager = new ConfigManager();
+        return $configManager->getPathFor($boundedContextName, $moduleName, 'command');
     }
     
     public static function forQueriesIn(string $boundedContextName, string $moduleName)
     {
-        return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Application/Query/";
+        $configManager = new ConfigManager();
+        return $configManager->getPathFor($boundedContextName, $moduleName, 'query');
     }
     
     public static function forDomainEventsIn(string $boundedContextName, string $moduleName)
     {
-        return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Domain/Event/";
+        $configManager = new ConfigManager();
+        return $configManager->getPathFor($boundedContextName, $moduleName, 'domain-event');
     }
     
     public static function forEventSubscribersIn(string $boundedContextName, string $moduleName)
     {
-        return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Application/EventSubscriber/";
+        $configManager = new ConfigManager();
+        return $configManager->getPathFor($boundedContextName, $moduleName, 'event-subscriber');
     }
     
     public static function forUseCasesIn(string $boundedContextName, string $moduleName)
     {
-        return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Application/UseCase/";
+        $configManager = new ConfigManager();
+        return $configManager->getPathFor($boundedContextName, $moduleName, 'use-case');
     }
     
     public static function forResponsesIn(string $boundedContextName, string $moduleName)
     {
-        return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Application/Response/";
+        $configManager = new ConfigManager();
+        return $configManager->getPathFor($boundedContextName, $moduleName, 'response');
     }
     
     public static function forValueObjectsIn(string $boundedContextName, string $moduleName)
     {
-        return self::$BASE_PATH . "{$boundedContextName}/{$moduleName}/Domain/ValueObject/";
+        $configManager = new ConfigManager();
+        return $configManager->getPathFor($boundedContextName, $moduleName, 'value-object');
     }
 }

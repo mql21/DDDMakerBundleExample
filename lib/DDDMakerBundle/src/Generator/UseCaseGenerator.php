@@ -27,7 +27,7 @@ class UseCaseGenerator implements DDDElementGenerator
             $renderer->render(
                 "lib/DDDMakerBundle/src/Templates/use_case.php.template",
                 [
-                    "t_namespace" => "Mql21\DDDMakerBundle\Generator",
+                    "t_namespace" => "Mql21\DDDMakerBundle\UseCase",
                     "t_class_name" => $useCaseName,
                 ]
             )

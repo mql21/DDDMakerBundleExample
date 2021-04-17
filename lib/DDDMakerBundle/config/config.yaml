@@ -1,0 +1,48 @@
+company_name: 'SomeCompany'
+ddd_elements:
+  bounded-context:
+    path: 'src/'
+  module:
+    path: 'src/{bounded_context}/'
+  command:
+    namespace: '{company_name}\{bounded_context}\{module}\Application\Command'
+    path: 'src/{bounded_context}/{module}/Application/Command/'
+    implements: 'App\Shared\Domain\Bus\Command\Command'
+    suffix:
+  command-handler:
+    namespace: '{company_name}\{bounded_context}\{module}\Application\Command'
+    path: 'src/{bounded_context}/{module}/Application/Command/'
+    implements: 'App\Shared\Domain\Bus\Command\CommandHandler'
+    suffix:
+  query:
+    namespace: '{company_name}\{bounded_context}\{module}\Application\Query'
+    path: 'src/{bounded_context}/{module}/Application/Query/'
+    implements: 'App\Shared\Domain\Bus\Query\Query'
+    suffix:
+  query-handler:
+    namespace: '{company_name}\{bounded_context}\{module}\Application\Query'
+    path: 'src/{bounded_context}/{module}/Application/Query/'
+    implements: 'App\Shared\Domain\Bus\Query\QueryHandler'
+    suffix:
+  response:
+    namespace: '{company_name}\{bounded_context}\{module}\Application\Response'
+    path: 'src/{bounded_context}/{module}/Application/Response/'
+    suffix:
+  domain-event:
+    namespace: '{company_name}\{bounded_context}\{module}\Domain\Event'
+    path: 'src/{bounded_context}/{module}/Domain/Event/'
+    extends: 'App\Shared\Domain\Bus\Event\DomainEvent'
+    suffix:
+  event-subscriber:
+    namespace: '{company_name}\{bounded_context}\{module}\Application\EventSubscriber'
+    path: 'src/{bounded_context}/{module}/Application/EventSubscriber/'
+    implements: 'App\Shared\Domain\Bus\Event\DomainEventSubscriber'
+    suffix:
+  value-object:
+    namespace: '{company_name}\{bounded_context}\{module}\Domain\ValueObject\'
+    path: 'src/{bounded_context}/{module}/Domain/ValueObject/'
+    suffix:
+  use-case:
+    namespace: '{company_name}\{bounded_context}\{module}\Application\UseCase'
+    path: 'src/{bounded_context}/{module}/Application/UseCase/'
+    suffix:

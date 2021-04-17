@@ -1,11 +1,7 @@
 TODO Tasks:
 
 - Finders should return full namespaces (i.e. Foo\Bar\SomeClass) rather than only returning class names, so that uses can be generated in the templates as well.
-- Use yaml config to define paths and generated code configurations
-    - Where are bounded contexts located.
-    - Where are DDD elements located inside a bounded context.
-    - What interface, if any, should DDD elements implement.
-    - What class, if any, should DDD elements extend from.
+- Class suffixes and namespaces are being hardcoded in generator classes, these should be obtained from 'suffix' / 'implements' / 'extends' vars from config.yaml file
 - Use DI (now most services/collaborator classes are explicitly instantiated)
 - Some code is being duplicated now, find a way (if it makes sense) to abstract that code (i.e. generator classes, finders...)
 - Every class that is generated, should be generated in tests directory as well following same path.

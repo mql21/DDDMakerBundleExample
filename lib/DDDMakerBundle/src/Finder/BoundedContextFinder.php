@@ -9,7 +9,7 @@ class BoundedContextFinder
 {
     public function find(): array
     {
-        $basePath = PathFactory::basePath();
+        $basePath = PathFactory::forBoundedContexts();
         $elementsInSrcDirectory = scandir($basePath);
     
         return array_filter(

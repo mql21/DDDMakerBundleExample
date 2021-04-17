@@ -13,7 +13,7 @@ class DTOAttributeQuestioner
 {
     public function ask(InputInterface $input, OutputInterface $output, $questionHelper): DTOAttributesResponse
     {
-        $output->writeln("<info>\n Now tell me what attributes should the event have! </info>\n\n");
+        $output->writeln("<info>\n Now tell me some info about its attributes! </info>\n\n");
         
         $availableTypes = ["string", "int", "float", "bool", "array"]; // TODO: abstract this
         $attributes = [];

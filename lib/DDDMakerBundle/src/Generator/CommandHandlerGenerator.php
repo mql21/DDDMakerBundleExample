@@ -23,7 +23,8 @@ class CommandHandlerGenerator extends HandlerGenerator implements DDDElementGene
             );
         }
         
-        $baseClassReflectionObject = new \ReflectionClass("App\Shared\Domain\Bus\Command\CommandHandler");
+        $baseClassReflector = new \ReflectionClass("App\Shared\Domain\Bus\Command\CommandHandler");
+        $useCaseNamespace = 'Mql21\DDDMakerBundle\UseCase\\';
         
         $renderer = new PHPCodeRenderer();
         file_put_contents(
@@ -33,8 +34,9 @@ class CommandHandlerGenerator extends HandlerGenerator implements DDDElementGene
                 [
                     "t_namespace" => "Mql21\DDDMakerBundle\Generator",
                     "t_class_name" => $commandHandlerClassName,
-                    "t_interface_full_namespace" => $baseClassReflectionObject->getName(),
-                    "t_interface_name" => $baseClassReflectionObject->getShortName(),
+                    "t_interface_full_namespace" => $baseClassReflector->getName(),
+                    "t_interface_name" => $baseClassReflector->getShortName(),
+                    "t_use_case_namespace" => "{$useCaseNamespace}{$this->useCaseResponse->useCase()}",
                     "t_use_case_class_name" => $this->useCaseResponse->useCase(),
                     "t_command_class_name" => "{$commandName}Command",
                 ]

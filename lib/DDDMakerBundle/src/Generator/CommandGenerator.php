@@ -23,7 +23,7 @@ class CommandGenerator extends DTOGenerator implements DDDElementGenerator
             );
         }
         
-        $baseClassReflectionObject = new \ReflectionClass("App\Shared\Domain\Bus\Command\Command");
+        $baseClassReflectionObject = new \ReflectionClass("App\Shared\Domain\Bus\Command\Command"); // TODO: Get this from config.yaml 'extends' var
         
         $renderer = new PHPCodeRenderer();
         file_put_contents(
