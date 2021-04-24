@@ -1,9 +1,10 @@
 TODO Tasks:
 
-- Finders should return full namespaces (i.e. Foo\Bar\SomeClass) rather than only returning class names, so that uses can be generated in the templates as well.
-- Class suffixes and namespaces are being hardcoded in generator classes, these should be obtained from 'suffix' / 'implements' / 'extends' vars from config.yaml file
+- Class suffixes are being hardcoded in generator classes, suffix should be obtained from 'suffix' var in config.yaml file
 - Use DI (now most services/collaborator classes are explicitly instantiated)
 - Some code is being duplicated now, find a way (if it makes sense) to abstract that code (i.e. generator classes, finders...)
 - Every class that is generated, should be generated in tests directory as well following same path.
 - Tests. To test the bundle, all I/O functions (i.e. scandir(), file_put_contents()...) that are being used will have to be abstracted to an interface to allow mocking during test execution.
 - Configure Bundle and push it to packagist
+- Command to create full bounded context
+- Command to create missing directories for a given bounded context and module
