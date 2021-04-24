@@ -2,11 +2,9 @@
 
 namespace Mql21\DDDMakerBundle\Generator;
 
-use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Factories\PathFactory;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
-use Mql21\DDDMakerBundle\Renderer\PHPCodeRenderer;
 
 class QueryGenerator extends DTOGenerator implements DDDElementGenerator
 {
@@ -26,10 +24,9 @@ class QueryGenerator extends DTOGenerator implements DDDElementGenerator
         
         $baseClassReflector = new \ReflectionClass($this->configManager->getClassToImplementFor('query'));
         
-        $renderer = new PHPCodeRenderer();
         file_put_contents(
             $queryFullPath,
-            $renderer->render(
+            $this->renderer->render(
                 "lib/DDDMakerBundle/src/Templates/query.php.template",
                 [
                     "t_namespace" => $this->configManager->getNamespaceFor(

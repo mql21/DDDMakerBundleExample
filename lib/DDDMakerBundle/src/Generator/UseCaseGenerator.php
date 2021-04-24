@@ -11,10 +11,12 @@ use Mql21\DDDMakerBundle\Renderer\PHPCodeRenderer;
 class UseCaseGenerator implements DDDElementGenerator
 {
     private ConfigManager $configManager;
+    private PHPCodeRenderer $renderer;
     
     public function __construct()
     {
         $this->configManager = new ConfigManager();
+        $this->renderer = new PHPCodeRenderer();
     }
     
     public function generate(string $boundedContextName, string $moduleName, string $useCaseName): void
@@ -29,10 +31,9 @@ class UseCaseGenerator implements DDDElementGenerator
             );
         }
         
-        $renderer = new PHPCodeRenderer();
         file_put_contents(
             $useCaseFullPath,
-            $renderer->render(
+            $this->renderer->render(
                 "lib/DDDMakerBundle/src/Templates/use_case.php.template",
                 [
                     "t_namespace" => $this->configManager->getNamespaceFor(

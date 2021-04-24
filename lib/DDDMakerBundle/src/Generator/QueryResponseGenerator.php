@@ -5,7 +5,6 @@ namespace Mql21\DDDMakerBundle\Generator;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Factories\PathFactory;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
-use Mql21\DDDMakerBundle\Renderer\PHPCodeRenderer;
 
 class QueryResponseGenerator extends DTOGenerator implements DDDElementGenerator
 {
@@ -23,10 +22,9 @@ class QueryResponseGenerator extends DTOGenerator implements DDDElementGenerator
             );
         }
         
-        $renderer = new PHPCodeRenderer();
         file_put_contents(
             $responseFullPath,
-            $renderer->render(
+            $this->renderer->render(
                 "lib/DDDMakerBundle/src/Templates/response.php.template",
                 [
                     "t_namespace" =>  $this->configManager->getNamespaceFor(

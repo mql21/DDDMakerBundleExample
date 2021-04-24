@@ -5,7 +5,6 @@ namespace Mql21\DDDMakerBundle\Generator;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Factories\PathFactory;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
-use Mql21\DDDMakerBundle\Renderer\PHPCodeRenderer;
 
 class DomainEventSubscriberGenerator extends HandlerGenerator implements DDDElementGenerator
 {
@@ -34,10 +33,9 @@ class DomainEventSubscriberGenerator extends HandlerGenerator implements DDDElem
         
         $eventName = "{$eventName}DomainEvent";
         
-        $renderer = new PHPCodeRenderer();
         file_put_contents(
             $subscriberFullPath,
-            $renderer->render(
+            $this->renderer->render(
                 "lib/DDDMakerBundle/src/Templates/event_subscriber.php.template",
                 [
                     "t_namespace" => $this->configManager->getNamespaceFor(

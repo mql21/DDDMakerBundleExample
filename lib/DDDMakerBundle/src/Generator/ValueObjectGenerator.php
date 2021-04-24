@@ -11,10 +11,12 @@ use Mql21\DDDMakerBundle\Renderer\PHPCodeRenderer;
 class ValueObjectGenerator implements DDDElementGenerator
 {
     private ConfigManager $configManager;
+    private PHPCodeRenderer $renderer;
     
     public function __construct()
     {
         $this->configManager = new ConfigManager();
+        $this->renderer = new PHPCodeRenderer();
     }
     
     public function generate(string $boundedContextName, string $moduleName, string $valueObjectName): void
@@ -26,11 +28,10 @@ class ValueObjectGenerator implements DDDElementGenerator
         if (file_exists($valueObjectFullPath)) {
             throw new ElementAlreadyExistsException("Value Object {$valueObjectName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\".");
         }
-    
-        $renderer = new PHPCodeRenderer();
+        
         file_put_contents(
             $valueObjectFullPath,
-            $renderer->render(
+            $this->renderer->render(
                 "lib/DDDMakerBundle/src/Templates/value_object.php.template",
                 [
                     "t_namespace" => $this->configManager->getNamespaceFor(

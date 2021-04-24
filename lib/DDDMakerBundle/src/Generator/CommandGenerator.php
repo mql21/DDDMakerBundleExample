@@ -5,7 +5,6 @@ namespace Mql21\DDDMakerBundle\Generator;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Factories\PathFactory;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
-use Mql21\DDDMakerBundle\Renderer\PHPCodeRenderer;
 
 class CommandGenerator extends DTOGenerator implements DDDElementGenerator
 {
@@ -27,10 +26,9 @@ class CommandGenerator extends DTOGenerator implements DDDElementGenerator
             $this->configManager->getClassToImplementFor('command')
         );
         
-        $renderer = new PHPCodeRenderer();
         file_put_contents(
             $commandFullPath,
-            $renderer->render(
+            $this->renderer->render(
                 "lib/DDDMakerBundle/src/Templates/command.php.template",
                 [
                     "t_namespace" => $this->configManager->getNamespaceFor($boundedContextName, $moduleName, 'command'),

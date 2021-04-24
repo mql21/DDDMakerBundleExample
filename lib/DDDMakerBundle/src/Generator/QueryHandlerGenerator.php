@@ -2,11 +2,9 @@
 
 namespace Mql21\DDDMakerBundle\Generator;
 
-use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Factories\PathFactory;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
-use Mql21\DDDMakerBundle\Renderer\PHPCodeRenderer;
 use Mql21\DDDMakerBundle\Response\UseCaseResponse;
 
 class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenerator
@@ -41,10 +39,9 @@ class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenera
         $responseNamespace = $this->
             configManager->getNamespaceFor($boundedContextName, $moduleName, "response");
         
-        $renderer = new PHPCodeRenderer();
         file_put_contents(
             $queryHandlerFullPath,
-            $renderer->render(
+            $this->renderer->render(
                 "lib/DDDMakerBundle/src/Templates/query_handler.php.template",
                 [
                     "t_namespace" => $this->configManager->getNamespaceFor(
