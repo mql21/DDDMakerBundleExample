@@ -2,6 +2,7 @@
 
 namespace Mql21\DDDMakerBundle\Generator;
 
+use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Factories\PathFactory;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
@@ -22,8 +23,9 @@ class CommandHandlerGenerator extends HandlerGenerator implements DDDElementGene
                 "Command handler {$commandHandlerClassName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\"."
             );
         }
-        
-        $baseClassReflector = new \ReflectionClass("App\Shared\Domain\Bus\Command\CommandHandler");
+    
+        $configManager = new ConfigManager(); // TODO Inject via DI
+        $baseClassReflector = new \ReflectionClass($configManager->getClassToImplementFor('command-handler'));
         $useCaseNamespace = 'Mql21\DDDMakerBundle\UseCase\\';
         
         $renderer = new PHPCodeRenderer();

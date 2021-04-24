@@ -2,6 +2,7 @@
 
 namespace Mql21\DDDMakerBundle\Generator;
 
+use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Factories\PathFactory;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
@@ -24,7 +25,9 @@ class DomainEventGenerator extends DTOGenerator implements DDDElementGenerator
         }
         
         $renderer = new PHPCodeRenderer();
-        $baseClassReflectionObject = new \ReflectionClass("App\Shared\Domain\Bus\Event\DomainEvent");
+    
+        $configManager = new ConfigManager(); // TODO Inject via DI
+        $baseClassReflector = new \ReflectionClass($configManager->getClassToExtendFor('domain-event'));
         
         file_put_contents(
             $eventFullPath,
@@ -33,8 +36,8 @@ class DomainEventGenerator extends DTOGenerator implements DDDElementGenerator
                 [
                     "t_namespace" => "Mql21\DDDMakerBundle\Generator",
                     "t_class_name" => $eventClassName,
-                    "t_base_class_full_namespace" => $baseClassReflectionObject->getName(),
-                    "t_base_class_name" => $baseClassReflectionObject->getShortName(),
+                    "t_base_class_full_namespace" => $baseClassReflector->getName(),
+                    "t_base_class_name" => $baseClassReflector->getShortName(),
                     "t_attributes" => $this->classAttributes->attributes()
                 ]
             )

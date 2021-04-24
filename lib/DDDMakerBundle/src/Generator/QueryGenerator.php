@@ -2,6 +2,7 @@
 
 namespace Mql21\DDDMakerBundle\Generator;
 
+use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Factories\PathFactory;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
@@ -22,7 +23,8 @@ class QueryGenerator extends DTOGenerator implements DDDElementGenerator
                 "Query {$queryName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\"."
             );
         }
-        $baseClassReflectionObject = new \ReflectionClass("App\Shared\Domain\Bus\Query\Query");
+        $configManager = new ConfigManager(); // TODO Inject via DI
+        $baseClassReflector = new \ReflectionClass($configManager->getClassToImplementFor('query'));
         
         $renderer = new PHPCodeRenderer();
         file_put_contents(
@@ -32,8 +34,8 @@ class QueryGenerator extends DTOGenerator implements DDDElementGenerator
                 [
                     "t_namespace" => "Mql21\DDDMakerBundle\Generator",
                     "t_class_name" => $queryClassName,
-                    "t_interface_full_namespace" => $baseClassReflectionObject->getName(),
-                    "t_interface_name" => $baseClassReflectionObject->getShortName(),
+                    "t_interface_full_namespace" => $baseClassReflector->getName(),
+                    "t_interface_name" => $baseClassReflector->getShortName(),
                     "t_attributes" => $this->classAttributes->attributes()
                 ]
             )

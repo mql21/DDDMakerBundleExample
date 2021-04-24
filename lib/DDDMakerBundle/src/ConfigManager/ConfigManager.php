@@ -35,4 +35,14 @@ class ConfigManager
             $this->config['ddd_elements'][$dddElement]['path']
         );
     }
+    
+    public function getClassToImplementFor(string $dddElement)
+    {
+        return $this->config['ddd_elements'][$dddElement]['implements'] ?? null;
+    }
+    
+    public function getClassToExtendFor(string $dddElement)
+    {
+        return $this->config['ddd_elements'][$dddElement]['extends'] ?? null;
+    }
 }
