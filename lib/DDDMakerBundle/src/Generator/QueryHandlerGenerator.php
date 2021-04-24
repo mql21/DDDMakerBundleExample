@@ -32,8 +32,9 @@ class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenera
                 "Query handler {$queryHandlerClassName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\"."
             );
         }
-        $configManager = new ConfigManager(); // TODO Inject via DI
-        $baseClassReflector = new \ReflectionClass($configManager->getClassToImplementFor('query-handler'));
+        $baseClassReflector = new \ReflectionClass(
+            $this->configManager->getClassToImplementFor('query-handler')
+        );
         
         $renderer = new PHPCodeRenderer();
         file_put_contents(

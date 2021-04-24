@@ -24,8 +24,9 @@ class CommandHandlerGenerator extends HandlerGenerator implements DDDElementGene
             );
         }
     
-        $configManager = new ConfigManager(); // TODO Inject via DI
-        $baseClassReflector = new \ReflectionClass($configManager->getClassToImplementFor('command-handler'));
+        $baseClassReflector = new \ReflectionClass(
+            $this->configManager->getClassToImplementFor('command-handler')
+        );
         $useCaseNamespace = 'Mql21\DDDMakerBundle\UseCase\\';
         
         $renderer = new PHPCodeRenderer();

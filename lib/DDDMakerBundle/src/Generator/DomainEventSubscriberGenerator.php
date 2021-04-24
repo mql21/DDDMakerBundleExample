@@ -23,8 +23,9 @@ class DomainEventSubscriberGenerator extends HandlerGenerator implements DDDElem
             );
         }
     
-        $configManager = new ConfigManager(); // TODO Inject via DI
-        $baseClassReflector = new \ReflectionClass($configManager->getClassToImplementFor('event-subscriber'));
+        $baseClassReflector = new \ReflectionClass(
+            $this->configManager->getClassToImplementFor('event-subscriber')
+        );
         
         $renderer = new PHPCodeRenderer();
         file_put_contents(

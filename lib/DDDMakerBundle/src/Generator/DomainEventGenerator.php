@@ -26,8 +26,7 @@ class DomainEventGenerator extends DTOGenerator implements DDDElementGenerator
         
         $renderer = new PHPCodeRenderer();
     
-        $configManager = new ConfigManager(); // TODO Inject via DI
-        $baseClassReflector = new \ReflectionClass($configManager->getClassToExtendFor('domain-event'));
+        $baseClassReflector = new \ReflectionClass($this->configManager->getClassToExtendFor('domain-event'));
         
         file_put_contents(
             $eventFullPath,

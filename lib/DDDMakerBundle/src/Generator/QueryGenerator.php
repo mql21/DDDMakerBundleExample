@@ -23,8 +23,8 @@ class QueryGenerator extends DTOGenerator implements DDDElementGenerator
                 "Query {$queryName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\"."
             );
         }
-        $configManager = new ConfigManager(); // TODO Inject via DI
-        $baseClassReflector = new \ReflectionClass($configManager->getClassToImplementFor('query'));
+        
+        $baseClassReflector = new \ReflectionClass($this->configManager->getClassToImplementFor('query'));
         
         $renderer = new PHPCodeRenderer();
         file_put_contents(

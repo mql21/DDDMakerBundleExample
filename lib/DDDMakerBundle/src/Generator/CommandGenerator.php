@@ -2,7 +2,6 @@
 
 namespace Mql21\DDDMakerBundle\Generator;
 
-use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Factories\PathFactory;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
@@ -24,8 +23,9 @@ class CommandGenerator extends DTOGenerator implements DDDElementGenerator
             );
         }
         
-        $configManager = new ConfigManager(); // TODO Inject via DI
-        $classToImplementReflector = new \ReflectionClass($configManager->getClassToImplementFor('command'));
+        $classToImplementReflector = new \ReflectionClass(
+            $this->configManager->getClassToImplementFor('command')
+        );
         
         $renderer = new PHPCodeRenderer();
         file_put_contents(
