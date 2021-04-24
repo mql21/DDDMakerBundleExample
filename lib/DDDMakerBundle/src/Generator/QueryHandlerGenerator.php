@@ -36,15 +36,26 @@ class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenera
             $this->configManager->getClassToImplementFor('query-handler')
         );
         
+        $useCaseNamespace = $this
+            ->configManager->getNamespaceFor($boundedContextName, $moduleName, "use-case");
+        $responseNamespace = $this->
+            configManager->getNamespaceFor($boundedContextName, $moduleName, "response");
+        
         $renderer = new PHPCodeRenderer();
         file_put_contents(
             $queryHandlerFullPath,
             $renderer->render(
                 "lib/DDDMakerBundle/src/Templates/query_handler.php.template",
                 [
-                    "t_namespace" => "Mql21\DDDMakerBundle\Generator",
+                    "t_namespace" => $this->configManager->getNamespaceFor(
+                        $boundedContextName,
+                        $moduleName,
+                        'query-handler'
+                    ),
                     "t_class_name" => $queryHandlerClassName,
                     "t_interface_full_namespace" => $baseClassReflector->getName(),
+                    "t_use_case_namespace" => $useCaseNamespace . "\\" . $this->useCaseResponse->useCase(),
+                    "t_response_namespace" => $responseNamespace . "\\" . $this->responseClassName,
                     "t_interface_name" => $baseClassReflector->getShortName(),
                     "t_use_case_class_name" => $this->useCaseResponse->useCase(),
                     "t_response_class_name" => $this->responseClassName,

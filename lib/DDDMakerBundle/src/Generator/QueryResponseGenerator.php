@@ -29,7 +29,11 @@ class QueryResponseGenerator extends DTOGenerator implements DDDElementGenerator
             $renderer->render(
                 "lib/DDDMakerBundle/src/Templates/response.php.template",
                 [
-                    "t_namespace" => "Mql21\DDDMakerBundle\Generator",
+                    "t_namespace" =>  $this->configManager->getNamespaceFor(
+                        $boundedContextName,
+                        $moduleName,
+                        'response'
+                    ),
                     "t_class_name" => $responseClassName,
                     "t_attributes" => $this->classAttributes->attributes()
                 ]

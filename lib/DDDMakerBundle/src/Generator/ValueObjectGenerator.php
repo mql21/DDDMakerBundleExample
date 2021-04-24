@@ -2,6 +2,7 @@
 
 namespace Mql21\DDDMakerBundle\Generator;
 
+use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Factories\PathFactory;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
@@ -9,6 +10,13 @@ use Mql21\DDDMakerBundle\Renderer\PHPCodeRenderer;
 
 class ValueObjectGenerator implements DDDElementGenerator
 {
+    private ConfigManager $configManager;
+    
+    public function __construct()
+    {
+        $this->configManager = new ConfigManager();
+    }
+    
     public function generate(string $boundedContextName, string $moduleName, string $valueObjectName): void
     {
         $valueObjectFileName = "{$valueObjectName}.php";
@@ -25,7 +33,11 @@ class ValueObjectGenerator implements DDDElementGenerator
             $renderer->render(
                 "lib/DDDMakerBundle/src/Templates/value_object.php.template",
                 [
-                    "t_namespace" => "Mql21\DDDMakerBundle\Generator",
+                    "t_namespace" => $this->configManager->getNamespaceFor(
+                        $boundedContextName,
+                        $moduleName,
+                        'value-object'
+                    ),
                     "t_class_name" => $valueObjectName,
                 ]
             )

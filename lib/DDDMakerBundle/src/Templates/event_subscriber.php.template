@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace {{t_namespace}};
 
 use {{t_interface_full_namespace}};
+use {{t_use_case_full_namespace}};
+use {{t_event_full_namespace}};
 
 final class {{t_class_name}} implements {{t_interface_name}}
 {

@@ -32,7 +32,11 @@ class QueryGenerator extends DTOGenerator implements DDDElementGenerator
             $renderer->render(
                 "lib/DDDMakerBundle/src/Templates/query.php.template",
                 [
-                    "t_namespace" => "Mql21\DDDMakerBundle\Generator",
+                    "t_namespace" => $this->configManager->getNamespaceFor(
+                        $boundedContextName,
+                        $moduleName,
+                        'query'
+                    ),
                     "t_class_name" => $queryClassName,
                     "t_interface_full_namespace" => $baseClassReflector->getName(),
                     "t_interface_name" => $baseClassReflector->getShortName(),

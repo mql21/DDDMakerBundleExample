@@ -39,7 +39,7 @@ ddd_elements:
     implements: 'App\Shared\Domain\Bus\Event\DomainEventSubscriber'
     suffix:
   value-object:
-    namespace: '{company_name}\{bounded_context}\{module}\Domain\ValueObject\'
+    namespace: '{company_name}\{bounded_context}\{module}\Domain\ValueObject'
     path: 'src/{bounded_context}/{module}/Domain/ValueObject/'
     suffix:
   use-case:

@@ -33,7 +33,7 @@ class CommandGenerator extends DTOGenerator implements DDDElementGenerator
             $renderer->render(
                 "lib/DDDMakerBundle/src/Templates/command.php.template",
                 [
-                    "t_namespace" => "Mql21\DDDMakerBundle\Generator",
+                    "t_namespace" => $this->configManager->getNamespaceFor($boundedContextName, $moduleName, 'command'),
                     "t_class_name" => $commandClassName,
                     "t_interface_full_namespace" => $classToImplementReflector->getName(),
                     "t_interface_name" => $classToImplementReflector->getShortName(),
