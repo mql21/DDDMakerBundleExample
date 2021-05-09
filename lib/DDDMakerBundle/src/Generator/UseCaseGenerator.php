@@ -10,12 +10,10 @@ use Mql21\DDDMakerBundle\Renderer\PHPCodeRenderer;
 
 class UseCaseGenerator implements DDDElementGenerator
 {
-    private ConfigManager $configManager;
     private PHPCodeRenderer $renderer;
     
     public function __construct()
     {
-        $this->configManager = new ConfigManager();
         $this->renderer = new PHPCodeRenderer();
     }
     
