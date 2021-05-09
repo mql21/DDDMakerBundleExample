@@ -4,15 +4,12 @@ namespace Mql21\DDDMakerBundle;
 
 use Mql21\DDDMakerBundle\Generator\CommandGenerator;
 use Mql21\DDDMakerBundle\Generator\CommandHandlerGenerator;
-use Mql21\DDDMakerBundle\Generator\DomainEventGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
 use Mql21\DDDMakerBundle\Question\DTOAttributeQuestioner;
-use Mql21\DDDMakerBundle\Question\DTODataResponse;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
 class MakeCommandConsoleCommand extends Command
@@ -20,7 +17,6 @@ class MakeCommandConsoleCommand extends Command
     protected static $defaultName = 'ddd:cqs:make:command';
     
     private CommandGenerator $commandGenerator;
-    private CommandHandlerGenerator $commandHandlerGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
     private DTOAttributeQuestioner $attributeQuestioner;
     

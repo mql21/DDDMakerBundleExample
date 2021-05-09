@@ -5,7 +5,6 @@ namespace Mql21\DDDMakerBundle;
 use Mql21\DDDMakerBundle\Finder\CommandFinder;
 use Mql21\DDDMakerBundle\Finder\UseCaseFinder;
 use Mql21\DDDMakerBundle\Generator\CommandHandlerGenerator;
-use Mql21\DDDMakerBundle\Generator\HandlerGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
 use Mql21\DDDMakerBundle\Response\UseCaseResponse;
 use Symfony\Component\Console\Command\Command;
@@ -18,7 +17,6 @@ class MakeCommandHandlerConsoleCommand extends Command
 {
     protected static $defaultName = 'ddd:cqs:make:command-handler';
     
-    private CommandHandlerGenerator $commandHandlerGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
     private CommandFinder $commandFinder;
     private UseCaseFinder $useCaseFinder;
