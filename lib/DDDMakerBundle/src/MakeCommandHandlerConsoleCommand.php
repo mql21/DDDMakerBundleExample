@@ -16,7 +16,7 @@ use Symfony\Component\Console\Question\Question;
 
 class MakeCommandHandlerConsoleCommand extends Command
 {
-    protected static $defaultName = 'ddd:cqrs:make:command-handler';
+    protected static $defaultName = 'ddd:cqs:make:command-handler';
     
     private CommandHandlerGenerator $commandHandlerGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;

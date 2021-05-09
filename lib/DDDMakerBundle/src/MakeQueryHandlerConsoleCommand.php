@@ -16,7 +16,7 @@ use Symfony\Component\Console\Question\Question;
 
 class MakeQueryHandlerConsoleCommand extends Command
 {
-    protected static $defaultName = 'ddd:cqrs:make:query-handler';
+    protected static $defaultName = 'ddd:cqs:make:query-handler';
     
     private BoundedContextModuleLocator $boundedContextModuleLocator;
     private QueryFinder $queryFinder;

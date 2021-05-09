@@ -13,7 +13,7 @@ use Symfony\Component\Console\Question\Question;
 
 class MakeQueryConsoleCommand extends Command
 {
-    protected static $defaultName = 'ddd:cqrs:make:query';
+    protected static $defaultName = 'ddd:cqs:make:query';
     
     private QueryGenerator $queryGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;

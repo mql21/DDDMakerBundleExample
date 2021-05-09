@@ -1,3 +1,4 @@
+
 # DDDMakerBundle
 A Symfony Bundle to easily create DDD elements from your console
 
@@ -18,12 +19,12 @@ For now, these are the elements that will be able to be created through this bun
 
 - **Bounded context** (*ddd:make:bounded-context*) :black_square_button:
 
-- **CQRS**
-    - Command (*ddd:cqrs:make:command*) :hourglass_flowing_sand:
-    - CommandHandler (*ddd:cqrs:make:command-handler*) :hourglass_flowing_sand:
-    - Query (*ddd:cqrs:make:query*) :hourglass_flowing_sand:
-    - QueryHandler (*ddd:cqrs:make:query-handler*) :hourglass_flowing_sand:
-    - Response  (*ddd:cqrs:make:response*) :hourglass_flowing_sand:
+- **CQS/CQRS**
+    - Command (*ddd:cqs:make:command*) :hourglass_flowing_sand:
+    - CommandHandler (*ddd:cqs:make:command-handler*) :hourglass_flowing_sand:
+    - Query (*ddd:cqs:make:query*) :hourglass_flowing_sand:
+    - QueryHandler (*ddd:cqs:make:query-handler*) :hourglass_flowing_sand:
+    - Response  (*ddd:cqs:make:response*) :hourglass_flowing_sand:
 
 - **Domain**
     - Event (*ddd:domain:make:event*) :hourglass_flowing_sand:
@@ -34,13 +35,13 @@ For now, these are the elements that will be able to be created through this bun
 
 - **List**
     - Bounded (*contexs ddd:list:bounded-contexts*) :black_square_button:
-    - Commands (*ddd:cqrs:list:commands*) :black_square_button:
-    - CommandHandlers (*ddd:cqrs:list:command-handlers*) :black_square_button:
-    - Querys (*ddd:cqrs:list:queries*) :black_square_button:
-    - QueryHandler (*ddd:cqrs:list:query-handlers*) :black_square_button:
+    - Commands (*ddd:cqs:list:commands*) :black_square_button:
+    - CommandHandlers (*ddd:cqs:list:command-handlers*) :black_square_button:
+    - Querys (*ddd:cqs:list:queries*) :black_square_button:
+    - QueryHandler (*ddd:cqs:list:query-handlers*) :black_square_button:
     - Events (*ddd:domain:list:events*) :black_square_button:
     - EventSubscribers (*ddd:application:list:event-subscribers*) :black_square_button:
-    - UseCases (*ddd:cqrs:list:use-cases*) :black_square_button:
+    - UseCases (*ddd:cqs:list:use-cases*) :black_square_button:
    
 :hourglass_flowing_sand: Someone is already working on this
 
