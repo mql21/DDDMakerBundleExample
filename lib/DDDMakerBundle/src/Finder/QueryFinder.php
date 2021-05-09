@@ -11,7 +11,7 @@ class QueryFinder
     
     public function findIn(string $boundedContextName, string $moduleName): array
     {
-        $queriesPath = PathFactory::forQueriesIn($boundedContextName, $moduleName);
+        $queriesPath = PathFactory::for($boundedContextName, $moduleName, 'query');
         $elementsInBoundedContextDirectory = scandir($queriesPath);
         
         $availableQueryFiles = $this->findAvailableQueryFiles($elementsInBoundedContextDirectory, $queriesPath);

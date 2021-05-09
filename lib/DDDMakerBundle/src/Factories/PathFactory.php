@@ -27,45 +27,9 @@ class PathFactory
         return $configManager->getModulePath($boundedContextName) . "/{$moduleName}/";
     }
     
-    public static function forCommandsIn(string $boundedContextName, string $moduleName)
+    public static function for(string $boundedContextName, string $moduleName, string $dddElement)
     {
         $configManager = new ConfigManager();
-        return $configManager->getPathFor($boundedContextName, $moduleName, 'command');
-    }
-    
-    public static function forQueriesIn(string $boundedContextName, string $moduleName)
-    {
-        $configManager = new ConfigManager();
-        return $configManager->getPathFor($boundedContextName, $moduleName, 'query');
-    }
-    
-    public static function forDomainEventsIn(string $boundedContextName, string $moduleName)
-    {
-        $configManager = new ConfigManager();
-        return $configManager->getPathFor($boundedContextName, $moduleName, 'domain-event');
-    }
-    
-    public static function forEventSubscribersIn(string $boundedContextName, string $moduleName)
-    {
-        $configManager = new ConfigManager();
-        return $configManager->getPathFor($boundedContextName, $moduleName, 'event-subscriber');
-    }
-    
-    public static function forUseCasesIn(string $boundedContextName, string $moduleName)
-    {
-        $configManager = new ConfigManager();
-        return $configManager->getPathFor($boundedContextName, $moduleName, 'use-case');
-    }
-    
-    public static function forResponsesIn(string $boundedContextName, string $moduleName)
-    {
-        $configManager = new ConfigManager();
-        return $configManager->getPathFor($boundedContextName, $moduleName, 'response');
-    }
-    
-    public static function forValueObjectsIn(string $boundedContextName, string $moduleName)
-    {
-        $configManager = new ConfigManager();
-        return $configManager->getPathFor($boundedContextName, $moduleName, 'value-object');
+        return $configManager->getPathFor($boundedContextName, $moduleName, $dddElement);
     }
 }

@@ -11,7 +11,7 @@ class ResponseFinder
     
     public function findIn(string $boundedContextName, string $moduleName): array
     {
-        $responsePath = PathFactory::forResponsesIn($boundedContextName, $moduleName);
+        $responsePath = PathFactory::for($boundedContextName, $moduleName, 'response');
         $elementsResponseDirectory = scandir($responsePath);
         
         $availableUseCaseFiles = $this->findAvailableResponseFiles($elementsResponseDirectory, $responsePath);

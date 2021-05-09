@@ -3,8 +3,8 @@
 namespace Mql21\DDDMakerBundle\Generator;
 
 use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
+use Mql21\DDDMakerBundle\DTO\ClassDTO;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
-use Mql21\DDDMakerBundle\Factories\PathFactory;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
 use Mql21\DDDMakerBundle\Renderer\PHPCodeRenderer;
 
@@ -21,27 +21,21 @@ class UseCaseGenerator implements DDDElementGenerator
     
     public function generate(string $boundedContextName, string $moduleName, string $useCaseName): void
     {
-        $useCaseSuffix = $this->configManager->getClassSuffixFor('use-case');
-        $useCaseFileName = "{$useCaseName}{$useCaseSuffix}.php";
-        $useCasePath = PathFactory::forUseCasesIn($boundedContextName, $moduleName);
-        $useCaseFullPath = "{$useCasePath}{$useCaseFileName}";
-        
-        if (file_exists($useCaseFullPath)) {
+        $classDTO = new ClassDTO($boundedContextName, $moduleName, $useCaseName, 'use-case');
+    
+    
+        if (file_exists($classDTO->elementFullPath())) {
             throw new ElementAlreadyExistsException(
                 "Use case {$useCaseName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\"."
             );
         }
         
         file_put_contents(
-            $useCaseFullPath,
+            $classDTO->elementFullPath(),
             $this->renderer->render(
                 "lib/DDDMakerBundle/src/Templates/use_case.php.template",
                 [
-                    "t_namespace" => $this->configManager->getNamespaceFor(
-                        $boundedContextName,
-                        $moduleName,
-                        'use-case'
-                    ),
+                    "t_namespace" => $classDTO->namespace(),
                     "t_class_name" => $useCaseName,
                 ]
             )

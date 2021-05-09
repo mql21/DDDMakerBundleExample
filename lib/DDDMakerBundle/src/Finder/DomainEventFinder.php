@@ -11,7 +11,7 @@ class DomainEventFinder
     
     public function findIn(string $boundedContextName, string $moduleName): array
     {
-        $eventsPath = PathFactory::forDomainEventsIn($boundedContextName, $moduleName);
+        $eventsPath = PathFactory::for($boundedContextName, $moduleName, 'domain-event');
         $elementsInBoundedContextDirectory = scandir($eventsPath);
         
         $availableEventFiles = $this->findAvailableEventFiles($elementsInBoundedContextDirectory, $eventsPath);
