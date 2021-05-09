@@ -2,7 +2,7 @@
 
 namespace Mql21\DDDMakerBundle\Generator;
 
-use Mql21\DDDMakerBundle\DTO\ClassDTO;
+use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
 
@@ -10,26 +10,36 @@ class QueryGenerator extends DTOGenerator implements DDDElementGenerator
 {
     public function generate(string $boundedContextName, string $moduleName, string $queryName): void
     {
-        $classDTO = new ClassDTO($boundedContextName, $moduleName, $queryName, 'query');
+        $dddClassBuilder = DDDClassBuilder::create()
+            ->forBoundedContext($boundedContextName)
+            ->forModule($moduleName)
+            ->withClassName($queryName)
+            ->ofDDDElementType($this->type())
+            ->build();
         
-        if (file_exists($classDTO->elementFullPath())) {
+        if (file_exists($dddClassBuilder->elementFullPath())) {
             throw new ElementAlreadyExistsException(
                 "Query {$queryName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\"."
             );
         }
         
         file_put_contents(
-            $classDTO->elementFullPath(),
+            $dddClassBuilder->elementFullPath(),
             $this->renderer->render(
                 "lib/DDDMakerBundle/src/Templates/query.php.template",
                 [
-                    "t_namespace" => $classDTO->namespace(),
-                    "t_class_name" => $classDTO->elementClassName(),
-                    "t_interface_full_namespace" => $classDTO->interfaceToImplementNamespace(),
-                    "t_interface_name" => $classDTO->interfaceToImplementName(),
+                    "t_namespace" => $dddClassBuilder->namespace(),
+                    "t_class_name" => $dddClassBuilder->elementClassName(),
+                    "t_interface_full_namespace" => $dddClassBuilder->interfaceToImplementNamespace(),
+                    "t_interface_name" => $dddClassBuilder->interfaceToImplementName(),
                     "t_attributes" => $this->classAttributes->attributes()
                 ]
             )
         );
+    }
+    
+    public function type(): string
+    {
+        return 'query';
     }
 }

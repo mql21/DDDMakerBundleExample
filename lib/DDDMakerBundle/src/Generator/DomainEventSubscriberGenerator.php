@@ -10,10 +10,10 @@ class DomainEventSubscriberGenerator extends HandlerGenerator implements DDDElem
 {
     public function generate(string $boundedContextName, string $moduleName, string $eventName): void
     {
-        $subscriberSuffix = $this->configManager->getClassSuffixFor('event-subscriber');
+        $subscriberSuffix = $this->configManager->getClassSuffixFor($this->type());
         $subscriberClassName = "{$this->useCaseResponse->useCase()}On{$eventName}{$subscriberSuffix}";
         $subscriberFileName = "{$subscriberClassName}.php";
-        $eventSubscribersPath = PathFactory::for($boundedContextName, $moduleName, 'event-subscriber');
+        $eventSubscribersPath = PathFactory::for($boundedContextName, $moduleName, $this->type());
         $subscriberFullPath = "{$eventSubscribersPath}{$subscriberFileName}";
         
         if (file_exists($subscriberFullPath)) {
@@ -23,7 +23,7 @@ class DomainEventSubscriberGenerator extends HandlerGenerator implements DDDElem
         }
         
         $baseClassReflector = new \ReflectionClass(
-            $this->configManager->getClassToImplementFor('event-subscriber')
+            $this->configManager->getClassToImplementFor($this->type())
         );
         
         $useCaseNamespace = $this
@@ -42,7 +42,7 @@ class DomainEventSubscriberGenerator extends HandlerGenerator implements DDDElem
                     "t_namespace" => $this->configManager->getNamespaceFor(
                         $boundedContextName,
                         $moduleName,
-                        'event-subscriber'
+                        $this->type()
                     ),
                     "t_class_name" => $subscriberClassName,
                     "t_interface_full_namespace" => $baseClassReflector->getName(),
@@ -54,5 +54,10 @@ class DomainEventSubscriberGenerator extends HandlerGenerator implements DDDElem
                 ]
             )
         );
+    }
+    
+    public function type(): string
+    {
+        return 'event-subscriber';
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Mql21\DDDMakerBundle\Generator;
 
-use Mql21\DDDMakerBundle\DTO\ClassDTO;
+use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
 use Mql21\DDDMakerBundle\Renderer\PHPCodeRenderer;
@@ -18,22 +18,31 @@ class ValueObjectGenerator implements DDDElementGenerator
     
     public function generate(string $boundedContextName, string $moduleName, string $valueObjectName): void
     {
-        $classDTO = new ClassDTO($boundedContextName, $moduleName, $valueObjectName, 'value-object');
+        $dddClassBuilder = DDDClassBuilder::create()
+            ->forBoundedContext($boundedContextName)
+            ->forModule($moduleName)
+            ->withClassName($valueObjectName)
+            ->ofDDDElementType($this->type())
+            ->build();
     
-        if (file_exists($classDTO->elementFullPath())) {
+        if (file_exists($dddClassBuilder->elementFullPath())) {
             throw new ElementAlreadyExistsException("Value Object {$valueObjectName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\".");
         }
         
         file_put_contents(
-            $classDTO->elementFullPath(),
+            $dddClassBuilder->elementFullPath(),
             $this->renderer->render(
                 "lib/DDDMakerBundle/src/Templates/value_object.php.template",
                 [
-                    "t_namespace" => $classDTO->namespace(),
+                    "t_namespace" => $dddClassBuilder->namespace(),
                     "t_class_name" => $valueObjectName,
                 ]
             )
         );
     }
     
+    public function type(): string
+    {
+        return 'value-object';
+    }
 }

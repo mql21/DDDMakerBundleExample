@@ -2,7 +2,7 @@
 
 namespace Mql21\DDDMakerBundle\Generator;
 
-use Mql21\DDDMakerBundle\DTO\ClassDTO;
+use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
 
@@ -10,11 +10,16 @@ class CommandHandlerGenerator extends HandlerGenerator implements DDDElementGene
 {
     public function generate(string $boundedContextName, string $moduleName, string $handlerName): void
     {
-        $classDTO = new ClassDTO($boundedContextName, $moduleName, $handlerName, 'command-handler');
+        $dddClassBuilder = DDDClassBuilder::create()
+            ->forBoundedContext($boundedContextName)
+            ->forModule($moduleName)
+            ->withClassName($handlerName)
+            ->ofDDDElementType($this->type())
+            ->build();
         
-        if (file_exists($classDTO->elementFullPath())) {
+        if (file_exists($dddClassBuilder->elementFullPath())) {
             throw new ElementAlreadyExistsException(
-                "Command handler {$classDTO->elementClassName()} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\"."
+                "Command handler {$dddClassBuilder->elementClassName()} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\"."
             );
         }
         
@@ -22,19 +27,24 @@ class CommandHandlerGenerator extends HandlerGenerator implements DDDElementGene
         $commandSuffix = $this->configManager->getClassSuffixFor('command');
         
         file_put_contents(
-            $classDTO->elementFullPath(),
+            $dddClassBuilder->elementFullPath(),
             $this->renderer->render(
                 "lib/DDDMakerBundle/src/Templates/command_handler.php.template",
                 [
-                    "t_namespace" => $classDTO->namespace(),
-                    "t_class_name" => $classDTO->elementClassName(),
-                    "t_interface_full_namespace" => $classDTO->interfaceToImplementNamespace(),
-                    "t_interface_name" => $classDTO->interfaceToImplementName(),
+                    "t_namespace" => $dddClassBuilder->namespace(),
+                    "t_class_name" => $dddClassBuilder->elementClassName(),
+                    "t_interface_full_namespace" => $dddClassBuilder->interfaceToImplementNamespace(),
+                    "t_interface_name" => $dddClassBuilder->interfaceToImplementName(),
                     "t_use_case_namespace" => "{$useCaseNamespace}\\" . $this->useCaseResponse->useCase(),
                     "t_use_case_class_name" => $this->useCaseResponse->useCase(),
                     "t_command_class_name" => "{$handlerName}{$commandSuffix}",
                 ]
             )
         );
+    }
+    
+    public function type(): string
+    {
+        return 'command-handler';
     }
 }
