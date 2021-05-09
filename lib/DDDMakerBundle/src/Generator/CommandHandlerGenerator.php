@@ -23,8 +23,8 @@ class CommandHandlerGenerator extends HandlerGenerator implements DDDElementGene
             );
         }
         
-        $useCaseNamespace = $this->configManager->getNamespaceFor($boundedContextName, $moduleName, 'use-case');
-        $commandSuffix = $this->configManager->getClassSuffixFor('command');
+        $useCaseNamespace = $this->configManager->namespaceFor($boundedContextName, $moduleName, 'use-case');
+        $commandSuffix = $this->configManager->classSuffixFor('command');
         
         file_put_contents(
             $dddClassBuilder->elementFullPath(),

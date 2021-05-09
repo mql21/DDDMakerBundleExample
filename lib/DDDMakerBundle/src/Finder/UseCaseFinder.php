@@ -3,12 +3,18 @@
 
 namespace Mql21\DDDMakerBundle\Finder;
 
+use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
 use Mql21\DDDMakerBundle\Factories\PathFactory;
 
 class UseCaseFinder
 {
-    const USE_CASE_FILE_EXTENSION = ".php";
+    private string $useCaseFileSuffix;
     
+    public function __construct()
+    {
+        $configManager = new ConfigManager();
+        $this->useCaseFileSuffix = $configManager->classSuffixFor('use-case') . '.php';
+    }
     public function findIn(string $boundedContextName, string $moduleName): array
     {
         $useCasePath = PathFactory::for($boundedContextName, $moduleName, 'use-case');
@@ -26,7 +32,7 @@ class UseCaseFinder
             function ($element) use ($eventsPath) {
                 $elementFullPath = $eventsPath . $element;
                 
-                return is_file($elementFullPath) && str_ends_with($elementFullPath, self::USE_CASE_FILE_EXTENSION);
+                return is_file($elementFullPath) && str_ends_with($elementFullPath, $this->useCaseFileSuffix);
             }
         );
     }
@@ -36,7 +42,7 @@ class UseCaseFinder
         return array_map(
             function ($element) {
                 
-                return str_replace(self::USE_CASE_FILE_EXTENSION, '', $element);
+                return str_replace($this->useCaseFileSuffix, '', $element);
             },
             $availableQueryFiles
         );

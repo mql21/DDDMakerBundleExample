@@ -27,7 +27,7 @@ class ConfigManager
         );
     }
     
-    public function getPathFor(string $boundedContext, string $module, string $dddElement)
+    public function pathFor(string $boundedContext, string $module, string $dddElement)
     {
         return str_replace(
             ['{bounded_context}', '{module}'],
@@ -36,7 +36,7 @@ class ConfigManager
         );
     }
     
-    public function getNamespaceFor(string $boundedContext, string $module, string $dddElement)
+    public function namespaceFor(string $boundedContext, string $module, string $dddElement)
     {
         return str_replace(
             ['{vendor}', '{bounded_context}', '{module}'],
@@ -45,17 +45,17 @@ class ConfigManager
         );
     }
     
-    public function getClassSuffixFor(string $dddElement)
+    public function classSuffixFor(string $dddElement)
     {
         return $this->config['ddd_elements'][$dddElement]['suffix'] ?? null;
     }
     
-    public function getClassToImplementFor(string $dddElement)
+    public function classToImplementFor(string $dddElement)
     {
         return $this->config['ddd_elements'][$dddElement]['implements'] ?? null;
     }
     
-    public function getClassToExtendFor(string $dddElement)
+    public function classToExtendFor(string $dddElement)
     {
         return $this->config['ddd_elements'][$dddElement]['extends'] ?? null;
     }

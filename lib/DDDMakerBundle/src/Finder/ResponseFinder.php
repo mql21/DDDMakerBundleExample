@@ -3,11 +3,18 @@
 
 namespace Mql21\DDDMakerBundle\Finder;
 
+use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
 use Mql21\DDDMakerBundle\Factories\PathFactory;
 
 class ResponseFinder
 {
-    const RESPONSE_FILE_EXTENSION = ".php";
+    private string $responseFileSuffix;
+    
+    public function __construct()
+    {
+        $configManager = new ConfigManager();
+        $this->responseFileSuffix = $configManager->classSuffixFor('response') . '.php';
+    }
     
     public function findIn(string $boundedContextName, string $moduleName): array
     {
@@ -26,7 +33,7 @@ class ResponseFinder
             function ($element) use ($eventsPath) {
                 $elementFullPath = $eventsPath . $element;
                 
-                return is_file($elementFullPath) && str_ends_with($elementFullPath, self::RESPONSE_FILE_EXTENSION);
+                return is_file($elementFullPath) && str_ends_with($elementFullPath, $this->responseFileSuffix);
             }
         );
     }
@@ -36,7 +43,7 @@ class ResponseFinder
         return array_map(
             function ($element) {
                 
-                return str_replace(self::RESPONSE_FILE_EXTENSION, '', $element);
+                return str_replace($this->responseFileSuffix, '', $element);
             },
             $availableQueryFiles
         );

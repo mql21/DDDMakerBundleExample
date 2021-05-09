@@ -30,6 +30,6 @@ class PathFactory
     public static function for(string $boundedContextName, string $moduleName, string $dddElement)
     {
         $configManager = new ConfigManager();
-        return $configManager->getPathFor($boundedContextName, $moduleName, $dddElement);
+        return $configManager->pathFor($boundedContextName, $moduleName, $dddElement);
     }
 }

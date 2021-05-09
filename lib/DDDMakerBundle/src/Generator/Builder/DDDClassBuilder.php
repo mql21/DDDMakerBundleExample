@@ -63,9 +63,9 @@ class DDDClassBuilder
         $this->checkIfClassCanBeBuilt();
     
         $this->configManager = new ConfigManager();
-        $this->classSuffix = $this->configManager->getClassSuffixFor($this->dddElementType);
+        $this->classSuffix = $this->configManager->classSuffixFor($this->dddElementType);
         $this->elementClassName = "{$this->className}{$this->classSuffix}";
-        $this->namespace = $this->configManager->getNamespaceFor(
+        $this->namespace = $this->configManager->namespaceFor(
             $this->boundedContextName,
             $this->moduleName,
             $this->dddElementType
@@ -124,7 +124,7 @@ class DDDClassBuilder
     
     private function classToImplementReflector(string $dddElementType): ?\ReflectionClass
     {
-        $classToImplement = $this->configManager->getClassToImplementFor($dddElementType);
+        $classToImplement = $this->configManager->classToImplementFor($dddElementType);
         if (empty($classToImplement)) {
             return null;
         }
@@ -134,7 +134,7 @@ class DDDClassBuilder
     
     private function classToExtendReflector(string $dddElementType): ?\ReflectionClass
     {
-        $classToExtend = $this->configManager->getClassToExtendFor($dddElementType);
+        $classToExtend = $this->configManager->classToExtendFor($dddElementType);
         if (empty($classToExtend)) {
             return null;
         }

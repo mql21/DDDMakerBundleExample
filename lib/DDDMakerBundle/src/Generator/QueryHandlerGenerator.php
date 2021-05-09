@@ -33,11 +33,12 @@ class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenera
         }
         
         $useCaseNamespace = $this
-            ->configManager->getNamespaceFor($boundedContextName, $moduleName, "use-case");
+            ->configManager->namespaceFor($boundedContextName, $moduleName, "use-case");
         $responseNamespace = $this->
-            configManager->getNamespaceFor($boundedContextName, $moduleName, "response");
-        $querySuffix = $this->configManager->getClassSuffixFor('query');
-    
+            configManager->namespaceFor($boundedContextName, $moduleName, "response");
+        $querySuffix = $this->configManager->classSuffixFor('query');
+        $responseSuffix = $this->configManager->classSuffixFor('response');
+        $responseClassName = "{$this->responseClassName}{$responseSuffix}";
         file_put_contents(
             $dddClassBuilder->elementFullPath(),
             $this->renderer->render(
@@ -47,10 +48,10 @@ class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenera
                     "t_class_name" => $dddClassBuilder->elementClassName(),
                     "t_interface_full_namespace" => $dddClassBuilder->interfaceToImplementNamespace(),
                     "t_use_case_namespace" => $useCaseNamespace . "\\" . $this->useCaseResponse->useCase(),
-                    "t_response_namespace" => $responseNamespace . "\\" . $this->responseClassName,
+                    "t_response_namespace" => $responseNamespace . "\\" . $responseClassName,
                     "t_interface_name" => $dddClassBuilder->interfaceToImplementName(),
                     "t_use_case_class_name" => $this->useCaseResponse->useCase(),
-                    "t_response_class_name" => $this->responseClassName,
+                    "t_response_class_name" => $responseClassName,
                     "t_query_class_name" => "{$handlerName}{$querySuffix}",
                 ]
             )

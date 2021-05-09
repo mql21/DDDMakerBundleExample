@@ -3,11 +3,18 @@
 
 namespace Mql21\DDDMakerBundle\Finder;
 
+use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
 use Mql21\DDDMakerBundle\Factories\PathFactory;
 
 class DomainEventFinder
 {
-    const EVENT_FILE_SUFFIX = "DomainEvent.php";
+    private string $eventFileSuffix;
+    
+    public function __construct()
+    {
+        $configManager = new ConfigManager();
+        $this->eventFileSuffix = $configManager->classSuffixFor('domain-event') . '.php';
+    }
     
     public function findIn(string $boundedContextName, string $moduleName): array
     {
@@ -26,7 +33,7 @@ class DomainEventFinder
             function ($element) use ($eventsPath) {
                 $elementFullPath = $eventsPath . $element;
                 
-                return is_file($elementFullPath) && str_ends_with($elementFullPath, self::EVENT_FILE_SUFFIX);
+                return is_file($elementFullPath) && str_ends_with($elementFullPath, $this->eventFileSuffix);
             }
         );
     }
@@ -36,7 +43,7 @@ class DomainEventFinder
         return array_map(
             function ($element) {
                 
-                return str_replace(self::EVENT_FILE_SUFFIX, '', $element);
+                return str_replace($this->eventFileSuffix, '', $element);
             },
             $availableQueryFiles
         );
