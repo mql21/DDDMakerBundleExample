@@ -10,7 +10,8 @@ class DomainEventSubscriberGenerator extends HandlerGenerator implements DDDElem
 {
     public function generate(string $boundedContextName, string $moduleName, string $eventName): void
     {
-        $subscriberClassName = "{$this->useCaseResponse->useCase()}On{$eventName}";
+        $subscriberSuffix = $this->configManager->getClassSuffixFor('event-subscriber');
+        $subscriberClassName = "{$this->useCaseResponse->useCase()}On{$eventName}{$subscriberSuffix}";
         $subscriberFileName = "{$subscriberClassName}.php";
         $eventSubscribersPath = PathFactory::forEventSubscribersIn($boundedContextName, $moduleName);
         $subscriberFullPath = "{$eventSubscribersPath}{$subscriberFileName}";

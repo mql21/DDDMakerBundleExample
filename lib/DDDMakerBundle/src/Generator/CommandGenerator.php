@@ -10,7 +10,7 @@ class CommandGenerator extends DTOGenerator implements DDDElementGenerator
 {
     public function generate(string $boundedContextName, string $moduleName, string $commandName): void
     {
-        $commandSuffix = "Command";
+        $commandSuffix = $this->configManager->getClassSuffixFor('command');
         $commandClassName = "{$commandName}{$commandSuffix}";
         $commandFileName = "{$commandClassName}.php";
         $commandsPath = PathFactory::forCommandsIn($boundedContextName, $moduleName);

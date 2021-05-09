@@ -10,7 +10,7 @@ class QueryResponseGenerator extends DTOGenerator implements DDDElementGenerator
 {
     public function generate(string $boundedContextName, string $moduleName, string $responseName): void
     {
-        $responseSuffix = "Response";
+        $responseSuffix = $eventSuffix = $this->configManager->getClassSuffixFor('response');
         $responseClassName = "{$responseName}{$responseSuffix}";
         $responseFileName = "{$responseClassName}.php";
         $responsesPath = PathFactory::forResponsesIn($boundedContextName, $moduleName);

@@ -21,7 +21,8 @@ class ValueObjectGenerator implements DDDElementGenerator
     
     public function generate(string $boundedContextName, string $moduleName, string $valueObjectName): void
     {
-        $valueObjectFileName = "{$valueObjectName}.php";
+        $valueObjectSuffix = $this->configManager->getClassSuffixFor('value-object');
+        $valueObjectFileName = "{$valueObjectName}{$valueObjectSuffix}.php";
         $valueObjectsPath = PathFactory::forValueObjectsIn($boundedContextName, $moduleName);
         $valueObjectFullPath = "{$valueObjectsPath}{$valueObjectFileName}";
         

@@ -10,7 +10,7 @@ class QueryGenerator extends DTOGenerator implements DDDElementGenerator
 {
     public function generate(string $boundedContextName, string $moduleName, string $queryName): void
     {
-        $querySuffix = "Query";
+        $querySuffix = $eventSuffix = $this->configManager->getClassSuffixFor('query');
         $queryClassName = "{$queryName}{$querySuffix}";
         $queryFileName = "{$queryClassName}.php";
         $queryPath = PathFactory::forQueriesIn($boundedContextName, $moduleName);

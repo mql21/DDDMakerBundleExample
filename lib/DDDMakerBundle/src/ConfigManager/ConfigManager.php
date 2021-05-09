@@ -39,10 +39,15 @@ class ConfigManager
     public function getNamespaceFor(string $boundedContext, string $module, string $dddElement)
     {
         return str_replace(
-            ['{company_name}', '{bounded_context}', '{module}'],
-            [$this->companyName(), $boundedContext, $module],
+            ['{vendor}', '{bounded_context}', '{module}'],
+            [$this->vendor(), $boundedContext, $module],
             $this->config['ddd_elements'][$dddElement]['namespace']
         );
+    }
+    
+    public function getClassSuffixFor(string $dddElement)
+    {
+        return $this->config['ddd_elements'][$dddElement]['suffix'] ?? null;
     }
     
     public function getClassToImplementFor(string $dddElement)
@@ -55,8 +60,8 @@ class ConfigManager
         return $this->config['ddd_elements'][$dddElement]['extends'] ?? null;
     }
     
-    private function companyName(): mixed
+    private function vendor(): string
     {
-        return $this->config['company_name'];
+        return $this->config['vendor'];
     }
 }

@@ -21,7 +21,8 @@ class UseCaseGenerator implements DDDElementGenerator
     
     public function generate(string $boundedContextName, string $moduleName, string $useCaseName): void
     {
-        $useCaseFileName = "{$useCaseName}.php";
+        $useCaseSuffix = $this->configManager->getClassSuffixFor('use-case');
+        $useCaseFileName = "{$useCaseName}{$useCaseSuffix}.php";
         $useCasePath = PathFactory::forUseCasesIn($boundedContextName, $moduleName);
         $useCaseFullPath = "{$useCasePath}{$useCaseFileName}";
         

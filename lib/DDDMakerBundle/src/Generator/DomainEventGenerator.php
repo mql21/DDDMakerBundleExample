@@ -10,7 +10,7 @@ class DomainEventGenerator extends DTOGenerator implements DDDElementGenerator
 {
     public function generate(string $boundedContextName, string $moduleName, string $eventName): void
     {
-        $eventSuffix = "DomainEvent";
+        $eventSuffix = $this->configManager->getClassSuffixFor('domain-event');
         $eventClassName = "{$eventName}{$eventSuffix}";
         $eventFileName = "{$eventClassName}.php";
         $domainEventsPath = PathFactory::forDomainEventsIn($boundedContextName, $moduleName);

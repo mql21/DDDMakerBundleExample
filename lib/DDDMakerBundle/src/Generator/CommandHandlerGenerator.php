@@ -10,7 +10,7 @@ class CommandHandlerGenerator extends HandlerGenerator implements DDDElementGene
 {
     public function generate(string $boundedContextName, string $moduleName, string $commandName): void
     {
-        $commandHandlerSuffix = "CommandHandler";
+        $commandHandlerSuffix = $this->configManager->getClassSuffixFor('command-handler');
         $commandHandlerClassName = "{$commandName}{$commandHandlerSuffix}";
         $commandHandlerFileName = "{$commandHandlerClassName}.php";
         $commandsPath = PathFactory::forCommandsIn($boundedContextName, $moduleName);

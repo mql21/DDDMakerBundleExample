@@ -19,7 +19,7 @@ class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenera
     
     public function generate(string $boundedContextName, string $moduleName, string $queryName): void
     {
-        $querySuffix = "QueryHandler";
+        $querySuffix = $eventSuffix = $this->configManager->getClassSuffixFor('query-handler');
         $queryHandlerClassName = "{$queryName}{$querySuffix}";
         $queryHandlerFileName = "{$queryHandlerClassName}.php";
         $queriesPath = PathFactory::forQueriesIn($boundedContextName, $moduleName);
