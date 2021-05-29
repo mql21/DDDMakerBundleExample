@@ -1,10 +1,12 @@
 TODO Tasks:
 
-- Use DI (now most services/collaborator classes are explicitly instantiated)
-- Some code is being duplicated now, find a way (if it makes sense) to abstract that code (i.e. generator classes, finders...)
+
+- Command to create missing directories for a given bounded context and module
 - Every class that is generated, should be generated in tests directory as well following same path.
+- Use DI (now most services/collaborator classes are explicitly instantiated)
+
+- Some code is being duplicated now, find a way (if it makes sense) to abstract that code (i.e. generator classes, finders...)
 - Tests. To test the bundle, all I/O functions (i.e. scandir(), file_put_contents()...) that are being used will have to be abstracted to an interface to allow mocking during test execution.
 
-- Configure Bundle and push it to packagist
 - Command to create full bounded context
-- Command to create missing directories for a given bounded context and module
+- Configure Bundle and push it to packagist
