@@ -29,7 +29,6 @@ class MakeEventSubscriberConsoleCommand extends Command
     protected function configure()
     {
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        
         $this->eventFinder = new DomainEventFinder();
         $this->useCaseFinder = new UseCaseFinder();
         

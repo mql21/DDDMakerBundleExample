@@ -27,7 +27,6 @@ class MakeQueryConsoleCommand extends Command
     protected function configure()
     {
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-    
         $this->attributeQuestioner = new DTOAttributeQuestioner();
         
         $this
