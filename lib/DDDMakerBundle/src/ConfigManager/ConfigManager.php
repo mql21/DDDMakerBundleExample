@@ -68,11 +68,11 @@ class ConfigManager
     public function directoriesFor(string $boundedContextName, string $moduleName): array
     {
         $directories = [];
-        foreach ($this->config["ddd_elements"] as $key => $dddElementConfig) {
+        foreach ($this->config["ddd_elements"] as $dddElementConfig) {
             $path = $dddElementConfig["path"];
             $directories[] = str_replace(
-                ['{bounded_context}', '{module}'],
-                [$boundedContextName, $moduleName],
+                ['{vendor}', '{bounded_context}', '{module}'],
+                [$this->vendor(), $boundedContextName, $moduleName],
                 $path
             );
         }

@@ -29,7 +29,7 @@ class BoundedContextModuleLocator
         if (!$this->boundedContextLocator->exists($boundedContextName)) {
             $this->displayBoundedContextNotFoundError($boundedContextName);
         }
-    
+        
         if (!$this->moduleLocator->exists($boundedContextName, $moduleName)) {
             $this->displayModuleNotFoundError($moduleName, $boundedContextName);
         }
@@ -38,15 +38,15 @@ class BoundedContextModuleLocator
     
     protected function displayBoundedContextNotFoundError(string $boundedContextName): void
     {
-        $availableBoundedContexts = implode(', ', $this->boundedContextFinder->find());
-        
-        throw new ElementNotFoundException("Bounded context {$boundedContextName} does not exist. Available bounded contexts: {$availableBoundedContexts}");
+        ElementNotFoundException::raiseBoundedContextNotFound($boundedContextName, $this->boundedContextFinder->find());
     }
     
     protected function displayModuleNotFoundError(string $moduleName, string $boundedContextName): void
     {
-        $availableModules = implode(', ', $this->moduleFinder->findIn($boundedContextName));
-        
-        throw new ElementNotFoundException("Module {$moduleName} does not exist in bounded context {$boundedContextName}. Available modules: {$availableModules}");
+        ElementNotFoundException::raiseModuleNotFound(
+            $moduleName,
+            $boundedContextName,
+            $this->moduleFinder->findIn($boundedContextName)
+        );
     }
 }

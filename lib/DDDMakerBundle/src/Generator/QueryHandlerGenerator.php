@@ -2,6 +2,7 @@
 
 namespace Mql21\DDDMakerBundle\Generator;
 
+use Mql21\DDDMakerBundle\Exception\DirectoryNotFoundException;
 use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
@@ -27,9 +28,7 @@ class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenera
             ->build();
     
         if (file_exists($dddClassBuilder->elementFullPath())) {
-            throw new ElementAlreadyExistsException(
-                "Query handler {$dddClassBuilder->elementClassName()} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\"."
-            );
+            ElementAlreadyExistsException::raise($handlerName, $boundedContextName, $moduleName);
         }
         
         $useCaseNamespace = $this
@@ -39,6 +38,11 @@ class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenera
         $querySuffix = $this->configManager->classSuffixFor('query');
         $responseSuffix = $this->configManager->classSuffixFor('response');
         $responseClassName = "{$this->responseClassName}{$responseSuffix}";
+    
+        if (!file_exists(dirname($dddClassBuilder->elementFullPath()))) {
+            DirectoryNotFoundException::raise($dddClassBuilder->elementFullPath());
+        }
+        
         file_put_contents(
             $dddClassBuilder->elementFullPath(),
             $this->renderer->render(

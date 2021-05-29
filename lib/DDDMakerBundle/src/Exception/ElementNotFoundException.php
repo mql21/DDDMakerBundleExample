@@ -10,4 +10,18 @@ class ElementNotFoundException extends \Exception
     {
         parent::__construct($message, $code, $previous);
     }
+    
+    public static function raiseBoundedContextNotFound(string $boundedContextName, array $availableBoundedContexts): void
+    {
+        $availableBoundedContexts = implode(', ', $availableBoundedContexts);
+    
+        throw new self("Bounded context {$boundedContextName} does not exist. Available bounded contexts: {$availableBoundedContexts}");
+    }
+    
+    public static function raiseModuleNotFound(string $moduleName, string $boundedContextName, array $availableModules): void
+    {
+        $availableModules = implode(', ', $availableModules);
+        
+        throw new self("Module {$moduleName} does not exist in bounded context {$boundedContextName}. Available modules: {$availableModules}");
+    }
 }

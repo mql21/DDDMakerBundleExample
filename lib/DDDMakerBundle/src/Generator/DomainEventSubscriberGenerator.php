@@ -2,6 +2,7 @@
 
 namespace Mql21\DDDMakerBundle\Generator;
 
+use Mql21\DDDMakerBundle\Exception\DirectoryNotFoundException;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
@@ -18,9 +19,7 @@ class DomainEventSubscriberGenerator extends HandlerGenerator implements DDDElem
             ->build();
         
         if (file_exists($dddClassBuilder->elementFullPath())) {
-            throw new ElementAlreadyExistsException(
-                "Event subscriber {$eventName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\"."
-            );
+            ElementAlreadyExistsException::raise($this->subscriberName($eventName), $boundedContextName, $moduleName);
         }
         
         $useCaseNamespace = $this
@@ -32,6 +31,10 @@ class DomainEventSubscriberGenerator extends HandlerGenerator implements DDDElem
         $eventSuffix = $this->configManager->classSuffixFor('domain-event');
         
         $eventName = "{$eventName}{$eventSuffix}";
+        
+        if (!file_exists(dirname($dddClassBuilder->elementFullPath()))) {
+            DirectoryNotFoundException::raise($dddClassBuilder->elementFullPath());
+        }
         
         file_put_contents(
             $dddClassBuilder->elementFullPath(),

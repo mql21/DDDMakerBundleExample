@@ -10,4 +10,9 @@ class ElementAlreadyExistsException extends \Exception
     {
         parent::__construct($message, $code, $previous);
     }
+    
+    public static function raise(string $element, string $boundedContextName, string $moduleName)
+    {
+        throw new self("{$element} already exists in '{$moduleName}' module of '{$boundedContextName}' bounded context.");
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace Mql21\DDDMakerBundle\Generator;
 
+use Mql21\DDDMakerBundle\Exception\DirectoryNotFoundException;
 use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
@@ -18,13 +19,15 @@ class CommandHandlerGenerator extends HandlerGenerator implements DDDElementGene
             ->build();
         
         if (file_exists($dddClassBuilder->elementFullPath())) {
-            throw new ElementAlreadyExistsException(
-                "Command handler {$dddClassBuilder->elementClassName()} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\"."
-            );
+            ElementAlreadyExistsException::raise($handlerName, $boundedContextName, $moduleName);
         }
         
         $useCaseNamespace = $this->configManager->namespaceFor($boundedContextName, $moduleName, 'use-case');
         $commandSuffix = $this->configManager->classSuffixFor('command');
+    
+        if (!file_exists(dirname($dddClassBuilder->elementFullPath()))) {
+            DirectoryNotFoundException::raise($dddClassBuilder->elementFullPath());
+        }
         
         file_put_contents(
             $dddClassBuilder->elementFullPath(),

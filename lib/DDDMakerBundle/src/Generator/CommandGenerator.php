@@ -2,6 +2,7 @@
 
 namespace Mql21\DDDMakerBundle\Generator;
 
+use Mql21\DDDMakerBundle\Exception\DirectoryNotFoundException;
 use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
@@ -18,9 +19,11 @@ class CommandGenerator extends DTOGenerator implements DDDElementGenerator
             ->build();
         
         if (file_exists($dddClassBuilder->elementFullPath())) {
-            throw new ElementAlreadyExistsException(
-                "Command {$commandName} already exists in module \"{$moduleName}\" of bounded context \"{$boundedContextName}\"."
-            );
+            ElementAlreadyExistsException::raise($commandName, $boundedContextName, $moduleName);
+        }
+    
+        if (!file_exists(dirname($dddClassBuilder->elementFullPath()))) {
+            DirectoryNotFoundException::raise($dddClassBuilder->elementFullPath());
         }
         
         file_put_contents(
