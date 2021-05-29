@@ -8,5 +8,10 @@ class {{t_class_name}}
 {
 {{t_attributes}}
 
+    public function __construct({{t_constructor_parameters}})
+    {
+{{t_constructor_initialization}}
+    }
+
 {{t_getters}}
 }

@@ -25,8 +25,9 @@ class PHPCodeRenderer implements Renderer
         if (empty($classAttributes)) {
             return $template;
         }
+        $template = $this->renderClassConstructor($classAttributes, $template);
         
-        return $this->renderAttributtesAndGetters($classAttributes, $template);
+        return $this->renderAttributesAndGetters($classAttributes, $template);
     }
     
     private function checkRequiredVars(array $requiredVars, string $template, array $templateVars): void
@@ -43,12 +44,12 @@ class PHPCodeRenderer implements Renderer
         return ['t_attributes'];
     }
     
-    private function renderAttributesPhpCode(array $attributes): string
+    private function attributesPhpCode(array $attributes): string
     {
         $attributesPHPCode = [];
         
-        foreach ($attributes as $attribute => $type) {
-            $attributesPHPCode[] = "    private {$type} \${$attribute};";
+        foreach ($attributes as $name => $type) {
+            $attributesPHPCode[] = "    private {$type} \${$name};";
         }
         
         return implode("\n", $attributesPHPCode);
@@ -59,22 +60,55 @@ class PHPCodeRenderer implements Renderer
         return "    public function {$attribute}(): {$type}\n    {\n        return \$this->{$attribute};\n    }";
     }
     
-    private function renderGettersPhpCode(array $attributes): string
+    private function gettersPhpCode(array $attributes): string
     {
         $gettersPHPCode = [];
         
-        foreach ($attributes as $attribute => $type) {
-            $gettersPHPCode[] = $this->getGetterCode($attribute, $type);
+        foreach ($attributes as $name => $type) {
+            $gettersPHPCode[] = $this->getGetterCode($name, $type);
         }
         
         return implode("\n\n", $gettersPHPCode);
     }
     
-    protected function renderAttributtesAndGetters(mixed $classAttributes, string $template): string
+    protected function renderAttributesAndGetters(mixed $classAttributes, string $template): string
     {
-        $template = str_replace("{{t_attributes}}", $this->renderAttributesPhpCode($classAttributes), $template);
-        $template = str_replace("{{t_getters}}", $this->renderGettersPhpCode($classAttributes), $template);
+        $template = str_replace("{{t_attributes}}", $this->attributesPhpCode($classAttributes), $template);
+        $template = str_replace("{{t_getters}}", $this->gettersPhpCode($classAttributes), $template);
         
         return $template;
+    }
+    
+    private function renderClassConstructor(array $attributes, string $template): string
+    {
+        $template = str_replace("{{t_constructor_parameters}}", $this->constructorParameters($attributes), $template);
+        
+        return str_replace(
+            "{{t_constructor_initialization}}",
+            $this->constructorInitialization($attributes),
+            $template
+        );
+    }
+    
+    private function constructorParameters(array $attributes)
+    {
+        $constructorParameters = [];
+        
+        foreach ($attributes as $name => $type) {
+            $constructorParameters[] = "{$type} \${$name}";
+        }
+        
+        return implode(", ", $constructorParameters);
+    }
+    
+    private function constructorInitialization(array $attributes): string
+    {
+        $constructorInitializationAttributes = [];
+        
+        foreach ($attributes as $name => $type) {
+            $constructorInitializationAttributes[] = "        \$this->{$name} = \${$name};";
+        }
+        
+        return implode("\n", $constructorInitializationAttributes);
     }
 }

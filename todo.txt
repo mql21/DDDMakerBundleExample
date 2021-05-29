@@ -1,6 +1,5 @@
 TODO Tasks:
 
-- Class suffixes are being hardcoded in generator classes, suffix should be obtained from 'suffix' var in config.yaml file
 - Use DI (now most services/collaborator classes are explicitly instantiated)
 - Some code is being duplicated now, find a way (if it makes sense) to abstract that code (i.e. generator classes, finders...)
 - Every class that is generated, should be generated in tests directory as well following same path.
