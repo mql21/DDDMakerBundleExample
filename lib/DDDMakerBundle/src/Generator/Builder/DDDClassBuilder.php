@@ -9,10 +9,7 @@ use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
 
 class DDDClassBuilder
 {
-    private ?string $classSuffix;
     private string $elementClassName;
-    private string $elementFileName;
-    private string $elementPath;
     private string $elementFullPath;
     private string $namespace;
     private ?string $interfaceToImplementNamespace;
@@ -24,65 +21,52 @@ class DDDClassBuilder
     private string $moduleName;
     private string $className;
     private string $dddElementType;
+    private mixed $classSuffix;
     
-    public static function create()
+    public static function create(): self
     {
         return new self();
     }
     
-    public function forBoundedContext(string $boundedContextName)
+    public function forBoundedContext(string $boundedContextName): self
     {
         $this->boundedContextName = $boundedContextName;
         
         return $this;
     }
     
-    public function forModule(string $moduleName)
+    public function forModule(string $moduleName): self
     {
         $this->moduleName = $moduleName;
         
         return $this;
     }
     
-    public function withClassName(string $className)
+    public function withClassName(string $className): self
     {
         $this->className = $className;
         
         return $this;
     }
     
-    public function ofDDDElementType(string $dddElementType)
+    public function ofDDDElementType(string $dddElementType): self
     {
         $this->dddElementType = $dddElementType;
         
         return $this;
     }
     
-    public function build()
+    public function build(): self
     {
         $this->checkIfClassCanBeBuilt();
-    
+        
         $this->configManager = new ConfigManager();
-        $this->classSuffix = $this->configManager->classSuffixFor($this->dddElementType);
-        $this->elementClassName = "{$this->className}{$this->classSuffix}";
-        $this->namespace = $this->configManager->namespaceFor(
-            $this->boundedContextName,
-            $this->moduleName,
-            $this->dddElementType
-        );
-        $classToImplementReflector = $this->classToImplementReflector($this->dddElementType);
-        $this->interfaceToImplementNamespace = $classToImplementReflector
-            ? $classToImplementReflector->getName()
-            : null;
-        $this->interfaceToImplementName = $classToImplementReflector
-            ? $classToImplementReflector->getShortName()
-            : null;
-        $classToExtendReflector = $this->classToExtendReflector($this->dddElementType);
-        $this->classToExtendNamespace = $classToExtendReflector ? $classToExtendReflector->getName() : null;
-        $this->classToExtendName = $classToExtendReflector ? $classToExtendReflector->getShortName() : null;
-        $this->elementFileName = "{$this->elementClassName}.php";
-        $this->elementPath = PathFactory::for($this->boundedContextName, $this->moduleName, $this->dddElementType);
-        $this->elementFullPath = "{$this->elementPath}{$this->elementFileName}";
+        $this->buildClassSuffix();
+        $this->buildElementClassName();
+        $this->buildNamespace();
+        $this->buildClassToImplement();
+        $this->buildClassToExtend();
+        $this->buildElementFullPath();
         
         return $this;
     }
@@ -144,28 +128,89 @@ class DDDClassBuilder
     
     private function checkIfClassCanBeBuilt(): void
     {
+        $this->checkIfBoundedContextNameIsMissing();
+        $this->checkIfModuleNameIsMissing();
+        $this->checkIfClassNameIsMissing();
+        $this->checkIfDDDElementTypeIsMissing();
+    }
+    
+    private function checkIfBoundedContextNameIsMissing(): void
+    {
         if (empty($this->boundedContextName)) {
             throw new \Exception(
                 "Bounded context name is required. Please use method 'forBoundedContext()' before calling build method."
             );
         }
-        
+    }
+    
+    private function checkIfModuleNameIsMissing(): void
+    {
         if (empty($this->moduleName)) {
             throw new \Exception(
                 "Module name is required. Please use method 'forModule()' before calling build method."
             );
         }
-        
+    }
+    
+    private function checkIfClassNameIsMissing(): void
+    {
         if (empty($this->className)) {
             throw new \Exception(
                 "Class name is required. Please use method 'withClassName()' before calling build method."
             );
         }
-        
+    }
+    
+    private function checkIfDDDElementTypeIsMissing(): void
+    {
         if (empty($this->dddElementType)) {
             throw new \Exception(
                 "DDD element type is required. Please use method 'ofDDDElementType()' before calling build method."
             );
         }
+    }
+    
+    private function buildElementFullPath(): void
+    {
+        $elementFileName = "{$this->elementClassName}.php";
+        $elementPath = PathFactory::for($this->boundedContextName, $this->moduleName, $this->dddElementType);
+        $this->elementFullPath = "{$elementPath}{$elementFileName}";
+    }
+    
+    private function buildClassToExtend(): void
+    {
+        $classToExtendReflector = $this->classToExtendReflector($this->dddElementType);
+        $this->classToExtendNamespace = $classToExtendReflector ? $classToExtendReflector->getName() : null;
+        $this->classToExtendName = $classToExtendReflector ? $classToExtendReflector->getShortName() : null;
+    }
+    
+    private function buildClassToImplement(): void
+    {
+        $classToImplementReflector = $this->classToImplementReflector($this->dddElementType);
+        $this->interfaceToImplementNamespace = $classToImplementReflector
+            ? $classToImplementReflector->getName()
+            : null;
+        $this->interfaceToImplementName = $classToImplementReflector
+            ? $classToImplementReflector->getShortName()
+            : null;
+    }
+    
+    private function buildNamespace(): void
+    {
+        $this->namespace = $this->configManager->namespaceFor(
+            $this->boundedContextName,
+            $this->moduleName,
+            $this->dddElementType
+        );
+    }
+    
+    protected function buildElementClassName(): void
+    {
+        $this->elementClassName = "{$this->className}{$this->classSuffix}";
+    }
+    
+    private function buildClassSuffix(): mixed
+    {
+        return $this->classSuffix = $this->configManager->classSuffixFor($this->dddElementType);
     }
 }
