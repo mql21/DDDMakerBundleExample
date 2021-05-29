@@ -18,7 +18,7 @@ class ConfigManager
         return $this->config['ddd_elements']['bounded_context']['path'];
     }
     
-    public function getModulePath(string $boundedContext)
+    public function getModulePath(string $boundedContext): string
     {
         return str_replace(
             '{bounded_context}',
@@ -27,7 +27,7 @@ class ConfigManager
         );
     }
     
-    public function pathFor(string $boundedContext, string $module, string $dddElement)
+    public function pathFor(string $boundedContext, string $module, string $dddElement): string
     {
         return str_replace(
             ['{bounded_context}', '{module}'],
@@ -36,7 +36,7 @@ class ConfigManager
         );
     }
     
-    public function namespaceFor(string $boundedContext, string $module, string $dddElement)
+    public function namespaceFor(string $boundedContext, string $module, string $dddElement): string
     {
         return str_replace(
             ['{vendor}', '{bounded_context}', '{module}'],
@@ -45,17 +45,17 @@ class ConfigManager
         );
     }
     
-    public function classSuffixFor(string $dddElement)
+    public function classSuffixFor(string $dddElement): ?string
     {
         return $this->config['ddd_elements'][$dddElement]['suffix'] ?? null;
     }
     
-    public function classToImplementFor(string $dddElement)
+    public function classToImplementFor(string $dddElement): ?string
     {
         return $this->config['ddd_elements'][$dddElement]['implements'] ?? null;
     }
     
-    public function classToExtendFor(string $dddElement)
+    public function classToExtendFor(string $dddElement): ?string
     {
         return $this->config['ddd_elements'][$dddElement]['extends'] ?? null;
     }
