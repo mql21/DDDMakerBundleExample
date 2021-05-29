@@ -1,9 +1,9 @@
 TODO Tasks:
 
 
-- Command to create missing directories for a given bounded context and module
 - Every class that is generated, should be generated in tests directory as well following same path.
 - Use DI (now most services/collaborator classes are explicitly instantiated)
+- Now php code generation is being done "by hand", check out https://github.com/nette/php-generator to generate classes
 
 - Some code is being duplicated now, find a way (if it makes sense) to abstract that code (i.e. generator classes, finders...)
 - Tests. To test the bundle, all I/O functions (i.e. scandir(), file_put_contents()...) that are being used will have to be abstracted to an interface to allow mocking during test execution.
