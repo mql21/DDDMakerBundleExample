@@ -36,6 +36,7 @@ services:
     Mql21\DDDMakerBundle\MakeDomainEventConsoleCommand: ~
     Mql21\DDDMakerBundle\MakeUseCaseConsoleCommand: ~
     Mql21\DDDMakerBundle\MakeEventSubscriberConsoleCommand: ~
+    Mql21\DDDMakerBundle\GenerateMissingDirectoriesConsoleCommand: ~
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
