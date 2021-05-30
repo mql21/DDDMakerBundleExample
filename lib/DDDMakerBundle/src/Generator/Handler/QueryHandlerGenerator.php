@@ -1,12 +1,16 @@
 <?php
 
-namespace Mql21\DDDMakerBundle\Generator;
+namespace Mql21\DDDMakerBundle\Generator\Handler;
 
 use Mql21\DDDMakerBundle\Exception\DirectoryNotFoundException;
-use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
+use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
 use Mql21\DDDMakerBundle\Response\UseCaseResponse;
+use Mql21\DDDMakerBundle\ValueObject\AttributeName;
+use Mql21\DDDMakerBundle\ValueObject\ClassName;
+use Mql21\DDDMakerBundle\ValueObject\ClassNamespace;
+use Mql21\DDDMakerBundle\ValueObject\HandlerClass;
 
 class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenerator
 {
@@ -38,32 +42,41 @@ class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenera
         $querySuffix = $this->configManager->classSuffixFor('query');
         $responseSuffix = $this->configManager->classSuffixFor('response');
         $responseClassName = "{$this->responseClassName}{$responseSuffix}";
+        $classToHandleSuffix = $this->configManager->classSuffixFor($this->handles());
+    
+        $classToHandleNamespace = $this->configManager->namespaceFor($boundedContextName, $moduleName, $this->handles());
+    
     
         if (!file_exists(dirname($dddClassBuilder->elementFullPath()))) {
             DirectoryNotFoundException::raise($dddClassBuilder->elementFullPath());
         }
-        
+    
+        $handlerClass = new HandlerClass(
+            new ClassNamespace($dddClassBuilder->namespace()),
+            new ClassName($dddClassBuilder->elementClassName()),
+            new ClassNamespace($dddClassBuilder->interfaceToImplementNamespace()),
+            new ClassNamespace($dddClassBuilder->classToExtendNamespace()),
+            new ClassNamespace("{$classToHandleNamespace}\\{$handlerName}{$classToHandleSuffix}"),
+            new ClassName("{$handlerName}{$classToHandleSuffix}"),
+            new AttributeName($this->handles()),
+            new ClassNamespace("{$useCaseNamespace}\\{$this->useCaseResponse->useCase()}"),
+            new ClassName($this->useCaseResponse->useCase()),
+            new ClassNamespace("{$responseNamespace}\\{$responseClassName}")
+        );
+    
         file_put_contents(
             $dddClassBuilder->elementFullPath(),
-            $this->renderer->render(
-                "lib/DDDMakerBundle/src/Templates/query_handler.php.template",
-                [
-                    "t_namespace" => $dddClassBuilder->namespace(),
-                    "t_class_name" => $dddClassBuilder->elementClassName(),
-                    "t_interface_full_namespace" => $dddClassBuilder->interfaceToImplementNamespace(),
-                    "t_use_case_namespace" => $useCaseNamespace . "\\" . $this->useCaseResponse->useCase(),
-                    "t_response_namespace" => $responseNamespace . "\\" . $responseClassName,
-                    "t_interface_name" => $dddClassBuilder->interfaceToImplementName(),
-                    "t_use_case_class_name" => $this->useCaseResponse->useCase(),
-                    "t_response_class_name" => $responseClassName,
-                    "t_query_class_name" => "{$handlerName}{$querySuffix}",
-                ]
-            )
+            $this->renderer->render($handlerClass)
         );
     }
     
     public function type(): string
     {
         return 'query-handler';
+    }
+    
+    private function handles(): string
+    {
+        return 'query';
     }
 }

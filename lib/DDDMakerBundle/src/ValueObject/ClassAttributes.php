@@ -1,8 +1,8 @@
 <?php
 
-namespace Mql21\DDDMakerBundle\Response;
+namespace Mql21\DDDMakerBundle\ValueObject;
 
-class DTOAttributesResponse
+class ClassAttributes
 {
     private array $attributes;
     

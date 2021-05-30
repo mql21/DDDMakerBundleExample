@@ -29,7 +29,7 @@ class BoundedContextModuleLocator
         if (!$this->boundedContextLocator->exists($boundedContextName)) {
             $this->displayBoundedContextNotFoundError($boundedContextName);
         }
-        
+    
         if (!$this->moduleLocator->exists($boundedContextName, $moduleName)) {
             $this->displayModuleNotFoundError($moduleName, $boundedContextName);
         }

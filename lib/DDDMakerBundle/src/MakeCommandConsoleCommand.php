@@ -2,10 +2,9 @@
 
 namespace Mql21\DDDMakerBundle;
 
-use Mql21\DDDMakerBundle\Generator\CommandGenerator;
-use Mql21\DDDMakerBundle\Generator\CommandHandlerGenerator;
+use Mql21\DDDMakerBundle\Generator\DTO\CommandGenerator;
+use Mql21\DDDMakerBundle\Interaction\DTOAttributeInteractor;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
-use Mql21\DDDMakerBundle\Question\DTOAttributeQuestioner;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,7 +17,7 @@ class MakeCommandConsoleCommand extends Command
     
     private CommandGenerator $commandGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
-    private DTOAttributeQuestioner $attributeQuestioner;
+    private DTOAttributeInteractor $attributeQuestioner;
     
     public function __construct(string $name = null)
     {
@@ -28,7 +27,7 @@ class MakeCommandConsoleCommand extends Command
     protected function configure()
     {
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        $this->attributeQuestioner = new DTOAttributeQuestioner();
+        $this->attributeQuestioner = new DTOAttributeInteractor();
         
         $this
             ->setDescription('Creates a command in the Application layer.')

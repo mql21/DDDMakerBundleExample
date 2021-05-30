@@ -4,7 +4,7 @@ namespace Mql21\DDDMakerBundle;
 
 use Mql21\DDDMakerBundle\Finder\DomainEventFinder;
 use Mql21\DDDMakerBundle\Finder\UseCaseFinder;
-use Mql21\DDDMakerBundle\Generator\DomainEventSubscriberGenerator;
+use Mql21\DDDMakerBundle\Generator\Handler\DomainEventSubscriberGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
 use Mql21\DDDMakerBundle\Response\UseCaseResponse;
 use Symfony\Component\Console\Command\Command;

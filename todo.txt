@@ -1,9 +1,18 @@
 TODO Tasks:
 
 
+- Now php code generation is being done "by hand", check out https://github.com/nette/php-generator to generate classes
+    - command (ok)
+    - command handler (ok)
+    - query (ok)
+    - query handler (ok)
+    - query response (ok)
+    - domain event (ok)
+    - event subscriber (ok)
+    - use case
+    - value object
 - Every class that is generated, should be generated in tests directory as well following same path.
 - Use DI (now most services/collaborator classes are explicitly instantiated)
-- Now php code generation is being done "by hand", check out https://github.com/nette/php-generator to generate classes
 
 - Some code is being duplicated now, find a way (if it makes sense) to abstract that code (i.e. generator classes, finders...)
 - Tests. To test the bundle, all I/O functions (i.e. scandir(), file_put_contents()...) that are being used will have to be abstracted to an interface to allow mocking during test execution.

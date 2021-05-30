@@ -2,9 +2,9 @@
 
 namespace Mql21\DDDMakerBundle;
 
-use Mql21\DDDMakerBundle\Generator\QueryGenerator;
+use Mql21\DDDMakerBundle\Generator\DTO\QueryGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
-use Mql21\DDDMakerBundle\Question\DTOAttributeQuestioner;
+use Mql21\DDDMakerBundle\Interaction\DTOAttributeInteractor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,7 +17,7 @@ class MakeQueryConsoleCommand extends Command
     
     private QueryGenerator $queryGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
-    private DTOAttributeQuestioner $attributeQuestioner;
+    private DTOAttributeInteractor $attributeQuestioner;
     
     public function __construct(string $name = null)
     {
@@ -27,7 +27,7 @@ class MakeQueryConsoleCommand extends Command
     protected function configure()
     {
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        $this->attributeQuestioner = new DTOAttributeQuestioner();
+        $this->attributeQuestioner = new DTOAttributeInteractor();
         
         $this
             ->setDescription('Creates a query in the Application layer.')

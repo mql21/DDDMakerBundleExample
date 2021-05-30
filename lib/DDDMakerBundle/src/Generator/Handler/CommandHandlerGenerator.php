@@ -1,11 +1,15 @@
 <?php
 
-namespace Mql21\DDDMakerBundle\Generator;
+namespace Mql21\DDDMakerBundle\Generator\Handler;
 
 use Mql21\DDDMakerBundle\Exception\DirectoryNotFoundException;
 use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
+use Mql21\DDDMakerBundle\ValueObject\AttributeName;
+use Mql21\DDDMakerBundle\ValueObject\ClassName;
+use Mql21\DDDMakerBundle\ValueObject\ClassNamespace;
+use Mql21\DDDMakerBundle\ValueObject\HandlerClass;
 
 class CommandHandlerGenerator extends HandlerGenerator implements DDDElementGenerator
 {
@@ -23,31 +27,40 @@ class CommandHandlerGenerator extends HandlerGenerator implements DDDElementGene
         }
         
         $useCaseNamespace = $this->configManager->namespaceFor($boundedContextName, $moduleName, 'use-case');
-        $commandSuffix = $this->configManager->classSuffixFor('command');
-    
+        $classToHandleSuffix = $this->configManager->classSuffixFor($this->handles());
+        
+        $classToHandleNamespace = $this->configManager->namespaceFor($boundedContextName, $moduleName, $this->handles());
+        
         if (!file_exists(dirname($dddClassBuilder->elementFullPath()))) {
             DirectoryNotFoundException::raise($dddClassBuilder->elementFullPath());
         }
         
+        $handlerClass = new HandlerClass(
+            new ClassNamespace($dddClassBuilder->namespace()),
+            new ClassName($dddClassBuilder->elementClassName()),
+            new ClassNamespace($dddClassBuilder->interfaceToImplementNamespace()),
+            new ClassNamespace($dddClassBuilder->classToExtendNamespace()),
+            new ClassNamespace("{$classToHandleNamespace}\\{$handlerName}{$classToHandleSuffix}"),
+            new ClassName("{$handlerName}{$classToHandleSuffix}"),
+            new AttributeName($this->handles()),
+            new ClassNamespace("{$useCaseNamespace}\\{$this->useCaseResponse->useCase()}"),
+            new ClassName($this->useCaseResponse->useCase()),
+            new ClassNamespace(null)
+        );
+        
         file_put_contents(
             $dddClassBuilder->elementFullPath(),
-            $this->renderer->render(
-                "lib/DDDMakerBundle/src/Templates/command_handler.php.template",
-                [
-                    "t_namespace" => $dddClassBuilder->namespace(),
-                    "t_class_name" => $dddClassBuilder->elementClassName(),
-                    "t_interface_full_namespace" => $dddClassBuilder->interfaceToImplementNamespace(),
-                    "t_interface_name" => $dddClassBuilder->interfaceToImplementName(),
-                    "t_use_case_namespace" => "{$useCaseNamespace}\\" . $this->useCaseResponse->useCase(),
-                    "t_use_case_class_name" => $this->useCaseResponse->useCase(),
-                    "t_command_class_name" => "{$handlerName}{$commandSuffix}",
-                ]
-            )
+            $this->renderer->render($handlerClass)
         );
     }
     
     public function type(): string
     {
         return 'command-handler';
+    }
+    
+    public function handles(): string
+    {
+        return 'command';
     }
 }

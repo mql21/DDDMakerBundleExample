@@ -1,9 +1,0 @@
-<?php
-
-declare(strict_types=1);
-
-namespace {{t_namespace}};
-
-final class {{t_class_name}}
-{
-}

@@ -1,17 +1,17 @@
 <?php
 
-namespace Mql21\DDDMakerBundle\Question;
+namespace Mql21\DDDMakerBundle\Interaction;
 
-use Mql21\DDDMakerBundle\Response\DTOAttributesResponse;
+use Mql21\DDDMakerBundle\ValueObject\ClassAttributes;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
-class DTOAttributeQuestioner
+class DTOAttributeInteractor
 {
-    public function ask(InputInterface $input, OutputInterface $output, $questionHelper): DTOAttributesResponse
+    public function ask(InputInterface $input, OutputInterface $output, $questionHelper): ClassAttributes
     {
         $output->writeln("<info>\n Now tell me some info about its attributes! </info>\n\n");
         
@@ -39,6 +39,6 @@ class DTOAttributeQuestioner
             $continueAskingAttributes = $questionHelper->ask($input, $output, $createQueryHandlerQuestion);
         }
         
-        return new DTOAttributesResponse($attributes);
+        return new ClassAttributes($attributes);
     }
 }

@@ -15,13 +15,13 @@ class ConfigManager
     
     public function getBoundedContextPath()
     {
-        return $this->config['ddd_elements']['bounded_context']['path'];
+        return $this->config['ddd_elements']['bounded-context']['path'];
     }
     
     public function getModulePath(string $boundedContext): string
     {
         return str_replace(
-            '{bounded_context}',
+            '{bounded-context}',
             $boundedContext,
             $this->config['ddd_elements']['module']['path']
         );
@@ -30,7 +30,7 @@ class ConfigManager
     public function pathFor(string $boundedContext, string $module, string $dddElement): string
     {
         return str_replace(
-            ['{bounded_context}', '{module}'],
+            ['{bounded-context}', '{module}'],
             [$boundedContext, $module],
             $this->config['ddd_elements'][$dddElement]['path']
         );
@@ -39,7 +39,7 @@ class ConfigManager
     public function namespaceFor(string $boundedContext, string $module, string $dddElement): string
     {
         return str_replace(
-            ['{vendor}', '{bounded_context}', '{module}'],
+            ['{vendor}', '{bounded-context}', '{module}'],
             [$this->vendor(), $boundedContext, $module],
             $this->config['ddd_elements'][$dddElement]['namespace']
         );
@@ -71,7 +71,7 @@ class ConfigManager
         foreach ($this->config["ddd_elements"] as $dddElementConfig) {
             $path = $dddElementConfig["path"];
             $directories[] = str_replace(
-                ['{vendor}', '{bounded_context}', '{module}'],
+                ['{vendor}', '{bounded-context}', '{module}'],
                 [$this->vendor(), $boundedContextName, $moduleName],
                 $path
             );
