@@ -1,16 +1,5 @@
 TODO Tasks:
 
-
-- Now php code generation is being done "by hand", check out https://github.com/nette/php-generator to generate classes
-    - command (ok)
-    - command handler (ok)
-    - query (ok)
-    - query handler (ok)
-    - query response (ok)
-    - domain event (ok)
-    - event subscriber (ok)
-    - use case
-    - value object
 - Every class that is generated, should be generated in tests directory as well following same path.
 - Use DI (now most services/collaborator classes are explicitly instantiated)
 
