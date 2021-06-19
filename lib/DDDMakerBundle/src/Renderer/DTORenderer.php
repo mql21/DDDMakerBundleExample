@@ -10,25 +10,25 @@ use Nette\PhpGenerator\PsrPrinter;
 
 class DTORenderer implements DDDElementRenderer
 {
-    public function render(DDDElement $handlerClass): string
+    public function render(DDDElement $useCase): string
     {
-        $namespace = new PhpNamespace($handlerClass->classNamespace()->namespace());
-        $class = $namespace->addClass($handlerClass->className()->name());
+        $namespace = new PhpNamespace($useCase->classNamespace()->namespace());
+        $class = $namespace->addClass($useCase->className()->name());
         
-        if (!empty($handlerClass->interfaceNamespace()->namespace())) {
-            $namespace->addUse($handlerClass->interfaceNamespace()->namespace());
-            $class->addImplement($handlerClass->interfaceNamespace()->namespace());
+        if (!empty($useCase->interfaceNamespace()->namespace())) {
+            $namespace->addUse($useCase->interfaceNamespace()->namespace());
+            $class->addImplement($useCase->interfaceNamespace()->namespace());
         }
         
-        if (!empty($handlerClass->parentClassNamespace()->namespace())) {
-            $namespace->addUse($handlerClass->parentClassNamespace()->namespace());
-            $class->addExtend($handlerClass->parentClassNamespace()->namespace());
+        if (!empty($useCase->parentClassNamespace()->namespace())) {
+            $namespace->addUse($useCase->parentClassNamespace()->namespace());
+            $class->addExtend($useCase->parentClassNamespace()->namespace());
         }
         
         $constructor = $class->addMethod("__construct");
         $constructorBody = "";
         
-        foreach ($handlerClass->attributes()->attributes() as $name => $type) {
+        foreach ($useCase->attributes()->attributes() as $name => $type) {
             $this->addPropertyToClass($class, $name, $type);
             $constructorBody = $this->addPropertyToConstructor($constructor, $name, $type, $constructorBody);
             $this->addGetterMethod($class, $name, $type);

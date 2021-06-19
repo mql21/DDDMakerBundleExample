@@ -2,7 +2,7 @@
 
 namespace Mql21\DDDMakerBundle\Interaction;
 
-use Mql21\DDDMakerBundle\ValueObject\ClassAttributes;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassAttributes;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;

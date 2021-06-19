@@ -6,15 +6,20 @@ use Mql21\DDDMakerBundle\Exception\DirectoryNotFoundException;
 use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
-use Mql21\DDDMakerBundle\Renderer\PHPCodeRenderer;
+use Mql21\DDDMakerBundle\Renderer\UseCaseRenderer;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassMetadata;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassName;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassNamespace;
+use Mql21\DDDMakerBundle\ValueObject\UseCase;
 
 class UseCaseGenerator implements DDDElementGenerator
 {
-    private PHPCodeRenderer $renderer;
+    
+    private UseCaseRenderer $renderer;
     
     public function __construct()
     {
-        $this->renderer = new PHPCodeRenderer();
+        $this->renderer = new UseCaseRenderer();
     }
     
     public function generate(string $boundedContextName, string $moduleName, string $useCaseName): void
@@ -25,11 +30,11 @@ class UseCaseGenerator implements DDDElementGenerator
             ->withClassName($useCaseName)
             ->ofDDDElementType($this->type())
             ->build();
-    
+        
         if (file_exists($dddClassBuilder->elementFullPath())) {
             ElementAlreadyExistsException::raise($useCaseName, $boundedContextName, $moduleName);
         }
-    
+        
         if (!file_exists(dirname($dddClassBuilder->elementFullPath()))) {
             DirectoryNotFoundException::raise($dddClassBuilder->elementFullPath());
         }
@@ -37,11 +42,7 @@ class UseCaseGenerator implements DDDElementGenerator
         file_put_contents(
             $dddClassBuilder->elementFullPath(),
             $this->renderer->render(
-                "lib/DDDMakerBundle/src/Templates/use_case.php.template",
-                [
-                    "t_namespace" => $dddClassBuilder->namespace(),
-                    "t_class_name" => $useCaseName,
-                ]
+                $this->useCase($dddClassBuilder, $useCaseName)
             )
         );
     }
@@ -49,5 +50,15 @@ class UseCaseGenerator implements DDDElementGenerator
     public function type(): string
     {
         return 'use-case';
+    }
+    
+    private function useCase(DDDClassBuilder $dddClassBuilder, string $useCaseName): UseCase
+    {
+        return UseCase::create(
+            new ClassMetadata(
+                ClassNamespace::create($dddClassBuilder->namespace()),
+                ClassName::create($useCaseName)
+            )
+        );
     }
 }

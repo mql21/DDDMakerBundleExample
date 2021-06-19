@@ -3,18 +3,22 @@
 namespace Mql21\DDDMakerBundle\Generator;
 
 use Mql21\DDDMakerBundle\Exception\DirectoryNotFoundException;
-use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
+use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
-use Mql21\DDDMakerBundle\Renderer\PHPCodeRenderer;
+use Mql21\DDDMakerBundle\Renderer\ValueObjectRenderer;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassMetadata;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassName;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassNamespace;
+use Mql21\DDDMakerBundle\ValueObject\ValueObject;
 
 class ValueObjectGenerator implements DDDElementGenerator
 {
-    private PHPCodeRenderer $renderer;
+    private ValueObjectRenderer $renderer;
     
     public function __construct()
     {
-        $this->renderer = new PHPCodeRenderer();
+        $this->renderer = new ValueObjectRenderer();
     }
     
     public function generate(string $boundedContextName, string $moduleName, string $valueObjectName): void
@@ -36,18 +40,22 @@ class ValueObjectGenerator implements DDDElementGenerator
         
         file_put_contents(
             $dddClassBuilder->elementFullPath(),
-            $this->renderer->render(
-                "lib/DDDMakerBundle/src/Templates/value_object.php.template",
-                [
-                    "t_namespace" => $dddClassBuilder->namespace(),
-                    "t_class_name" => $valueObjectName,
-                ]
-            )
+            $this->renderer->render($this->valueObject($dddClassBuilder, $valueObjectName))
         );
     }
     
     public function type(): string
     {
         return 'value-object';
+    }
+    
+    private function valueObject(DDDClassBuilder $dddClassBuilder, string $valueObjectName): ValueObject
+    {
+        return ValueObject::create(
+            new ClassMetadata(
+                ClassNamespace::create($dddClassBuilder->namespace()),
+                ClassName::create($valueObjectName)
+            )
+        );
     }
 }

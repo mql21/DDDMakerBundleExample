@@ -7,9 +7,11 @@ use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
 use Mql21\DDDMakerBundle\Response\UseCaseResponse;
-use Mql21\DDDMakerBundle\ValueObject\AttributeName;
-use Mql21\DDDMakerBundle\ValueObject\ClassName;
-use Mql21\DDDMakerBundle\ValueObject\ClassNamespace;
+use Mql21\DDDMakerBundle\ValueObject\Class\AttributeName;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassMetadata;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassName;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassNamespace;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassToHandle;
 use Mql21\DDDMakerBundle\ValueObject\HandlerClass;
 
 class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenerator
@@ -39,7 +41,6 @@ class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenera
             ->configManager->namespaceFor($boundedContextName, $moduleName, "use-case");
         $responseNamespace = $this->
             configManager->namespaceFor($boundedContextName, $moduleName, "response");
-        $querySuffix = $this->configManager->classSuffixFor('query');
         $responseSuffix = $this->configManager->classSuffixFor('response');
         $responseClassName = "{$this->responseClassName}{$responseSuffix}";
         $classToHandleSuffix = $this->configManager->classSuffixFor($this->handles());
@@ -50,18 +51,14 @@ class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenera
         if (!file_exists(dirname($dddClassBuilder->elementFullPath()))) {
             DirectoryNotFoundException::raise($dddClassBuilder->elementFullPath());
         }
-    
-        $handlerClass = new HandlerClass(
-            new ClassNamespace($dddClassBuilder->namespace()),
-            new ClassName($dddClassBuilder->elementClassName()),
-            new ClassNamespace($dddClassBuilder->interfaceToImplementNamespace()),
-            new ClassNamespace($dddClassBuilder->classToExtendNamespace()),
-            new ClassNamespace("{$classToHandleNamespace}\\{$handlerName}{$classToHandleSuffix}"),
-            new ClassName("{$handlerName}{$classToHandleSuffix}"),
-            new AttributeName($this->handles()),
-            new ClassNamespace("{$useCaseNamespace}\\{$this->useCaseResponse->useCase()}"),
-            new ClassName($this->useCaseResponse->useCase()),
-            new ClassNamespace("{$responseNamespace}\\{$responseClassName}")
+        
+        $handlerClass = $this->handlerClass(
+            $dddClassBuilder,
+            $classToHandleNamespace,
+            $handlerName,
+            $classToHandleSuffix,
+            $useCaseNamespace,
+            "$responseNamespace\\$responseClassName"
         );
     
         file_put_contents(
@@ -69,7 +66,33 @@ class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenera
             $this->renderer->render($handlerClass)
         );
     }
-    
+    private function handlerClass(
+        DDDClassBuilder $dddClassBuilder,
+        string $classToHandleNamespace,
+        string $handlerName,
+        ?string $classToHandleSuffix,
+        string $useCaseNamespace,
+        string $responseNamespace
+    ): HandlerClass {
+        return new HandlerClass(
+            new ClassMetadata(
+                ClassNamespace::create($dddClassBuilder->namespace()),
+                ClassName::create($dddClassBuilder->elementClassName())
+            ),
+            new ClassNamespace($dddClassBuilder->interfaceToImplementNamespace()),
+            new ClassNamespace($dddClassBuilder->classToExtendNamespace()),
+            new ClassToHandle(
+                ClassNamespace::create("{$classToHandleNamespace}\\{$handlerName}{$classToHandleSuffix}"),
+                ClassName::create("{$handlerName}{$classToHandleSuffix}"),
+                AttributeName::create($this->handles())
+            ),
+            new ClassMetadata(
+                ClassNamespace::create("{$useCaseNamespace}\\{$this->useCaseResponse->useCase()}"),
+                ClassName::create($this->useCaseResponse->useCase())
+            ),
+            new ClassNamespace($responseNamespace)
+        );
+    }
     public function type(): string
     {
         return 'query-handler';

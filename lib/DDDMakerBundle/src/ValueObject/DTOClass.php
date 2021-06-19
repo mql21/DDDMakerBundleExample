@@ -2,6 +2,10 @@
 
 namespace Mql21\DDDMakerBundle\ValueObject;
 
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassAttributes;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassName;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassNamespace;
+
 class DTOClass extends DDDElement
 {
     private ClassNamespace $classNamespace;

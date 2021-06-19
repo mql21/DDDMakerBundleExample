@@ -6,9 +6,11 @@ use Mql21\DDDMakerBundle\Exception\DirectoryNotFoundException;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
-use Mql21\DDDMakerBundle\ValueObject\AttributeName;
-use Mql21\DDDMakerBundle\ValueObject\ClassName;
-use Mql21\DDDMakerBundle\ValueObject\ClassNamespace;
+use Mql21\DDDMakerBundle\ValueObject\Class\AttributeName;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassMetadata;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassName;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassNamespace;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassToHandle;
 use Mql21\DDDMakerBundle\ValueObject\HandlerClass;
 
 class DomainEventSubscriberGenerator extends HandlerGenerator implements DDDElementGenerator
@@ -37,17 +39,12 @@ class DomainEventSubscriberGenerator extends HandlerGenerator implements DDDElem
             DirectoryNotFoundException::raise($dddClassBuilder->elementFullPath());
         }
     
-        $handlerClass = new HandlerClass(
-            new ClassNamespace($dddClassBuilder->namespace()),
-            new ClassName($dddClassBuilder->elementClassName()),
-            new ClassNamespace($dddClassBuilder->interfaceToImplementNamespace()),
-            new ClassNamespace($dddClassBuilder->classToExtendNamespace()),
-            new ClassNamespace("{$classToHandleNamespace}\\{$handlerName}{$classToHandleSuffix}"),
-            new ClassName("{$handlerName}{$classToHandleSuffix}"),
-            new AttributeName($this->handles()),
-            new ClassNamespace("{$useCaseNamespace}\\{$this->useCaseResponse->useCase()}"),
-            new ClassName($this->useCaseResponse->useCase()),
-            new ClassNamespace(null)
+        $handlerClass = $this->handlerClass(
+            $dddClassBuilder,
+            $classToHandleNamespace,
+            $handlerName,
+            $classToHandleSuffix,
+            $useCaseNamespace
         );
     
         file_put_contents(
@@ -70,5 +67,32 @@ class DomainEventSubscriberGenerator extends HandlerGenerator implements DDDElem
     private function handles()
     {
         return 'event';
+    }
+    
+    private function handlerClass(
+        DDDClassBuilder $dddClassBuilder,
+        string $classToHandleNamespace,
+        string $handlerName,
+        ?string $classToHandleSuffix,
+        string $useCaseNamespace
+    ): HandlerClass {
+        return new HandlerClass(
+            new ClassMetadata(
+                ClassNamespace::create($dddClassBuilder->namespace()),
+                ClassName::create($dddClassBuilder->elementClassName())
+            ),
+            new ClassNamespace($dddClassBuilder->interfaceToImplementNamespace()),
+            new ClassNamespace($dddClassBuilder->classToExtendNamespace()),
+            new ClassToHandle(
+                ClassNamespace::create("{$classToHandleNamespace}\\{$handlerName}{$classToHandleSuffix}"),
+                ClassName::create("{$handlerName}{$classToHandleSuffix}"),
+                AttributeName::create($this->handles())
+            ),
+            new ClassMetadata(
+                ClassNamespace::create("{$useCaseNamespace}\\{$this->useCaseResponse->useCase()}"),
+                ClassName::create($this->useCaseResponse->useCase())
+            ),
+            new ClassNamespace(null)
+        );
     }
 }

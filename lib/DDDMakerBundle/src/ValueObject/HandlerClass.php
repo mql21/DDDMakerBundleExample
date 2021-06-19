@@ -2,51 +2,45 @@
 
 namespace Mql21\DDDMakerBundle\ValueObject;
 
+use Mql21\DDDMakerBundle\ValueObject\Class\AttributeName;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassMetadata;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassName;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassNamespace;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassToHandle;
+
 class HandlerClass extends DDDElement
 {
-    private ClassNamespace $classNamespace;
-    private ClassName $className;
+    private ClassMetadata $classMetadata;
     private ClassNamespace $interfaceNamespace;
     private ClassNamespace $parentClassNamespace;
-    private ClassNamespace $classToHandleNamespace;
-    private AttributeName $attributeToHandle;
-    private ClassNamespace $useCaseNamespace;
-    private ClassName $useCaseName;
-    private ClassName $classToHandleName;
+    private ClassToHandle $classToHandle;
+    private ClassMetadata $useCaseData;
     private ClassNamespace $responseClassNamespace;
     
     public function __construct(
-        ClassNamespace $classNamespace,
-        ClassName $className,
+        ClassMetadata $classMetadata,
         ClassNamespace $interfaceNamespace,
         ClassNamespace $parentClassNamespace,
-        ClassNamespace $classToHandleNamespace,
-        ClassName $classToHandleName,
-        AttributeName $attributeToHandle,
-        ClassNamespace $useCaseNamespace,
-        ClassName $useCaseName,
-        ClassNamespace $classToReturnNamespace
+        ClassToHandle $classToHandle,
+        ClassMetadata $useCaseData,
+        ClassNamespace $responseClassNamespace
     ) {
-        $this->classNamespace = $classNamespace;
-        $this->className = $className;
+        $this->classMetadata = $classMetadata;
         $this->interfaceNamespace = $interfaceNamespace;
         $this->parentClassNamespace = $parentClassNamespace;
-        $this->classToHandleNamespace = $classToHandleNamespace;
-        $this->classToHandleName = $classToHandleName;
-        $this->attributeToHandle = $attributeToHandle;
-        $this->useCaseNamespace = $useCaseNamespace;
-        $this->useCaseName = $useCaseName;
-        $this->responseClassNamespace = $classToReturnNamespace;
+        $this->classToHandle = $classToHandle;
+        $this->useCaseData = $useCaseData;
+        $this->responseClassNamespace = $responseClassNamespace;
     }
     
     public function classNamespace(): ClassNamespace
     {
-        return $this->classNamespace;
+        return $this->classMetadata->namespace();
     }
     
     public function className(): ClassName
     {
-        return $this->className;
+        return $this->classMetadata->name();
     }
     
     public function interfaceNamespace(): ClassNamespace
@@ -61,27 +55,22 @@ class HandlerClass extends DDDElement
     
     public function classToHandleNamespace(): ClassNamespace
     {
-        return $this->classToHandleNamespace;
-    }
-    
-    public function classToHandleName(): ClassName
-    {
-        return $this->classToHandleName;
+        return $this->classToHandle->namespaceToHandle();
     }
     
     public function attributeToHandle(): AttributeName
     {
-        return $this->attributeToHandle;
+        return $this->classToHandle->attributeToHandle();
     }
     
     public function useCaseNamespace(): ClassNamespace
     {
-        return $this->useCaseNamespace;
+        return $this->useCaseData->namespace();
     }
     
     public function useCaseName(): ClassName
     {
-        return $this->useCaseName;
+        return $this->useCaseData->name();
     }
     
     public function responseClassNamespace(): ClassNamespace

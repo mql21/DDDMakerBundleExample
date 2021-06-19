@@ -5,42 +5,41 @@ namespace Mql21\DDDMakerBundle\Renderer;
 use Mql21\DDDMakerBundle\ValueObject\DDDElement;
 use Mql21\DDDMakerBundle\ValueObject\HandlerClass;
 use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\Method;
 use Nette\PhpGenerator\PhpNamespace;
 use Nette\PhpGenerator\PsrPrinter;
 
 class HandlerRenderer implements DDDElementRenderer
 {
-    public function render(DDDElement $handlerClass): string
+    public function render(DDDElement $useCase): string
     {
-        $namespace = new PhpNamespace($handlerClass->classNamespace()->namespace());
-        $class = $namespace->addClass($handlerClass->className()->name());
+        $namespace = new PhpNamespace($useCase->classNamespace()->namespace());
+        $class = $namespace->addClass($useCase->className()->name());
         $class->setFinal();
     
-        if (!empty($handlerClass->interfaceNamespace()->namespace())) {
-            $namespace->addUse($handlerClass->interfaceNamespace()->namespace());
-            $class->addImplement($handlerClass->interfaceNamespace()->namespace());
+        if (!empty($useCase->interfaceNamespace()->namespace())) {
+            $namespace->addUse($useCase->interfaceNamespace()->namespace());
+            $class->addImplement($useCase->interfaceNamespace()->namespace());
         }
     
-        if (!empty($handlerClass->parentClassNamespace()->namespace())) {
-            $namespace->addUse($handlerClass->parentClassNamespace()->namespace());
-            $class->addExtend($handlerClass->parentClassNamespace()->namespace());
+        if (!empty($useCase->parentClassNamespace()->namespace())) {
+            $namespace->addUse($useCase->parentClassNamespace()->namespace());
+            $class->addExtend($useCase->parentClassNamespace()->namespace());
         }
     
-        if (!empty($handlerClass->responseClassNamespace()->namespace())) {
-            $namespace->addUse($handlerClass->responseClassNamespace()->namespace());
+        if (!empty($useCase->responseClassNamespace()->namespace())) {
+            $namespace->addUse($useCase->responseClassNamespace()->namespace());
         }
     
-        $namespace->addUse($handlerClass->classToHandleNamespace()->namespace());
-        $namespace->addUse($handlerClass->useCaseNamespace()->namespace());
+        $namespace->addUse($useCase->classToHandleNamespace()->namespace());
+        $namespace->addUse($useCase->useCaseNamespace()->namespace());
     
         $class
             ->addProperty("useCase")
-            ->setType($handlerClass->useCaseNamespace()->namespace());
+            ->setType($useCase->useCaseNamespace()->namespace());
     
-        $this->addConstructorMethod($class, $handlerClass);
+        $this->addConstructorMethod($class, $useCase);
     
-        $this->addInvokeMethod($class, $handlerClass);
+        $this->addInvokeMethod($class, $useCase);
     
         return $this->renderNamespace($namespace);
     }
@@ -68,11 +67,13 @@ class HandlerRenderer implements DDDElementRenderer
             ->setType($handlerClass->classToHandleNamespace()->namespace());
         
         $returnType = "void";
+        $returnResponse = "";
         if (!empty($handlerClass->responseClassNamespace()->namespace())) {
             $returnType = $handlerClass->responseClassNamespace()->namespace();
+            $returnResponse = "return ";
         }
         
-        $invokeMethod->setBody("\$this->useCase->__invoke();");
+        $invokeMethod->setBody("{$returnResponse}\$this->useCase->__invoke();");
         $invokeMethod->setReturnType($returnType);
     }
 }

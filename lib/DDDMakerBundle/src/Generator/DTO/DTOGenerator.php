@@ -8,12 +8,13 @@ use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
 use Mql21\DDDMakerBundle\Renderer\DTORenderer;
-use Mql21\DDDMakerBundle\ValueObject\ClassAttributes;
-use Mql21\DDDMakerBundle\ValueObject\ClassName;
-use Mql21\DDDMakerBundle\ValueObject\ClassNamespace;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassAttributes;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassName;
+use Mql21\DDDMakerBundle\ValueObject\Class\ClassNamespace;
 use Mql21\DDDMakerBundle\ValueObject\DTOClass;
 
-abstract class DTOGenerator implements DDDElementGenerator
+abstract class
+DTOGenerator implements DDDElementGenerator
 {
     protected ClassAttributes $classAttributes;
     protected ConfigManager $configManager;

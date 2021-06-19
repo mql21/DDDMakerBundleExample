@@ -1,6 +1,6 @@
 <?php
 
-namespace Mql21\DDDMakerBundle\ValueObject;
+namespace Mql21\DDDMakerBundle\ValueObject\Class;
 
 class ClassAttributes
 {
