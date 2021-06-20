@@ -1,6 +1,6 @@
 <?php
 
-namespace Mql21\DDDMakerBundle;
+namespace Mql21\DDDMakerBundle\Maker;
 
 use Mql21\DDDMakerBundle\Generator\DTO\QueryResponseGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
-class MakeQueryResponseConsoleCommand extends Command
+class MakeQueryResponse extends Command
 {
     protected static $defaultName = 'ddd:cqs:make:response';
     

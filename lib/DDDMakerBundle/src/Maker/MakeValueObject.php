@@ -1,23 +1,21 @@
 <?php
 
-namespace Mql21\DDDMakerBundle;
+namespace Mql21\DDDMakerBundle\Maker;
 
-use Mql21\DDDMakerBundle\Generator\DTO\DomainEventGenerator;
+use Mql21\DDDMakerBundle\Generator\ValueObjectGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
-use Mql21\DDDMakerBundle\Interaction\DTOAttributeInteractor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
-class MakeDomainEventConsoleCommand extends Command
+class MakeValueObject extends Command
 {
-    protected static $defaultName = 'ddd:domain:make:event';
+    protected static $defaultName = 'ddd:domain:make:value-object';
     
-    private DomainEventGenerator $domainEventGenerator;
+    private ValueObjectGenerator $valueObjectGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
-    private DTOAttributeInteractor $attributeQuestioner;
     
     public function __construct(string $name = null)
     {
@@ -27,10 +25,10 @@ class MakeDomainEventConsoleCommand extends Command
     protected function configure()
     {
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        $this->attributeQuestioner = new DTOAttributeInteractor();
+        $this->valueObjectGenerator = new ValueObjectGenerator();
         
         $this
-            ->setDescription('Creates a domain event in the Domain layer.')
+            ->setDescription('Creates a value object in the Domain layer.')
             ->addArgument(
                 'boundedContext',
                 InputArgument::REQUIRED,
@@ -49,18 +47,15 @@ class MakeDomainEventConsoleCommand extends Command
         $moduleName = $input->getArgument('module');
         
         $this->boundedContextModuleLocator->checkIfBoundedContextModuleExists($boundedContextName, $moduleName);
-        // Ask for event name and create it
-        $eventNameQuestion = new Question("<info> What should the event be called?</info>\n > ");
+        
+        // Ask for value object name and create it
+        $valueObjectNameQuestion = new Question("<info> What should the value object be called?</info>\n > ");
         $questionHelper = $this->getHelper('question');
-        $eventName = $questionHelper->ask($input, $output, $eventNameQuestion);
+        $valueObjectName = $questionHelper->ask($input, $output, $valueObjectNameQuestion);
         
-        $this->domainEventGenerator = new DomainEventGenerator(
-            $this->attributeQuestioner->ask($input, $output, $questionHelper)
-        );
+        $this->valueObjectGenerator->generate($boundedContextName, $moduleName, $valueObjectName);
         
-        $this->domainEventGenerator->generate($boundedContextName, $moduleName, $eventName);
-        
-        $output->writeln("<info> Event {$eventName} has been successfully created! </info>\n\n");
+        $output->writeln("<info> Value object {$valueObjectName} has been successfully created! </info>\n\n");
         
         return Command::SUCCESS;
     }

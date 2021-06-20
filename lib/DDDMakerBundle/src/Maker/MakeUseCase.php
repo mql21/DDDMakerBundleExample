@@ -1,23 +1,21 @@
 <?php
 
-namespace Mql21\DDDMakerBundle;
+namespace Mql21\DDDMakerBundle\Maker;
 
-use Mql21\DDDMakerBundle\Generator\DTO\QueryGenerator;
+use Mql21\DDDMakerBundle\Generator\UseCaseGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
-use Mql21\DDDMakerBundle\Interaction\DTOAttributeInteractor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
-class MakeQueryConsoleCommand extends Command
+class MakeUseCase extends Command
 {
-    protected static $defaultName = 'ddd:cqs:make:query';
+    protected static $defaultName = 'ddd:application:make:use-case';
     
-    private QueryGenerator $queryGenerator;
+    private UseCaseGenerator $useCaseGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
-    private DTOAttributeInteractor $attributeQuestioner;
     
     public function __construct(string $name = null)
     {
@@ -27,10 +25,10 @@ class MakeQueryConsoleCommand extends Command
     protected function configure()
     {
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        $this->attributeQuestioner = new DTOAttributeInteractor();
+        $this->useCaseGenerator = new UseCaseGenerator();
         
         $this
-            ->setDescription('Creates a query in the Application layer.')
+            ->setDescription('Creates a use case (application service) in the Application layer.')
             ->addArgument(
                 'boundedContext',
                 InputArgument::REQUIRED,
@@ -42,7 +40,7 @@ class MakeQueryConsoleCommand extends Command
                 'The name of the module inside the bounded context where Command will be saved into.'
             );
     }
-
+    
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $boundedContextName = $input->getArgument('boundedContext');
@@ -50,18 +48,14 @@ class MakeQueryConsoleCommand extends Command
         
         $this->boundedContextModuleLocator->checkIfBoundedContextModuleExists($boundedContextName, $moduleName);
         
-        // Ask for query name and create it
-        $queryNameQuestion = new Question("<info> What should the query be called?</info>\n > ");
+        // Ask for value object name and create it
+        $useCaseNameQuestion = new Question("<info> What should the use case be called?</info>\n > ");
         $questionHelper = $this->getHelper('question');
-        $queryName = $questionHelper->ask($input, $output, $queryNameQuestion);
-    
-        $this->queryGenerator = new QueryGenerator(
-            $this->attributeQuestioner->ask($input, $output, $questionHelper)
-        );
+        $useCaseName = $questionHelper->ask($input, $output, $useCaseNameQuestion);
         
-        $this->queryGenerator->generate($boundedContextName, $moduleName, $queryName);
-    
-        $output->writeln("<info> Query {$queryName} has been successfully created! </info>\n\n");
+        $this->useCaseGenerator->generate($boundedContextName, $moduleName, $useCaseName);
+        
+        $output->writeln("<info> Use case {$useCaseName} has been successfully created! </info>\n\n");
         
         return Command::SUCCESS;
     }

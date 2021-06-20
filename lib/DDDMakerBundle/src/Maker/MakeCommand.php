@@ -1,25 +1,23 @@
 <?php
 
-namespace Mql21\DDDMakerBundle;
+namespace Mql21\DDDMakerBundle\Maker;
 
-use Mql21\DDDMakerBundle\Finder\CommandFinder;
-use Mql21\DDDMakerBundle\Finder\UseCaseFinder;
-use Mql21\DDDMakerBundle\Generator\Handler\CommandHandlerGenerator;
+use Mql21\DDDMakerBundle\Generator\DTO\CommandGenerator;
+use Mql21\DDDMakerBundle\Interaction\DTOAttributeInteractor;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
-use Mql21\DDDMakerBundle\Response\UseCaseResponse;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
-class MakeCommandHandlerConsoleCommand extends Command
+class MakeCommand extends Command
 {
-    protected static $defaultName = 'ddd:cqs:make:command-handler';
+    protected static $defaultName = 'ddd:cqs:make:command';
     
+    private CommandGenerator $commandGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
-    private CommandFinder $commandFinder;
-    private UseCaseFinder $useCaseFinder;
+    private DTOAttributeInteractor $attributeQuestioner;
     
     public function __construct(string $name = null)
     {
@@ -29,11 +27,10 @@ class MakeCommandHandlerConsoleCommand extends Command
     protected function configure()
     {
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        $this->commandFinder = new CommandFinder();
-        $this->useCaseFinder = new UseCaseFinder();
+        $this->attributeQuestioner = new DTOAttributeInteractor();
         
         $this
-            ->setDescription('Creates a command handler in the Application layer.')
+            ->setDescription('Creates a command in the Application layer.')
             ->addArgument(
                 'boundedContext',
                 InputArgument::REQUIRED,
@@ -45,7 +42,7 @@ class MakeCommandHandlerConsoleCommand extends Command
                 'The name of the module inside the bounded context where Command will be saved into.'
             );
     }
-    
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $boundedContextName = $input->getArgument('boundedContext');
@@ -53,25 +50,18 @@ class MakeCommandHandlerConsoleCommand extends Command
         
         $this->boundedContextModuleLocator->checkIfBoundedContextModuleExists($boundedContextName, $moduleName);
         
-        $commandNameQuestion = new Question("<info> What command should the command handler listen to?</info>\n > ");
-        $commandNameQuestion->setAutocompleterValues(
-            $this->commandFinder->findIn($boundedContextName, $moduleName)
-        );
+        // Ask for command name and create it
+        $commandNameQuestion = new Question("<info> What should the command be called?</info>\n > ");
         $questionHelper = $this->getHelper('question');
-        
         $commandName = $questionHelper->ask($input, $output, $commandNameQuestion);
         
-        $useCaseQuestion = new Question("<info> What use case should the command handler execute?</info>\n > ");
-        $useCaseQuestion->setAutocompleterValues(
-            $this->useCaseFinder->findIn($boundedContextName, $moduleName)
+        $this->commandGenerator = new CommandGenerator(
+            $this->attributeQuestioner->ask($input, $output, $questionHelper)
         );
         
-        $useCaseNameResponse = new UseCaseResponse($questionHelper->ask($input, $output, $useCaseQuestion));
-        
-        $commandHandlerGenerator = new CommandHandlerGenerator($useCaseNameResponse);
-        $commandHandlerGenerator->generate($boundedContextName, $moduleName, $commandName);
-        
-        $output->writeln("<info> Command handler {$commandName} has been successfully created! </info>\n\n");
+        $this->commandGenerator->generate($boundedContextName, $moduleName, $commandName);
+    
+        $output->writeln("<info> Command {$commandName} has been successfully created! </info>\n\n");
         
         return Command::SUCCESS;
     }

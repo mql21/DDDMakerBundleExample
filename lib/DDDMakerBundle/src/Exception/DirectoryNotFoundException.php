@@ -13,6 +13,6 @@ class DirectoryNotFoundException extends \Exception
     
     public static function raise(string $directory)
     {
-        throw new self("Directory '{$directory}' does not exist. Please run ddd:generate-missing-directories and try it again.");
+        throw new self("Directory '{$directory}' does not exist. Please run ddd:make:missing-directories and try it again.");
     }
 }

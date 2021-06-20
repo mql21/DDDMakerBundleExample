@@ -1,21 +1,20 @@
 <?php
 
-namespace Mql21\DDDMakerBundle;
+namespace Mql21\DDDMakerBundle\Maker;
 
-use Mql21\DDDMakerBundle\Generator\UseCaseGenerator;
+use Mql21\DDDMakerBundle\Generator\MissingDirectoriesGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
 
-class MakeUseCaseConsoleCommand extends Command
+class MakeMissingDirectories extends Command
 {
-    protected static $defaultName = 'ddd:application:make:use-case';
+    protected static $defaultName = 'ddd:make:missing-directories';
     
-    private UseCaseGenerator $useCaseGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
+    private MissingDirectoriesGenerator $missingDirectoriesGenerator;
     
     public function __construct(string $name = null)
     {
@@ -25,10 +24,9 @@ class MakeUseCaseConsoleCommand extends Command
     protected function configure()
     {
         $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        $this->useCaseGenerator = new UseCaseGenerator();
-        
+        $this->missingDirectoriesGenerator = new MissingDirectoriesGenerator();
         $this
-            ->setDescription('Creates a use case (application service) in the Application layer.')
+            ->setDescription('Creates a value object in the Domain layer.')
             ->addArgument(
                 'boundedContext',
                 InputArgument::REQUIRED,
@@ -48,14 +46,9 @@ class MakeUseCaseConsoleCommand extends Command
         
         $this->boundedContextModuleLocator->checkIfBoundedContextModuleExists($boundedContextName, $moduleName);
         
-        // Ask for value object name and create it
-        $useCaseNameQuestion = new Question("<info> What should the use case be called?</info>\n > ");
-        $questionHelper = $this->getHelper('question');
-        $useCaseName = $questionHelper->ask($input, $output, $useCaseNameQuestion);
+        $this->missingDirectoriesGenerator->generate($boundedContextName, $moduleName);
         
-        $this->useCaseGenerator->generate($boundedContextName, $moduleName, $useCaseName);
-        
-        $output->writeln("<info> Use case {$useCaseName} has been successfully created! </info>\n\n");
+        $output->writeln("<info> Missing directories for module {$moduleName} of {$boundedContextName} bounded context have been successfully created! </info>\n\n");
         
         return Command::SUCCESS;
     }

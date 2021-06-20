@@ -1,21 +1,21 @@
 <?php
 
-namespace Mql21\DDDMakerBundle;
+namespace Mql21\DDDMakerBundle\Maker;
 
-use Mql21\DDDMakerBundle\Generator\DTO\CommandGenerator;
-use Mql21\DDDMakerBundle\Interaction\DTOAttributeInteractor;
+use Mql21\DDDMakerBundle\Generator\DTO\QueryGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
+use Mql21\DDDMakerBundle\Interaction\DTOAttributeInteractor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
-class MakeCommandConsoleCommand extends Command
+class MakeQuery extends Command
 {
-    protected static $defaultName = 'ddd:cqs:make:command';
+    protected static $defaultName = 'ddd:cqs:make:query';
     
-    private CommandGenerator $commandGenerator;
+    private QueryGenerator $queryGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
     private DTOAttributeInteractor $attributeQuestioner;
     
@@ -30,7 +30,7 @@ class MakeCommandConsoleCommand extends Command
         $this->attributeQuestioner = new DTOAttributeInteractor();
         
         $this
-            ->setDescription('Creates a command in the Application layer.')
+            ->setDescription('Creates a query in the Application layer.')
             ->addArgument(
                 'boundedContext',
                 InputArgument::REQUIRED,
@@ -50,18 +50,18 @@ class MakeCommandConsoleCommand extends Command
         
         $this->boundedContextModuleLocator->checkIfBoundedContextModuleExists($boundedContextName, $moduleName);
         
-        // Ask for command name and create it
-        $commandNameQuestion = new Question("<info> What should the command be called?</info>\n > ");
+        // Ask for query name and create it
+        $queryNameQuestion = new Question("<info> What should the query be called?</info>\n > ");
         $questionHelper = $this->getHelper('question');
-        $commandName = $questionHelper->ask($input, $output, $commandNameQuestion);
-        
-        $this->commandGenerator = new CommandGenerator(
+        $queryName = $questionHelper->ask($input, $output, $queryNameQuestion);
+    
+        $this->queryGenerator = new QueryGenerator(
             $this->attributeQuestioner->ask($input, $output, $questionHelper)
         );
         
-        $this->commandGenerator->generate($boundedContextName, $moduleName, $commandName);
+        $this->queryGenerator->generate($boundedContextName, $moduleName, $queryName);
     
-        $output->writeln("<info> Command {$commandName} has been successfully created! </info>\n\n");
+        $output->writeln("<info> Query {$queryName} has been successfully created! </info>\n\n");
         
         return Command::SUCCESS;
     }
