@@ -2,7 +2,6 @@
 
 namespace Mql21\DDDMakerBundle\Locator;
 
-
 class ModuleLocator
 {
     private PathLocator $locator;

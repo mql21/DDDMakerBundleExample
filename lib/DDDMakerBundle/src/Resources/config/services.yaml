@@ -64,12 +64,23 @@ services:
     arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator' ]
 
   Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator:
-    arguments: [ '@Mql21\DDDMakerBundle\Locator\BoundedContextLocator', '@Mql21\DDDMakerBundle\Locator\ModuleLocator' ]
+    arguments: [
+        '@Mql21\DDDMakerBundle\Locator\BoundedContextLocator',
+        '@Mql21\DDDMakerBundle\Locator\ModuleLocator',
+        '@Mql21\DDDMakerBundle\Finder\BoundedContextFinder',
+        '@Mql21\DDDMakerBundle\Finder\ModuleFinder'
+    ]
 
   Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder:
     arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator', '@Mql21\DDDMakerBundle\ConfigManager\ConfigManager' ]
 
   Mql21\DDDMakerBundle\Interaction\DTOAttributeInteractor: ~
+
+  Mql21\DDDMakerBundle\Finder\BoundedContextFinder:
+    arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator' ]
+
+  Mql21\DDDMakerBundle\Finder\ModuleFinder:
+    arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator' ]
 
   Mql21\DDDMakerBundle\Finder\CommandFinder:
     arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator', '@Mql21\DDDMakerBundle\ConfigManager\ConfigManager' ]

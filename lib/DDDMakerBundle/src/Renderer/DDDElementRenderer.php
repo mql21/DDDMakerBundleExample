@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Mql21\DDDMakerBundle\Renderer;
-
 
 use Mql21\DDDMakerBundle\ValueObject\DDDElement;
 

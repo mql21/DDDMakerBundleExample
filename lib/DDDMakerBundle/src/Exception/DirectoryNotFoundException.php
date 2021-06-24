@@ -11,7 +11,7 @@ class DirectoryNotFoundException extends \Exception
         parent::__construct($message, $code, $previous);
     }
     
-    public static function raise(string $directory)
+    public static function raise(string $directory): void
     {
         throw new self("Directory '{$directory}' does not exist. Please run ddd:make:missing-directories and try it again.");
     }

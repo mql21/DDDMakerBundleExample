@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Mql21\DDDMakerBundle\Generator\Contract;
-
 
 interface DDDElementGenerator
 {

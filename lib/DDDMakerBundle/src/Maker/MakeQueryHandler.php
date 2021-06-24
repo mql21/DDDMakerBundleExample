@@ -3,7 +3,6 @@
 namespace Mql21\DDDMakerBundle\Maker;
 
 use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
-use Mql21\DDDMakerBundle\Finder\CommandFinder;
 use Mql21\DDDMakerBundle\Finder\QueryFinder;
 use Mql21\DDDMakerBundle\Finder\ResponseFinder;
 use Mql21\DDDMakerBundle\Finder\UseCaseFinder;

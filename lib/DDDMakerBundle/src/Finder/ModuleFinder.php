@@ -1,15 +1,21 @@
 <?php
 
-
 namespace Mql21\DDDMakerBundle\Finder;
 
-use Mql21\DDDMakerBundle\Factories\PathLocator;
+use Mql21\DDDMakerBundle\Locator\PathLocator;
 
 class ModuleFinder
 {
+    private PathLocator $pathLocator;
+    
+    public function __construct(PathLocator $pathLocator)
+    {
+        $this->pathLocator = $pathLocator;
+    }
+    
     public function findIn(string $boundedContextName): array
     {
-        $boundedContextPath = PathLocator::forModules($boundedContextName);
+        $boundedContextPath = $this->pathLocator->forModules($boundedContextName);
         $elementsInBoundedContextDirectory = scandir($boundedContextPath);
     
         return array_filter(

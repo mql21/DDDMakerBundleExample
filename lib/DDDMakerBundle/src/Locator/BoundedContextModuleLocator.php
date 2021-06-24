@@ -1,13 +1,10 @@
 <?php
 
-
 namespace Mql21\DDDMakerBundle\Locator;
-
 
 use Mql21\DDDMakerBundle\Exception\ElementNotFoundException;
 use Mql21\DDDMakerBundle\Finder\BoundedContextFinder;
 use Mql21\DDDMakerBundle\Finder\ModuleFinder;
-use Symfony\Component\Console\Command\Command;
 
 class BoundedContextModuleLocator
 {
@@ -16,12 +13,16 @@ class BoundedContextModuleLocator
     private BoundedContextFinder $boundedContextFinder;
     private ModuleFinder $moduleFinder;
     
-    public function __construct(BoundedContextLocator $boundedContextLocator, ModuleLocator $moduleLocator)
-    {
+    public function __construct(
+        BoundedContextLocator $boundedContextLocator,
+        ModuleLocator $moduleLocator,
+        BoundedContextFinder $boundedContextFinder,
+        ModuleFinder $moduleFinder
+    ) {
         $this->boundedContextLocator = $boundedContextLocator;
         $this->moduleLocator = $moduleLocator;
-        $this->boundedContextFinder = new BoundedContextFinder();
-        $this->moduleFinder = new ModuleFinder();
+        $this->boundedContextFinder = $boundedContextFinder;
+        $this->moduleFinder = $moduleFinder;
     }
     
     public function checkIfBoundedContextModuleExists(string $boundedContextName, string $moduleName)
@@ -29,7 +30,7 @@ class BoundedContextModuleLocator
         if (!$this->boundedContextLocator->exists($boundedContextName)) {
             $this->displayBoundedContextNotFoundError($boundedContextName);
         }
-    
+        
         if (!$this->moduleLocator->exists($boundedContextName, $moduleName)) {
             $this->displayModuleNotFoundError($moduleName, $boundedContextName);
         }

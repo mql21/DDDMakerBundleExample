@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Mql21\DDDMakerBundle\Finder;
 
 use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;

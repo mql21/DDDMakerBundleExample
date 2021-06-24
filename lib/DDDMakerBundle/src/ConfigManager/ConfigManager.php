@@ -2,8 +2,6 @@
 
 namespace Mql21\DDDMakerBundle\ConfigManager;
 
-use Symfony\Component\Yaml\Yaml;
-
 class ConfigManager
 {
     private array $config;
