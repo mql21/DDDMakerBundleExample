@@ -27,16 +27,16 @@ services:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
 
-    Mql21\DDDMakerBundle\MakeCommandConsoleCommand: ~
-    Mql21\DDDMakerBundle\MakeCommandHandlerConsoleCommand: ~
-    Mql21\DDDMakerBundle\MakeQueryConsoleCommand: ~
-    Mql21\DDDMakerBundle\MakeQueryHandlerConsoleCommand: ~
-    Mql21\DDDMakerBundle\MakeQueryResponseConsoleCommand: ~
-    Mql21\DDDMakerBundle\MakeValueObjectConsoleCommand: ~
-    Mql21\DDDMakerBundle\MakeDomainEventConsoleCommand: ~
-    Mql21\DDDMakerBundle\MakeUseCaseConsoleCommand: ~
-    Mql21\DDDMakerBundle\MakeEventSubscriberConsoleCommand: ~
-    Mql21\DDDMakerBundle\GenerateMissingDirectoriesConsoleCommand: ~
+    Mql21\DDDMakerBundle\Maker\MakeCommand: ~
+    Mql21\DDDMakerBundle\Maker\MakeCommandHandler: ~
+    Mql21\DDDMakerBundle\Maker\MakeQuery: ~
+    Mql21\DDDMakerBundle\Maker\MakeQueryHandler: ~
+    Mql21\DDDMakerBundle\Maker\MakeQueryResponse: ~
+    Mql21\DDDMakerBundle\Maker\MakeValueObject: ~
+    Mql21\DDDMakerBundle\Maker\MakeDomainEvent: ~
+    Mql21\DDDMakerBundle\Maker\MakeUseCase: ~
+    Mql21\DDDMakerBundle\Maker\MakeEventSubscriber: ~
+    Mql21\DDDMakerBundle\Maker\MakeMissingDirectories: ~
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
