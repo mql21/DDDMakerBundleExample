@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Mql21\DDDMakerBundle\Generator\Builder;
 
-use Mql21\DDDMakerBundle\Factories\PathFactory;
 use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
+use Mql21\DDDMakerBundle\Locator\PathLocator;
 
 class DDDClassBuilder
 {
+    private PathLocator $pathLocator;
+    private ConfigManager $configManager;
+    
     private string $elementClassName;
     private string $elementFullPath;
     private string $namespace;
@@ -16,16 +19,16 @@ class DDDClassBuilder
     private ?string $interfaceToImplementName;
     private ?string $classToExtendNamespace;
     private ?string $classToExtendName;
-    private ConfigManager $configManager;
     private string $boundedContextName;
     private string $moduleName;
     private string $className;
     private string $dddElementType;
     private mixed $classSuffix;
     
-    public static function create(): self
+    public function __construct(PathLocator $pathLocator, ConfigManager $configManager)
     {
-        return new self();
+        $this->pathLocator = $pathLocator;
+        $this->configManager = $configManager;
     }
     
     public function forBoundedContext(string $boundedContextName): self
@@ -59,8 +62,6 @@ class DDDClassBuilder
     public function build(): self
     {
         $this->checkIfClassCanBeBuilt();
-        
-        $this->configManager = new ConfigManager();
         $this->buildClassSuffix();
         $this->buildElementClassName();
         $this->buildNamespace();
@@ -173,7 +174,7 @@ class DDDClassBuilder
     private function buildElementFullPath(): void
     {
         $elementFileName = "{$this->elementClassName}.php";
-        $elementPath = PathFactory::for($this->boundedContextName, $this->moduleName, $this->dddElementType);
+        $elementPath = $this->pathLocator->for($this->boundedContextName, $this->moduleName, $this->dddElementType);
         $this->elementFullPath = "{$elementPath}{$elementFileName}";
     }
     

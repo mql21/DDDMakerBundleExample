@@ -13,25 +13,29 @@ use Mql21\DDDMakerBundle\ValueObject\Class\ClassName;
 use Mql21\DDDMakerBundle\ValueObject\Class\ClassNamespace;
 use Mql21\DDDMakerBundle\ValueObject\DTOClass;
 
-abstract class
-DTOGenerator implements DDDElementGenerator
+abstract class DTOGenerator implements DDDElementGenerator
 {
     protected ClassAttributes $classAttributes;
     protected ConfigManager $configManager;
     protected DTORenderer $renderer;
+    private DDDClassBuilder $classBuilder;
     
     abstract public function type();
     
-    public function __construct(ClassAttributes $classAttributes)
-    {
+    public function __construct(
+        ClassAttributes $classAttributes,
+        ConfigManager $configManager,
+        DDDClassBuilder $classBuilder
+    ) {
         $this->classAttributes = $classAttributes;
-        $this->configManager = new ConfigManager();
+        $this->configManager = $configManager;
         $this->renderer = new DTORenderer();
+        $this->classBuilder = $classBuilder;
     }
     
     public function generate(string $boundedContextName, string $moduleName, string $className): void
     {
-        $dddClassBuilder = DDDClassBuilder::create()
+        $dddClassBuilder = $this->classBuilder
             ->forBoundedContext($boundedContextName)
             ->forModule($moduleName)
             ->withClassName($className)
@@ -40,7 +44,6 @@ DTOGenerator implements DDDElementGenerator
         
         if (file_exists($dddClassBuilder->elementFullPath())) {
             ElementAlreadyExistsException::raise($className, $boundedContextName, $moduleName);
-            
         }
         
         if (!file_exists(dirname($dddClassBuilder->elementFullPath()))) {

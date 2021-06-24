@@ -16,10 +16,10 @@ class BoundedContextModuleLocator
     private BoundedContextFinder $boundedContextFinder;
     private ModuleFinder $moduleFinder;
     
-    public function __construct()
+    public function __construct(BoundedContextLocator $boundedContextLocator, ModuleLocator $moduleLocator)
     {
-        $this->boundedContextLocator = new BoundedContextLocator();
-        $this->moduleLocator = new ModuleLocator();
+        $this->boundedContextLocator = $boundedContextLocator;
+        $this->moduleLocator = $moduleLocator;
         $this->boundedContextFinder = new BoundedContextFinder();
         $this->moduleFinder = new ModuleFinder();
     }

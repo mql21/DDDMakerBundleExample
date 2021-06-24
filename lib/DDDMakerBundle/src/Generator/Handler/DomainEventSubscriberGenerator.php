@@ -17,7 +17,7 @@ class DomainEventSubscriberGenerator extends HandlerGenerator implements DDDElem
 {
     public function generate(string $boundedContextName, string $moduleName, string $handlerName): void
     {
-        $dddClassBuilder = DDDClassBuilder::create()
+        $dddClassBuilder = $this->classBuilder
             ->forBoundedContext($boundedContextName)
             ->forModule($moduleName)
             ->withClassName($this->subscriberName($handlerName))

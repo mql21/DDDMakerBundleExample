@@ -9,9 +9,9 @@ class MissingDirectoriesGenerator
     private const DIRECTORY_PERMISSIONS = 0775;
     private ConfigManager $configManager;
     
-    public function __construct()
+    public function __construct(ConfigManager $configManager)
     {
-        $this->configManager = new ConfigManager();
+        $this->configManager = $configManager;
     }
     
     public function generate(string $boundedContextName, string $moduleName): void

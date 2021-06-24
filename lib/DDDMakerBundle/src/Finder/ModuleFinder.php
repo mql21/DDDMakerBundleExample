@@ -3,13 +3,13 @@
 
 namespace Mql21\DDDMakerBundle\Finder;
 
-use Mql21\DDDMakerBundle\Factories\PathFactory;
+use Mql21\DDDMakerBundle\Factories\PathLocator;
 
 class ModuleFinder
 {
     public function findIn(string $boundedContextName): array
     {
-        $boundedContextPath = PathFactory::forModules($boundedContextName);
+        $boundedContextPath = PathLocator::forModules($boundedContextName);
         $elementsInBoundedContextDirectory = scandir($boundedContextPath);
     
         return array_filter(

@@ -4,20 +4,24 @@
 namespace Mql21\DDDMakerBundle\Finder;
 
 use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
-use Mql21\DDDMakerBundle\Factories\PathFactory;
+use Mql21\DDDMakerBundle\Locator\PathLocator;
 
 class UseCaseFinder
 {
     private string $useCaseFileSuffix;
+    private ConfigManager $configManager;
+    private PathLocator $pathLocator;
     
-    public function __construct()
+    public function __construct(PathLocator $pathLocator, ConfigManager $configManager)
     {
-        $configManager = new ConfigManager();
+        $this->configManager = $configManager;
         $this->useCaseFileSuffix = $configManager->classSuffixFor('use-case') . '.php';
+        $this->pathLocator = $pathLocator;
     }
+    
     public function findIn(string $boundedContextName, string $moduleName): array
     {
-        $useCasePath = PathFactory::for($boundedContextName, $moduleName, 'use-case');
+        $useCasePath = $this->pathLocator->for($boundedContextName, $moduleName, 'use-case');
         $elementsInBoundedContextDirectory = scandir($useCasePath);
         
         $availableUseCaseFiles = $this->findAvailableUseCaseFiles($elementsInBoundedContextDirectory, $useCasePath);

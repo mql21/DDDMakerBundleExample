@@ -2,6 +2,8 @@
 
 namespace Mql21\DDDMakerBundle\Maker;
 
+use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
+use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\DTO\CommandGenerator;
 use Mql21\DDDMakerBundle\Interaction\DTOAttributeInteractor;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
@@ -18,17 +20,25 @@ class MakeCommand extends Command
     private CommandGenerator $commandGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
     private DTOAttributeInteractor $attributeQuestioner;
+    private ConfigManager $configManager;
+    private DDDClassBuilder $classBuilder;
     
-    public function __construct(string $name = null)
-    {
-        parent::__construct($name);
+    public function __construct(
+        BoundedContextModuleLocator $boundedContextModuleLocator,
+        ConfigManager $configManager,
+        DDDClassBuilder $classBuilder,
+        DTOAttributeInteractor $dtoAttributeInteractor
+    ) {
+        $this->boundedContextModuleLocator = $boundedContextModuleLocator;
+        $this->configManager = $configManager;
+        $this->attributeQuestioner = $dtoAttributeInteractor;
+        $this->classBuilder = $classBuilder;
+        
+        parent::__construct(self::$defaultName);
     }
     
     protected function configure()
     {
-        $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        $this->attributeQuestioner = new DTOAttributeInteractor();
-        
         $this
             ->setDescription('Creates a command in the Application layer.')
             ->addArgument(
@@ -42,7 +52,7 @@ class MakeCommand extends Command
                 'The name of the module inside the bounded context where Command will be saved into.'
             );
     }
-
+    
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $boundedContextName = $input->getArgument('boundedContext');
@@ -56,11 +66,13 @@ class MakeCommand extends Command
         $commandName = $questionHelper->ask($input, $output, $commandNameQuestion);
         
         $this->commandGenerator = new CommandGenerator(
-            $this->attributeQuestioner->ask($input, $output, $questionHelper)
+            $this->attributeQuestioner->ask($input, $output, $questionHelper),
+            $this->configManager,
+            $this->classBuilder
         );
         
         $this->commandGenerator->generate($boundedContextName, $moduleName, $commandName);
-    
+        
         $output->writeln("<info> Command {$commandName} has been successfully created! </info>\n\n");
         
         return Command::SUCCESS;

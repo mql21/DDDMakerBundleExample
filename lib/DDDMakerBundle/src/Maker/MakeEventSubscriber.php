@@ -2,10 +2,13 @@
 
 namespace Mql21\DDDMakerBundle\Maker;
 
+use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
 use Mql21\DDDMakerBundle\Finder\DomainEventFinder;
 use Mql21\DDDMakerBundle\Finder\UseCaseFinder;
+use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\Handler\DomainEventSubscriberGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
+use Mql21\DDDMakerBundle\Renderer\HandlerRenderer;
 use Mql21\DDDMakerBundle\Response\UseCaseResponse;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,18 +23,30 @@ class MakeEventSubscriber extends Command
     private BoundedContextModuleLocator $boundedContextModuleLocator;
     private DomainEventFinder $eventFinder;
     private UseCaseFinder $useCaseFinder;
+    private ConfigManager $configManager;
+    private DDDClassBuilder $DDDClassBuilder;
+    private HandlerRenderer $renderer;
     
-    public function __construct(string $name = null)
-    {
-        parent::__construct($name);
+    public function __construct(
+        BoundedContextModuleLocator $boundedContextModuleLocator,
+        DomainEventFinder $eventFinder,
+        UseCaseFinder $useCaseFinder,
+        ConfigManager $configManager,
+        DDDClassBuilder $DDDClassBuilder,
+        HandlerRenderer $renderer
+    ) {
+        $this->boundedContextModuleLocator = $boundedContextModuleLocator;
+        $this->eventFinder = $eventFinder;
+        $this->useCaseFinder = $useCaseFinder;
+        $this->configManager = $configManager;
+        $this->DDDClassBuilder = $DDDClassBuilder;
+        $this->renderer = $renderer;
+        
+        parent::__construct(self::$defaultName);
     }
     
     protected function configure()
     {
-        $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        $this->eventFinder = new DomainEventFinder();
-        $this->useCaseFinder = new UseCaseFinder();
-        
         $this
             ->setDescription('Creates an event subscriber in the Application layer.')
             ->addArgument(
@@ -68,7 +83,10 @@ class MakeEventSubscriber extends Command
         $questionHelper = $this->getHelper('question');
         
         $domainEventSubscriberGenerator = new DomainEventSubscriberGenerator(
-            new UseCaseResponse($questionHelper->ask($input, $output, $useCaseQuestion))
+            new UseCaseResponse($questionHelper->ask($input, $output, $useCaseQuestion)),
+            $this->configManager,
+            $this->renderer,
+            $this->DDDClassBuilder
         );
         $domainEventSubscriberGenerator->generate($boundedContextName, $moduleName, $eventName);
         

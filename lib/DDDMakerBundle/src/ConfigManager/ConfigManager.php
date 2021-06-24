@@ -8,9 +8,9 @@ class ConfigManager
 {
     private array $config;
     
-    public function __construct()
+    public function __construct(DDDElementsConfig $config)
     {
-        $this->config = Yaml::parseFile("lib/DDDMakerBundle/config/config.yaml");
+        $this->config = $config->config();
     }
     
     public function getBoundedContextPath()

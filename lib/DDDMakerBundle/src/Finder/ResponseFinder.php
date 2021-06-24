@@ -4,21 +4,24 @@
 namespace Mql21\DDDMakerBundle\Finder;
 
 use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
-use Mql21\DDDMakerBundle\Factories\PathFactory;
+use Mql21\DDDMakerBundle\Locator\PathLocator;
 
 class ResponseFinder
 {
     private string $responseFileSuffix;
+    private ConfigManager $configManager;
+    private PathLocator $pathLocator;
     
-    public function __construct()
+    public function __construct(PathLocator $pathLocator, ConfigManager $configManager)
     {
-        $configManager = new ConfigManager();
+        $this->configManager = $configManager;
         $this->responseFileSuffix = $configManager->classSuffixFor('response') . '.php';
+        $this->pathLocator = $pathLocator;
     }
     
     public function findIn(string $boundedContextName, string $moduleName): array
     {
-        $responsePath = PathFactory::for($boundedContextName, $moduleName, 'response');
+        $responsePath = $this->pathLocator->for($boundedContextName, $moduleName, 'response');
         $elementsResponseDirectory = scandir($responsePath);
         
         $availableUseCaseFiles = $this->findAvailableResponseFiles($elementsResponseDirectory, $responsePath);
@@ -42,7 +45,6 @@ class ResponseFinder
     {
         return array_map(
             function ($element) {
-                
                 return str_replace($this->responseFileSuffix, '', $element);
             },
             $availableQueryFiles

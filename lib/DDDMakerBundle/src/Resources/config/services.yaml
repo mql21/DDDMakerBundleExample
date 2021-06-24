@@ -1,0 +1,93 @@
+services:
+  Mql21\DDDMakerBundle\ConfigManager\DDDElementsConfig:
+    arguments:
+      $config:
+        vendor: 'SomeCompany'
+        ddd_elements:
+          bounded-context:
+            path: 'src/'
+          module:
+            path: 'src/{bounded-context}/'
+          command:
+            namespace: '{vendor}\{bounded-context}\{module}\Application\Command'
+            path: 'src/{bounded-context}/{module}/Application/Command/'
+            implements: 'App\Shared\Domain\Bus\Command\Command'
+            suffix: 'Command'
+          command-handler:
+            namespace: '{vendor}\{bounded-context}\{module}\Application\Command'
+            path: 'src/{bounded-context}/{module}/Application/Command/'
+            implements: 'App\Shared\Domain\Bus\Command\CommandHandler'
+            suffix: 'CommandHandler'
+          query:
+            namespace: '{vendor}\{bounded-context}\{module}\Application\Query'
+            path: 'src/{bounded-context}/{module}/Application/Query/'
+            implements: 'App\Shared\Domain\Bus\Query\Query'
+            suffix: 'Query'
+          query-handler:
+            namespace: '{vendor}\{bounded-context}\{module}\Application\Query'
+            path: 'src/{bounded-context}/{module}/Application/Query/'
+            implements: 'App\Shared\Domain\Bus\Query\QueryHandler'
+            suffix: 'QueryHandler'
+          response:
+            namespace: '{vendor}\{bounded-context}\{module}\Application\Response'
+            path: 'src/{bounded-context}/{module}/Application/Response/'
+            suffix: 'Response'
+          domain-event:
+            namespace: '{vendor}\{bounded-context}\{module}\Domain\Event'
+            path: 'src/{bounded-context}/{module}/Domain/Event/'
+            extends: 'App\Shared\Domain\Bus\Event\DomainEvent'
+            suffix: 'DomainEvent'
+          event-subscriber:
+            namespace: '{vendor}\{bounded-context}\{module}\Application\EventSubscriber'
+            path: 'src/{bounded-context}/{module}/Application/EventSubscriber/'
+            implements: 'App\Shared\Domain\Bus\Event\DomainEventSubscriber'
+            suffix:
+          value-object:
+            namespace: '{vendor}\{bounded-context}\{module}\Domain\ValueObject'
+            path: 'src/{bounded-context}/{module}/Domain/ValueObject/'
+            suffix:
+          use-case:
+            namespace: '{vendor}\{bounded-context}\{module}\Application\UseCase'
+            path: 'src/{bounded-context}/{module}/Application/UseCase/'
+            suffix:
+
+  Mql21\DDDMakerBundle\ConfigManager\ConfigManager:
+    arguments: [ '@Mql21\DDDMakerBundle\ConfigManager\DDDElementsConfig' ]
+
+  Mql21\DDDMakerBundle\Locator\PathLocator:
+    arguments: [ '@Mql21\DDDMakerBundle\ConfigManager\ConfigManager' ]
+
+  Mql21\DDDMakerBundle\Locator\BoundedContextLocator:
+    arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator' ]
+
+  Mql21\DDDMakerBundle\Locator\ModuleLocator:
+    arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator' ]
+
+  Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator:
+    arguments: [ '@Mql21\DDDMakerBundle\Locator\BoundedContextLocator', '@Mql21\DDDMakerBundle\Locator\ModuleLocator' ]
+
+  Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder:
+    arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator', '@Mql21\DDDMakerBundle\ConfigManager\ConfigManager' ]
+
+  Mql21\DDDMakerBundle\Interaction\DTOAttributeInteractor: ~
+
+  Mql21\DDDMakerBundle\Finder\CommandFinder:
+    arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator', '@Mql21\DDDMakerBundle\ConfigManager\ConfigManager' ]
+
+  Mql21\DDDMakerBundle\Finder\QueryFinder:
+    arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator', '@Mql21\DDDMakerBundle\ConfigManager\ConfigManager' ]
+
+  Mql21\DDDMakerBundle\Finder\ResponseFinder:
+    arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator', '@Mql21\DDDMakerBundle\ConfigManager\ConfigManager' ]
+
+  Mql21\DDDMakerBundle\Finder\DomainEventFinder:
+    arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator', '@Mql21\DDDMakerBundle\ConfigManager\ConfigManager' ]
+
+  Mql21\DDDMakerBundle\Finder\UseCaseFinder:
+    arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator', '@Mql21\DDDMakerBundle\ConfigManager\ConfigManager' ]
+
+  Mql21\DDDMakerBundle\Renderer\HandlerRenderer: ~
+
+  Mql21\DDDMakerBundle\Renderer\UseCaseRenderer: ~
+
+  Mql21\DDDMakerBundle\Renderer\ValueObjectRenderer: ~

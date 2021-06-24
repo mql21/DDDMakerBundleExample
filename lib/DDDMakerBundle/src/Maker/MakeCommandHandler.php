@@ -2,10 +2,13 @@
 
 namespace Mql21\DDDMakerBundle\Maker;
 
+use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
 use Mql21\DDDMakerBundle\Finder\CommandFinder;
 use Mql21\DDDMakerBundle\Finder\UseCaseFinder;
+use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\Handler\CommandHandlerGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
+use Mql21\DDDMakerBundle\Renderer\HandlerRenderer;
 use Mql21\DDDMakerBundle\Response\UseCaseResponse;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,18 +23,30 @@ class MakeCommandHandler extends Command
     private BoundedContextModuleLocator $boundedContextModuleLocator;
     private CommandFinder $commandFinder;
     private UseCaseFinder $useCaseFinder;
+    private ConfigManager $configManager;
+    private HandlerRenderer $renderer;
+    private DDDClassBuilder $classBuilder;
     
-    public function __construct(string $name = null)
-    {
-        parent::__construct($name);
+    public function __construct(
+        BoundedContextModuleLocator $boundedContextModuleLocator,
+        CommandFinder $queryFinder,
+        UseCaseFinder $useCaseFinder,
+        ConfigManager $configManager,
+        HandlerRenderer $renderer,
+        DDDClassBuilder $classBuilder
+    ) {
+        $this->boundedContextModuleLocator = $boundedContextModuleLocator;
+        $this->commandFinder = $queryFinder;
+        $this->useCaseFinder = $useCaseFinder;
+        $this->configManager = $configManager;
+        $this->renderer = $renderer;
+        $this->classBuilder = $classBuilder;
+        
+        parent::__construct(self::$defaultName);
     }
     
     protected function configure()
     {
-        $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        $this->commandFinder = new CommandFinder();
-        $this->useCaseFinder = new UseCaseFinder();
-        
         $this
             ->setDescription('Creates a command handler in the Application layer.')
             ->addArgument(
@@ -68,7 +83,12 @@ class MakeCommandHandler extends Command
         
         $useCaseNameResponse = new UseCaseResponse($questionHelper->ask($input, $output, $useCaseQuestion));
         
-        $commandHandlerGenerator = new CommandHandlerGenerator($useCaseNameResponse);
+        $commandHandlerGenerator = new CommandHandlerGenerator(
+            $useCaseNameResponse,
+            $this->configManager,
+            $this->renderer,
+            $this->classBuilder
+        );
         $commandHandlerGenerator->generate($boundedContextName, $moduleName, $commandName);
         
         $output->writeln("<info> Command handler {$commandName} has been successfully created! </info>\n\n");

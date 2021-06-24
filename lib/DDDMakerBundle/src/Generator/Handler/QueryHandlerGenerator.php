@@ -2,10 +2,12 @@
 
 namespace Mql21\DDDMakerBundle\Generator\Handler;
 
+use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
 use Mql21\DDDMakerBundle\Exception\DirectoryNotFoundException;
 use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
+use Mql21\DDDMakerBundle\Renderer\HandlerRenderer;
 use Mql21\DDDMakerBundle\Response\UseCaseResponse;
 use Mql21\DDDMakerBundle\ValueObject\Class\AttributeName;
 use Mql21\DDDMakerBundle\ValueObject\Class\ClassMetadata;
@@ -18,21 +20,26 @@ class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenera
 {
     private string $responseClassName;
     
-    public function __construct(UseCaseResponse $useCaseResponse, string $responseClassName)
-    {
-        parent::__construct($useCaseResponse);
+    public function __construct(
+        UseCaseResponse $useCaseResponse,
+        string $responseClassName,
+        ConfigManager $configManager,
+        HandlerRenderer $renderer,
+        DDDClassBuilder $classBuilder
+    ) {
+        parent::__construct($useCaseResponse, $configManager, $renderer, $classBuilder);
         $this->responseClassName = $responseClassName;
     }
     
     public function generate(string $boundedContextName, string $moduleName, string $handlerName): void
     {
-        $dddClassBuilder = DDDClassBuilder::create()
+        $dddClassBuilder = $this->classBuilder
             ->forBoundedContext($boundedContextName)
             ->forModule($moduleName)
             ->withClassName($handlerName)
             ->ofDDDElementType($this->type())
             ->build();
-    
+        
         if (file_exists($dddClassBuilder->elementFullPath())) {
             ElementAlreadyExistsException::raise($handlerName, $boundedContextName, $moduleName);
         }
@@ -40,14 +47,18 @@ class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenera
         $useCaseNamespace = $this
             ->configManager->namespaceFor($boundedContextName, $moduleName, "use-case");
         $responseNamespace = $this->
-            configManager->namespaceFor($boundedContextName, $moduleName, "response");
+        configManager->namespaceFor($boundedContextName, $moduleName, "response");
         $responseSuffix = $this->configManager->classSuffixFor('response');
         $responseClassName = "{$this->responseClassName}{$responseSuffix}";
         $classToHandleSuffix = $this->configManager->classSuffixFor($this->handles());
-    
-        $classToHandleNamespace = $this->configManager->namespaceFor($boundedContextName, $moduleName, $this->handles());
-    
-    
+        
+        $classToHandleNamespace = $this->configManager->namespaceFor(
+            $boundedContextName,
+            $moduleName,
+            $this->handles()
+        );
+        
+        
         if (!file_exists(dirname($dddClassBuilder->elementFullPath()))) {
             DirectoryNotFoundException::raise($dddClassBuilder->elementFullPath());
         }
@@ -60,12 +71,13 @@ class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenera
             $useCaseNamespace,
             "$responseNamespace\\$responseClassName"
         );
-    
+        
         file_put_contents(
             $dddClassBuilder->elementFullPath(),
             $this->renderer->render($handlerClass)
         );
     }
+    
     private function handlerClass(
         DDDClassBuilder $dddClassBuilder,
         string $classToHandleNamespace,
@@ -93,6 +105,7 @@ class QueryHandlerGenerator extends HandlerGenerator implements DDDElementGenera
             new ClassNamespace($responseNamespace)
         );
     }
+    
     public function type(): string
     {
         return 'query-handler';

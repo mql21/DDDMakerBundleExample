@@ -2,8 +2,10 @@
 
 namespace Mql21\DDDMakerBundle\Maker;
 
+use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\ValueObjectGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
+use Mql21\DDDMakerBundle\Renderer\ValueObjectRenderer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,19 +16,21 @@ class MakeValueObject extends Command
 {
     protected static $defaultName = 'ddd:domain:make:value-object';
     
-    private ValueObjectGenerator $valueObjectGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
+    private ValueObjectRenderer $renderer;
+    private DDDClassBuilder $classBuilder;
     
-    public function __construct(string $name = null)
+    public function __construct(BoundedContextModuleLocator $boundedContextModuleLocator, ValueObjectRenderer $renderer, DDDClassBuilder $classBuilder)
     {
-        parent::__construct($name);
+        $this->boundedContextModuleLocator = $boundedContextModuleLocator;
+        $this->renderer = $renderer;
+        $this->classBuilder = $classBuilder;
+        
+        parent::__construct(self::$defaultName);
     }
     
     protected function configure()
     {
-        $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        $this->valueObjectGenerator = new ValueObjectGenerator();
-        
         $this
             ->setDescription('Creates a value object in the Domain layer.')
             ->addArgument(
@@ -48,12 +52,12 @@ class MakeValueObject extends Command
         
         $this->boundedContextModuleLocator->checkIfBoundedContextModuleExists($boundedContextName, $moduleName);
         
-        // Ask for value object name and create it
         $valueObjectNameQuestion = new Question("<info> What should the value object be called?</info>\n > ");
         $questionHelper = $this->getHelper('question');
         $valueObjectName = $questionHelper->ask($input, $output, $valueObjectNameQuestion);
         
-        $this->valueObjectGenerator->generate($boundedContextName, $moduleName, $valueObjectName);
+        $valueObjectGenerator = new ValueObjectGenerator($this->renderer, $this->classBuilder);
+        $valueObjectGenerator->generate($boundedContextName, $moduleName, $valueObjectName);
         
         $output->writeln("<info> Value object {$valueObjectName} has been successfully created! </info>\n\n");
         

@@ -17,7 +17,7 @@ class CommandHandlerGenerator extends HandlerGenerator implements DDDElementGene
 {
     public function generate(string $boundedContextName, string $moduleName, string $handlerName): void
     {
-        $dddClassBuilder = DDDClassBuilder::create()
+        $dddClassBuilder = $this->classBuilder
             ->forBoundedContext($boundedContextName)
             ->forModule($moduleName)
             ->withClassName($handlerName)

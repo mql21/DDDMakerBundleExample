@@ -2,6 +2,7 @@
 
 namespace Mql21\DDDMakerBundle\Maker;
 
+use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
 use Mql21\DDDMakerBundle\Generator\MissingDirectoriesGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
 use Symfony\Component\Console\Command\Command;
@@ -14,17 +15,18 @@ class MakeMissingDirectories extends Command
     protected static $defaultName = 'ddd:make:missing-directories';
     
     private BoundedContextModuleLocator $boundedContextModuleLocator;
-    private MissingDirectoriesGenerator $missingDirectoriesGenerator;
+    private ConfigManager $configManager;
     
-    public function __construct(string $name = null)
+    public function __construct(BoundedContextModuleLocator $boundedContextModuleLocator, ConfigManager $configManager)
     {
-        parent::__construct($name);
+        $this->boundedContextModuleLocator = $boundedContextModuleLocator;
+        $this->configManager = $configManager;
+    
+        parent::__construct(self::$defaultName);
     }
     
     protected function configure()
     {
-        $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        $this->missingDirectoriesGenerator = new MissingDirectoriesGenerator();
         $this
             ->setDescription('Creates a value object in the Domain layer.')
             ->addArgument(
@@ -46,9 +48,12 @@ class MakeMissingDirectories extends Command
         
         $this->boundedContextModuleLocator->checkIfBoundedContextModuleExists($boundedContextName, $moduleName);
         
-        $this->missingDirectoriesGenerator->generate($boundedContextName, $moduleName);
+        $missingDirectoriesGenerator = new MissingDirectoriesGenerator($this->configManager);
+        $missingDirectoriesGenerator->generate($boundedContextName, $moduleName);
         
-        $output->writeln("<info> Missing directories for module {$moduleName} of {$boundedContextName} bounded context have been successfully created! </info>\n\n");
+        $output->writeln(
+            "<info> Missing directories for module {$moduleName} of {$boundedContextName} bounded context have been successfully created! </info>\n\n"
+        );
         
         return Command::SUCCESS;
     }

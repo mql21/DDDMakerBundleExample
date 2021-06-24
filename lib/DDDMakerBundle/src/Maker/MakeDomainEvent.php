@@ -2,6 +2,8 @@
 
 namespace Mql21\DDDMakerBundle\Maker;
 
+use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
+use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\DTO\DomainEventGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
 use Mql21\DDDMakerBundle\Interaction\DTOAttributeInteractor;
@@ -18,17 +20,25 @@ class MakeDomainEvent extends Command
     private DomainEventGenerator $domainEventGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
     private DTOAttributeInteractor $attributeQuestioner;
+    private ConfigManager $configManager;
+    private DDDClassBuilder $classBuilder;
     
-    public function __construct(string $name = null)
-    {
-        parent::__construct($name);
+    public function __construct(
+        BoundedContextModuleLocator $boundedContextModuleLocator,
+        ConfigManager $configManager,
+        DDDClassBuilder $classBuilder,
+        DTOAttributeInteractor $dtoAttributeInteractor
+    ) {
+        $this->boundedContextModuleLocator = $boundedContextModuleLocator;
+        $this->configManager = $configManager;
+        $this->attributeQuestioner = $dtoAttributeInteractor;
+        $this->classBuilder = $classBuilder;
+        
+        parent::__construct(self::$defaultName);
     }
     
     protected function configure()
     {
-        $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        $this->attributeQuestioner = new DTOAttributeInteractor();
-        
         $this
             ->setDescription('Creates a domain event in the Domain layer.')
             ->addArgument(
@@ -49,13 +59,14 @@ class MakeDomainEvent extends Command
         $moduleName = $input->getArgument('module');
         
         $this->boundedContextModuleLocator->checkIfBoundedContextModuleExists($boundedContextName, $moduleName);
-        // Ask for event name and create it
         $eventNameQuestion = new Question("<info> What should the event be called?</info>\n > ");
         $questionHelper = $this->getHelper('question');
         $eventName = $questionHelper->ask($input, $output, $eventNameQuestion);
         
         $this->domainEventGenerator = new DomainEventGenerator(
-            $this->attributeQuestioner->ask($input, $output, $questionHelper)
+            $this->attributeQuestioner->ask($input, $output, $questionHelper),
+            $this->configManager,
+            $this->classBuilder
         );
         
         $this->domainEventGenerator->generate($boundedContextName, $moduleName, $eventName);

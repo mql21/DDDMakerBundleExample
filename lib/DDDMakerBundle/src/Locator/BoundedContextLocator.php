@@ -1,15 +1,18 @@
 <?php
 
-
 namespace Mql21\DDDMakerBundle\Locator;
-
-
-use Mql21\DDDMakerBundle\Factories\PathFactory;
 
 class BoundedContextLocator
 {
+    private PathLocator $locator;
+    
+    public function __construct(PathLocator $locator)
+    {
+        $this->locator = $locator;
+    }
+    
     public function exists(string $boundedContextName): bool
     {
-        return file_exists(PathFactory::forModules($boundedContextName));
+        return file_exists($this->locator->forModules($boundedContextName));
     }
 }

@@ -4,21 +4,24 @@
 namespace Mql21\DDDMakerBundle\Finder;
 
 use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
-use Mql21\DDDMakerBundle\Factories\PathFactory;
+use Mql21\DDDMakerBundle\Locator\PathLocator;
 
 class CommandFinder
 {
     private string $commandFileSuffix;
+    private ConfigManager $configManager;
+    private PathLocator $pathLocator;
     
-    public function __construct()
+    public function __construct(PathLocator $pathLocator, ConfigManager $configManager)
     {
-        $configManager = new ConfigManager();
+        $this->configManager = $configManager;
         $this->commandFileSuffix = $configManager->classSuffixFor('command') . '.php';
+        $this->pathLocator = $pathLocator;
     }
     
     public function findIn(string $boundedContextName, string $moduleName): array
     {
-        $commandsPath = PathFactory::for($boundedContextName, $moduleName, 'command');
+        $commandsPath = $this->pathLocator->for($boundedContextName, $moduleName, 'command');
         $elementsInBoundedContextDirectory = scandir($commandsPath);
         
         $availableCommandFiles = $this->findAvailableCommandFiles($elementsInBoundedContextDirectory, $commandsPath);

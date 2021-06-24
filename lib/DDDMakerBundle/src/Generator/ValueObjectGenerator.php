@@ -15,15 +15,17 @@ use Mql21\DDDMakerBundle\ValueObject\ValueObject;
 class ValueObjectGenerator implements DDDElementGenerator
 {
     private ValueObjectRenderer $renderer;
+    private DDDClassBuilder $classBuilder;
     
-    public function __construct()
+    public function __construct(ValueObjectRenderer $renderer, DDDClassBuilder $classBuilder)
     {
-        $this->renderer = new ValueObjectRenderer();
+        $this->renderer = $renderer;
+        $this->classBuilder = $classBuilder;
     }
     
     public function generate(string $boundedContextName, string $moduleName, string $valueObjectName): void
     {
-        $dddClassBuilder = DDDClassBuilder::create()
+        $dddClassBuilder = $this->classBuilder
             ->forBoundedContext($boundedContextName)
             ->forModule($moduleName)
             ->withClassName($valueObjectName)

@@ -2,11 +2,15 @@
 
 namespace Mql21\DDDMakerBundle\Maker;
 
+use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
+use Mql21\DDDMakerBundle\Finder\CommandFinder;
 use Mql21\DDDMakerBundle\Finder\QueryFinder;
 use Mql21\DDDMakerBundle\Finder\ResponseFinder;
 use Mql21\DDDMakerBundle\Finder\UseCaseFinder;
+use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\Handler\QueryHandlerGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
+use Mql21\DDDMakerBundle\Renderer\HandlerRenderer;
 use Mql21\DDDMakerBundle\Response\UseCaseResponse;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -22,19 +26,32 @@ class MakeQueryHandler extends Command
     private QueryFinder $queryFinder;
     private UseCaseFinder $useCaseFinder;
     private ResponseFinder $responseFinder;
+    private ConfigManager $configManager;
+    private HandlerRenderer $renderer;
+    private DDDClassBuilder $classBuilder;
     
-    public function __construct(string $name = null)
-    {
-        parent::__construct($name);
+    public function __construct(
+        BoundedContextModuleLocator $boundedContextModuleLocator,
+        QueryFinder $queryFinder,
+        UseCaseFinder $useCaseFinder,
+        ConfigManager $configManager,
+        HandlerRenderer $renderer,
+        DDDClassBuilder $classBuilder,
+        ResponseFinder $responseFinder
+    ) {
+        $this->boundedContextModuleLocator = $boundedContextModuleLocator;
+        $this->queryFinder = $queryFinder;
+        $this->useCaseFinder = $useCaseFinder;
+        $this->configManager = $configManager;
+        $this->renderer = $renderer;
+        $this->classBuilder = $classBuilder;
+        $this->responseFinder = $responseFinder;
+        
+        parent::__construct(self::$defaultName);
     }
     
     protected function configure()
     {
-        $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        $this->queryFinder = new QueryFinder();
-        $this->useCaseFinder = new UseCaseFinder();
-        $this->responseFinder = new ResponseFinder();
-    
         $this
             ->setDescription('Creates a command handler in the Application layer.')
             ->addArgument(
@@ -76,7 +93,13 @@ class MakeQueryHandler extends Command
         );
         $responseClassName = $questionHelper->ask($input, $output, $responseClassNameQuestion);
     
-        $queryHandlerGenerator = new QueryHandlerGenerator($useCaseNameResponse, $responseClassName);
+        $queryHandlerGenerator = new QueryHandlerGenerator(
+            $useCaseNameResponse,
+            $responseClassName,
+            $this->configManager,
+            $this->renderer,
+            $this->classBuilder
+        );
         $queryHandlerGenerator->generate($boundedContextName, $moduleName, $queryName);
     
         $output->writeln("<info> Query handler {$queryName} has been successfully created! </info>\n\n");

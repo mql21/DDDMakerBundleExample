@@ -2,8 +2,10 @@
 
 namespace Mql21\DDDMakerBundle\Maker;
 
+use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\UseCaseGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
+use Mql21\DDDMakerBundle\Renderer\UseCaseRenderer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,19 +16,24 @@ class MakeUseCase extends Command
 {
     protected static $defaultName = 'ddd:application:make:use-case';
     
-    private UseCaseGenerator $useCaseGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
+    private UseCaseRenderer $renderer;
+    private DDDClassBuilder $classBuilder;
     
-    public function __construct(string $name = null)
-    {
-        parent::__construct($name);
+    public function __construct(
+        BoundedContextModuleLocator $boundedContextModuleLocator,
+        UseCaseRenderer $renderer,
+        DDDClassBuilder $classBuilder
+    ) {
+        $this->boundedContextModuleLocator = $boundedContextModuleLocator;
+        $this->renderer = $renderer;
+        $this->classBuilder = $classBuilder;
+        
+        parent::__construct(self::$defaultName);
     }
     
     protected function configure()
     {
-        $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        $this->useCaseGenerator = new UseCaseGenerator();
-        
         $this
             ->setDescription('Creates a use case (application service) in the Application layer.')
             ->addArgument(
@@ -48,12 +55,12 @@ class MakeUseCase extends Command
         
         $this->boundedContextModuleLocator->checkIfBoundedContextModuleExists($boundedContextName, $moduleName);
         
-        // Ask for value object name and create it
         $useCaseNameQuestion = new Question("<info> What should the use case be called?</info>\n > ");
         $questionHelper = $this->getHelper('question');
         $useCaseName = $questionHelper->ask($input, $output, $useCaseNameQuestion);
         
-        $this->useCaseGenerator->generate($boundedContextName, $moduleName, $useCaseName);
+        $useCaseGenerator = new UseCaseGenerator($this->renderer, $this->classBuilder);
+        $useCaseGenerator->generate($boundedContextName, $moduleName, $useCaseName);
         
         $output->writeln("<info> Use case {$useCaseName} has been successfully created! </info>\n\n");
         

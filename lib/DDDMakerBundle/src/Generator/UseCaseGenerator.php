@@ -14,17 +14,18 @@ use Mql21\DDDMakerBundle\ValueObject\UseCase;
 
 class UseCaseGenerator implements DDDElementGenerator
 {
-    
     private UseCaseRenderer $renderer;
+    private DDDClassBuilder $classBuilder;
     
-    public function __construct()
+    public function __construct(UseCaseRenderer $renderer, DDDClassBuilder $classBuilder)
     {
-        $this->renderer = new UseCaseRenderer();
+        $this->renderer = $renderer;
+        $this->classBuilder = $classBuilder;
     }
     
     public function generate(string $boundedContextName, string $moduleName, string $useCaseName): void
     {
-        $dddClassBuilder = DDDClassBuilder::create()
+        $dddClassBuilder = $this->classBuilder
             ->forBoundedContext($boundedContextName)
             ->forModule($moduleName)
             ->withClassName($useCaseName)

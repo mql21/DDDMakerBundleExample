@@ -2,6 +2,8 @@
 
 namespace Mql21\DDDMakerBundle\Maker;
 
+use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
+use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\DTO\QueryGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
 use Mql21\DDDMakerBundle\Interaction\DTOAttributeInteractor;
@@ -18,17 +20,25 @@ class MakeQuery extends Command
     private QueryGenerator $queryGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
     private DTOAttributeInteractor $attributeQuestioner;
+    private ConfigManager $configManager;
+    private DDDClassBuilder $classBuilder;
     
-    public function __construct(string $name = null)
-    {
-        parent::__construct($name);
+    public function __construct(
+        BoundedContextModuleLocator $boundedContextModuleLocator,
+        ConfigManager $configManager,
+        DDDClassBuilder $classBuilder,
+        DTOAttributeInteractor $dtoAttributeInteractor
+    ) {
+        $this->boundedContextModuleLocator = $boundedContextModuleLocator;
+        $this->configManager = $configManager;
+        $this->attributeQuestioner = $dtoAttributeInteractor;
+        $this->classBuilder = $classBuilder;
+        
+        parent::__construct(self::$defaultName);
     }
     
     protected function configure()
     {
-        $this->boundedContextModuleLocator = new BoundedContextModuleLocator();
-        $this->attributeQuestioner = new DTOAttributeInteractor();
-        
         $this
             ->setDescription('Creates a query in the Application layer.')
             ->addArgument(
@@ -50,13 +60,14 @@ class MakeQuery extends Command
         
         $this->boundedContextModuleLocator->checkIfBoundedContextModuleExists($boundedContextName, $moduleName);
         
-        // Ask for query name and create it
         $queryNameQuestion = new Question("<info> What should the query be called?</info>\n > ");
         $questionHelper = $this->getHelper('question');
         $queryName = $questionHelper->ask($input, $output, $queryNameQuestion);
     
         $this->queryGenerator = new QueryGenerator(
-            $this->attributeQuestioner->ask($input, $output, $questionHelper)
+            $this->attributeQuestioner->ask($input, $output, $questionHelper),
+            $this->configManager,
+            $this->classBuilder
         );
         
         $this->queryGenerator->generate($boundedContextName, $moduleName, $queryName);
