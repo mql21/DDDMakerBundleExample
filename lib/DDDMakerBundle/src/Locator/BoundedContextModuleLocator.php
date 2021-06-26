@@ -8,30 +8,27 @@ use Mql21\DDDMakerBundle\Finder\Directory\ModuleFinder;
 
 class BoundedContextModuleLocator
 {
-    private BoundedContextLocator $boundedContextLocator;
-    private ModuleLocator $moduleLocator;
+    private DirectoryLocator $directoryLocator;
     private BoundedContextFinder $boundedContextFinder;
     private ModuleFinder $moduleFinder;
     
     public function __construct(
-        BoundedContextLocator $boundedContextLocator,
-        ModuleLocator $moduleLocator,
+        DirectoryLocator $directoryLocator,
         BoundedContextFinder $boundedContextFinder,
         ModuleFinder $moduleFinder
     ) {
-        $this->boundedContextLocator = $boundedContextLocator;
-        $this->moduleLocator = $moduleLocator;
+        $this->directoryLocator = $directoryLocator;
         $this->boundedContextFinder = $boundedContextFinder;
         $this->moduleFinder = $moduleFinder;
     }
     
-    public function checkIfBoundedContextModuleExists(string $boundedContextName, string $moduleName)
+    public function checkIfBoundedContextModuleExists(string $boundedContextName, string $moduleName): void
     {
-        if (!$this->boundedContextLocator->exists($boundedContextName)) {
+        if (!$this->directoryLocator->boundedContextExists($boundedContextName)) {
             $this->displayBoundedContextNotFoundError($boundedContextName);
         }
         
-        if (!$this->moduleLocator->exists($boundedContextName, $moduleName)) {
+        if (!$this->directoryLocator->moduleExists($boundedContextName, $moduleName)) {
             $this->displayModuleNotFoundError($moduleName, $boundedContextName);
         }
     }

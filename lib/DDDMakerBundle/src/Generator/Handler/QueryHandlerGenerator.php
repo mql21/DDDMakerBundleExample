@@ -8,7 +8,7 @@ use Mql21\DDDMakerBundle\Exception\ElementAlreadyExistsException;
 use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\Contract\DDDElementGenerator;
 use Mql21\DDDMakerBundle\Renderer\HandlerRenderer;
-use Mql21\DDDMakerBundle\Response\UseCaseResponse;
+use Mql21\DDDMakerBundle\Maker\Interaction\Response\UseCaseResponse;
 use Mql21\DDDMakerBundle\ValueObject\Class\AttributeName;
 use Mql21\DDDMakerBundle\ValueObject\Class\ClassMetadata;
 use Mql21\DDDMakerBundle\ValueObject\Class\ClassName;

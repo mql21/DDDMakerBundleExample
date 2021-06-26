@@ -9,7 +9,7 @@ use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\Handler\DomainEventSubscriberGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
 use Mql21\DDDMakerBundle\Renderer\HandlerRenderer;
-use Mql21\DDDMakerBundle\Response\UseCaseResponse;
+use Mql21\DDDMakerBundle\Maker\Interaction\Response\UseCaseResponse;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

@@ -20,7 +20,7 @@ class PathLocator
     
     public function forModules(string $boundedContextName): string
     {
-        return  $this->configManager->getModulePath($boundedContextName);
+        return $this->configManager->getModulePath($boundedContextName);
     }
     
     public function forBoundedContextModules(string $boundedContextName, string $moduleName): string

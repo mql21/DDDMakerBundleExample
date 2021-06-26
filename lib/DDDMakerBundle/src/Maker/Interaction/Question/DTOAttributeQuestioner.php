@@ -1,6 +1,6 @@
 <?php
 
-namespace Mql21\DDDMakerBundle\Interaction;
+namespace Mql21\DDDMakerBundle\Maker\Interaction\Question;
 
 use Mql21\DDDMakerBundle\ValueObject\Class\ClassAttributes;
 use Symfony\Component\Console\Input\InputInterface;
@@ -9,16 +9,16 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
-class DTOAttributeInteractor
+class DTOAttributeQuestioner
 {
     public function ask(InputInterface $input, OutputInterface $output, $questionHelper): ClassAttributes
     {
         $output->writeln("<info>\n Now tell me some info about its attributes! </info>\n\n");
         
-        $availableTypes = ["string", "int", "float", "bool", "array"]; // TODO: abstract this
+        $availableTypes = ["string", "int", "float", "bool", "array"];
         $attributes = [];
-        $continueAskingAttributes = true;
-        while ($continueAskingAttributes) {
+        $askAttributes = true;
+        while ($askAttributes) {
             $attributeNameQuestion = new Question("<info> What should the attribute be called?</info>\n > ");
             $attributeName = $questionHelper->ask($input, $output, $attributeNameQuestion);
             $attributeTypeQuestion = new ChoiceQuestion(
@@ -36,7 +36,7 @@ class DTOAttributeInteractor
                 '/^(y|s)/i'
             );
             
-            $continueAskingAttributes = $questionHelper->ask($input, $output, $createQueryHandlerQuestion);
+            $askAttributes = $questionHelper->ask($input, $output, $createQueryHandlerQuestion);
         }
         
         return new ClassAttributes($attributes);

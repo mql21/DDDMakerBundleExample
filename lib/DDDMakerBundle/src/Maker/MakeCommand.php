@@ -5,7 +5,7 @@ namespace Mql21\DDDMakerBundle\Maker;
 use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
 use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\DTO\CommandGenerator;
-use Mql21\DDDMakerBundle\Interaction\DTOAttributeInteractor;
+use Mql21\DDDMakerBundle\Maker\Interaction\Question\DTOAttributeQuestioner;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -19,7 +19,7 @@ class MakeCommand extends Command
     
     private CommandGenerator $commandGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
-    private DTOAttributeInteractor $attributeQuestioner;
+    private DTOAttributeQuestioner $attributeQuestioner;
     private ConfigManager $configManager;
     private DDDClassBuilder $classBuilder;
     
@@ -27,7 +27,7 @@ class MakeCommand extends Command
         BoundedContextModuleLocator $boundedContextModuleLocator,
         ConfigManager $configManager,
         DDDClassBuilder $classBuilder,
-        DTOAttributeInteractor $dtoAttributeInteractor
+        DTOAttributeQuestioner $dtoAttributeInteractor
     ) {
         $this->boundedContextModuleLocator = $boundedContextModuleLocator;
         $this->configManager = $configManager;

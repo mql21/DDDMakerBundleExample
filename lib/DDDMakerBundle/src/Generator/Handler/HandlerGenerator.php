@@ -5,7 +5,7 @@ namespace Mql21\DDDMakerBundle\Generator\Handler;
 use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
 use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Renderer\HandlerRenderer;
-use Mql21\DDDMakerBundle\Response\UseCaseResponse;
+use Mql21\DDDMakerBundle\Maker\Interaction\Response\UseCaseResponse;
 
 class HandlerGenerator
 {

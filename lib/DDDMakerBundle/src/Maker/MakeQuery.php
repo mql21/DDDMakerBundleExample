@@ -6,7 +6,7 @@ use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
 use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\DTO\QueryGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;
-use Mql21\DDDMakerBundle\Interaction\DTOAttributeInteractor;
+use Mql21\DDDMakerBundle\Maker\Interaction\Question\DTOAttributeQuestioner;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,7 +19,7 @@ class MakeQuery extends Command
     
     private QueryGenerator $queryGenerator;
     private BoundedContextModuleLocator $boundedContextModuleLocator;
-    private DTOAttributeInteractor $attributeQuestioner;
+    private DTOAttributeQuestioner $attributeQuestioner;
     private ConfigManager $configManager;
     private DDDClassBuilder $classBuilder;
     
@@ -27,7 +27,7 @@ class MakeQuery extends Command
         BoundedContextModuleLocator $boundedContextModuleLocator,
         ConfigManager $configManager,
         DDDClassBuilder $classBuilder,
-        DTOAttributeInteractor $dtoAttributeInteractor
+        DTOAttributeQuestioner $dtoAttributeInteractor
     ) {
         $this->boundedContextModuleLocator = $boundedContextModuleLocator;
         $this->configManager = $configManager;

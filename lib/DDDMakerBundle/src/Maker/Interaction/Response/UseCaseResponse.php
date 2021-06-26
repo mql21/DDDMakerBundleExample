@@ -1,6 +1,6 @@
 <?php
 
-namespace Mql21\DDDMakerBundle\Response;
+namespace Mql21\DDDMakerBundle\Maker\Interaction\Response;
 
 class UseCaseResponse
 {

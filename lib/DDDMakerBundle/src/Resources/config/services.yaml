@@ -8,16 +8,12 @@ services:
   Mql21\DDDMakerBundle\Locator\PathLocator:
     arguments: [ '@Mql21\DDDMakerBundle\ConfigManager\ConfigManager' ]
 
-  Mql21\DDDMakerBundle\Locator\BoundedContextLocator:
-    arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator' ]
-
-  Mql21\DDDMakerBundle\Locator\ModuleLocator:
+  Mql21\DDDMakerBundle\Locator\DirectoryLocator:
     arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator' ]
 
   Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator:
     arguments: [
-        '@Mql21\DDDMakerBundle\Locator\BoundedContextLocator',
-        '@Mql21\DDDMakerBundle\Locator\ModuleLocator',
+        '@Mql21\DDDMakerBundle\Locator\DirectoryLocator',
         '@Mql21\DDDMakerBundle\Finder\Directory\BoundedContextFinder',
         '@Mql21\DDDMakerBundle\Finder\Directory\ModuleFinder'
     ]
@@ -25,7 +21,7 @@ services:
   Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder:
     arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator', '@Mql21\DDDMakerBundle\ConfigManager\ConfigManager' ]
 
-  Mql21\DDDMakerBundle\Interaction\DTOAttributeInteractor: ~
+  Mql21\DDDMakerBundle\Maker\Interaction\Question\DTOAttributeQuestioner: ~
 
   Mql21\DDDMakerBundle\Finder\Directory\BoundedContextFinder:
     arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator' ]
