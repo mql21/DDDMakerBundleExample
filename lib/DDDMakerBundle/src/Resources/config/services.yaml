@@ -21,8 +21,8 @@ services:
     arguments: [
         '@Mql21\DDDMakerBundle\Locator\BoundedContextLocator',
         '@Mql21\DDDMakerBundle\Locator\ModuleLocator',
-        '@Mql21\DDDMakerBundle\Finder\BoundedContextFinder',
-        '@Mql21\DDDMakerBundle\Finder\ModuleFinder'
+        '@Mql21\DDDMakerBundle\Finder\Directory\BoundedContextFinder',
+        '@Mql21\DDDMakerBundle\Finder\Directory\ModuleFinder'
     ]
 
   Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder:
@@ -30,25 +30,25 @@ services:
 
   Mql21\DDDMakerBundle\Interaction\DTOAttributeInteractor: ~
 
-  Mql21\DDDMakerBundle\Finder\BoundedContextFinder:
+  Mql21\DDDMakerBundle\Finder\Directory\BoundedContextFinder:
     arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator' ]
 
-  Mql21\DDDMakerBundle\Finder\ModuleFinder:
+  Mql21\DDDMakerBundle\Finder\Directory\ModuleFinder:
     arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator' ]
 
-  Mql21\DDDMakerBundle\Finder\CommandFinder:
+  Mql21\DDDMakerBundle\Finder\Class\CommandFinder:
     arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator', '@Mql21\DDDMakerBundle\ConfigManager\ConfigManager' ]
 
-  Mql21\DDDMakerBundle\Finder\QueryFinder:
+  Mql21\DDDMakerBundle\Finder\Class\QueryFinder:
     arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator', '@Mql21\DDDMakerBundle\ConfigManager\ConfigManager' ]
 
-  Mql21\DDDMakerBundle\Finder\ResponseFinder:
+  Mql21\DDDMakerBundle\Finder\Class\ResponseFinder:
     arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator', '@Mql21\DDDMakerBundle\ConfigManager\ConfigManager' ]
 
-  Mql21\DDDMakerBundle\Finder\DomainEventFinder:
+  Mql21\DDDMakerBundle\Finder\Class\DomainEventFinder:
     arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator', '@Mql21\DDDMakerBundle\ConfigManager\ConfigManager' ]
 
-  Mql21\DDDMakerBundle\Finder\UseCaseFinder:
+  Mql21\DDDMakerBundle\Finder\Class\UseCaseFinder:
     arguments: [ '@Mql21\DDDMakerBundle\Locator\PathLocator', '@Mql21\DDDMakerBundle\ConfigManager\ConfigManager' ]
 
   Mql21\DDDMakerBundle\Renderer\HandlerRenderer: ~

@@ -3,8 +3,8 @@
 namespace Mql21\DDDMakerBundle\Maker;
 
 use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
-use Mql21\DDDMakerBundle\Finder\DomainEventFinder;
-use Mql21\DDDMakerBundle\Finder\UseCaseFinder;
+use Mql21\DDDMakerBundle\Finder\Class\DomainEventFinder;
+use Mql21\DDDMakerBundle\Finder\Class\UseCaseFinder;
 use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\Handler\DomainEventSubscriberGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;

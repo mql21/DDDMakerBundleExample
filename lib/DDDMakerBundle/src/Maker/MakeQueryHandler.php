@@ -3,9 +3,9 @@
 namespace Mql21\DDDMakerBundle\Maker;
 
 use Mql21\DDDMakerBundle\ConfigManager\ConfigManager;
-use Mql21\DDDMakerBundle\Finder\QueryFinder;
-use Mql21\DDDMakerBundle\Finder\ResponseFinder;
-use Mql21\DDDMakerBundle\Finder\UseCaseFinder;
+use Mql21\DDDMakerBundle\Finder\Class\QueryFinder;
+use Mql21\DDDMakerBundle\Finder\Class\ResponseFinder;
+use Mql21\DDDMakerBundle\Finder\Class\UseCaseFinder;
 use Mql21\DDDMakerBundle\Generator\Builder\DDDClassBuilder;
 use Mql21\DDDMakerBundle\Generator\Handler\QueryHandlerGenerator;
 use Mql21\DDDMakerBundle\Locator\BoundedContextModuleLocator;

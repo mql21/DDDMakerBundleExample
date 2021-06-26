@@ -1,6 +1,6 @@
 <?php
 
-namespace Mql21\DDDMakerBundle\Finder;
+namespace Mql21\DDDMakerBundle\Finder\Directory;
 
 use Mql21\DDDMakerBundle\Locator\PathLocator;
 

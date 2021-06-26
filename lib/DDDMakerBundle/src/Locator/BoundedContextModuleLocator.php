@@ -3,8 +3,8 @@
 namespace Mql21\DDDMakerBundle\Locator;
 
 use Mql21\DDDMakerBundle\Exception\ElementNotFoundException;
-use Mql21\DDDMakerBundle\Finder\BoundedContextFinder;
-use Mql21\DDDMakerBundle\Finder\ModuleFinder;
+use Mql21\DDDMakerBundle\Finder\Directory\BoundedContextFinder;
+use Mql21\DDDMakerBundle\Finder\Directory\ModuleFinder;
 
 class BoundedContextModuleLocator
 {
