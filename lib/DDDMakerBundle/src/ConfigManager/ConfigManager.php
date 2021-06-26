@@ -6,9 +6,9 @@ class ConfigManager
 {
     private array $config;
     
-    public function __construct(DDDElementsConfig $config)
+    public function __construct(array $config)
     {
-        $this->config = $config->config();
+        $this->config = $config;
     }
     
     public function getBoundedContextPath()

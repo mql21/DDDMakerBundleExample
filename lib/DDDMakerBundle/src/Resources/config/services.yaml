@@ -2,11 +2,8 @@ imports:
   - { resource: ddd_elements_config.yaml }
 
 services:
-  Mql21\DDDMakerBundle\ConfigManager\DDDElementsConfig:
-    arguments: [ '%ddd_maker_bundle_config%' ]
-
   Mql21\DDDMakerBundle\ConfigManager\ConfigManager:
-    arguments: [ '@Mql21\DDDMakerBundle\ConfigManager\DDDElementsConfig' ]
+    arguments: [ '%ddd_maker_bundle_config%' ]
 
   Mql21\DDDMakerBundle\Locator\PathLocator:
     arguments: [ '@Mql21\DDDMakerBundle\ConfigManager\ConfigManager' ]
