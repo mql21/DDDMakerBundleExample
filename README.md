@@ -20,24 +20,26 @@ For now, these are the elements that will be able to be created through this bun
 - **Bounded context** (*ddd:make:bounded-context*) :black_square_button:
 
 - **CQS/CQRS**
-    - Command (*ddd:cqs:make:command*) :hourglass_flowing_sand:
-    - CommandHandler (*ddd:cqs:make:command-handler*) :hourglass_flowing_sand:
-    - Query (*ddd:cqs:make:query*) :hourglass_flowing_sand:
-    - QueryHandler (*ddd:cqs:make:query-handler*) :hourglass_flowing_sand:
-    - Response  (*ddd:cqs:make:response*) :hourglass_flowing_sand:
+    - Command (*ddd:cqs:make:command*) :heavy_check_mark:
+    - CommandHandler (*ddd:cqs:make:command-handler*) :heavy_check_mark:
+    - Query (*ddd:cqs:make:query*) :heavy_check_mark:
+    - QueryHandler (*ddd:cqs:make:query-handler*) :heavy_check_mark:
+    - Response  (*ddd:cqs:make:response*) :heavy_check_mark:
 
 - **Domain**
-    - Event (*ddd:domain:make:event*) :hourglass_flowing_sand:
-    - Value Object (*ddd:domain:make:value-object*) :hourglass_flowing_sand:
+    - Event (*ddd:domain:make:event*) :heavy_check_mark:
+    - Value Object (*ddd:domain:make:value-object*) :heavy_check_mark:
 - **Application**
-    - EventSubscriber (*ddd:application:make:event-subscriber*) :hourglass_flowing_sand:
-    - UseCase (*ddd:application:make:use-case*) :hourglass_flowing_sand:
+    - EventSubscriber (*ddd:application:make:event-subscriber*) :heavy_check_mark:
+    - UseCase (*ddd:application:make:use-case*) :heavy_check_mark:
+- **Other**
+    - Command to generate missing directories that are specified in config (*ddd:make:missing-directories*) :heavy_check_mark:
 
 - **List**
     - Bounded (*contexs ddd:list:bounded-contexts*) :black_square_button:
     - Commands (*ddd:cqs:list:commands*) :black_square_button:
     - CommandHandlers (*ddd:cqs:list:command-handlers*) :black_square_button:
-    - Querys (*ddd:cqs:list:queries*) :black_square_button:
+    - Queries (*ddd:cqs:list:queries*) :black_square_button:
     - QueryHandler (*ddd:cqs:list:query-handlers*) :black_square_button:
     - Events (*ddd:domain:list:events*) :black_square_button:
     - EventSubscribers (*ddd:application:list:event-subscribers*) :black_square_button:
